@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+
+{% block title %}Prediction{% endblock %}
+
+
+{% block content %}
+
+
+<div class="page">
+
+
+   <h1>Student Placement Prediction</h1>
+
+
+   <form>
+
+
+       <label>Student ID</label>
+       <input type="text" placeholder="Enter Student ID">
+
+
+       <label>Department</label>
+       <select>
+           <option>CSE</option>
+           <option>ECE</option>
+           <option>EEE</option>
+           <option>Mechanical</option>
+           <option>Civil</option>
+       </select>
+
+
+       <label>CGPA</label>
+       <input type="number" step="0.01" placeholder="Enter CGPA">
+
+
+       <label>10th Percentage</label>
+       <input type="number" placeholder="Enter 10th percentage">
+
+
+       <label>12th Percentage</label>
+       <input type="number" placeholder="Enter 12th percentage">
+
+
+       <label>Backlogs</label>
+       <input type="number" placeholder="Number of backlogs">
+
+
+       <label>Internship</label>
+       <select>
+           <option>Yes</option>
+           <option>No</option>
+       </select>
+
+
+       <label>Number of Projects</label>
+       <input type="number" placeholder="Enter number of projects">
+
+
+       <label>Aptitude Score</label>
+       <input type="number" placeholder="Enter aptitude score">
+
+
+       <label>Communication Score</label>
+       <input type="number" placeholder="Enter communication score">
+
+
+       <button type="button">
+           Predict Placement
+       </button>
+
+
+   </form>
+
+
+</div>
+
+
+{% endblock %}

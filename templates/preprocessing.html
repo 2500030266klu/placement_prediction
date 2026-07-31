@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+
+{% block title %}Preprocessing{% endblock %}
+
+
+{% block content %}
+
+
+<div class="page">
+
+
+   <h1>Data Preprocessing</h1>
+
+
+   <div class="cards">
+
+
+       <div class="card">
+           <h3>Missing Values</h3>
+           <p>
+               Deletion, mean imputation, median imputation,
+               model-based imputation and MissingIndicator.
+           </p>
+       </div>
+
+
+       <div class="card">
+           <h3>Data Cleaning</h3>
+           <p>
+               Identify and remove duplicate and inconsistent records.
+           </p>
+       </div>
+
+
+       <div class="card">
+           <h3>Encoding</h3>
+           <p>
+               One-hot, ordinal, target and embedding-based encoding.
+           </p>
+       </div>
+
+
+       <div class="card">
+           <h3>Feature Scaling</h3>
+           <p>
+               Standardization and normalization of numerical features.
+           </p>
+       </div>
+
+
+   </div>
+
+
+   <div class="workflow">
+
+
+       <h2>Preprocessing Workflow</h2>
+
+
+       <p>
+           Raw Dataset → Cleaning → Missing Values →
+           Encoding → Scaling → Processed Dataset
+       </p>
+
+
+   </div>
+
+
+</div>
+
+
+{% endblock %}

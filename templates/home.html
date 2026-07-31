@@ -1,0 +1,179 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+Home - Placement Prediction System
+{% endblock %}
+
+
+{% block content %}
+
+
+<section class="hero">
+
+
+   <h1>Placement Prediction System</h1>
+
+
+   <h2>
+       Predict Student Placement Opportunities Using Machine Learning
+   </h2>
+
+
+   <p>
+       Analyze academic performance, technical skills, internships,
+       projects, aptitude and communication skills to predict
+       student placement outcomes.
+   </p>
+
+
+   <div class="buttons">
+
+
+       <a href="{{ url_for('prediction') }}" class="btn">
+           Start Prediction
+       </a>
+
+
+       <a href="{{ url_for('dashboard') }}" class="btn secondary">
+           View Dashboard
+       </a>
+
+
+   </div>
+
+
+</section>
+
+
+
+
+<section class="section">
+
+
+   <h2>About the System</h2>
+
+
+   <p>
+       The Placement Prediction System is a machine-learning-based
+       web application designed to analyze student information and
+       predict placement outcomes.
+   </p>
+
+
+   <p>
+       The system helps students understand their placement
+       opportunities and helps placement officers analyze
+       student performance.
+   </p>
+
+
+</section>
+
+
+
+
+<section class="section">
+
+
+   <h2>Key Features</h2>
+
+
+   <div class="cards">
+
+
+       <div class="card">
+           <h3>📂 Dataset</h3>
+           <p>Upload and analyze placement datasets.</p>
+       </div>
+
+
+       <div class="card">
+           <h3>🔧 Preprocessing</h3>
+           <p>Clean missing values, encode data and scale features.</p>
+       </div>
+
+
+       <div class="card">
+           <h3>📊 Visualization</h3>
+           <p>Analyze placement data using graphs and charts.</p>
+       </div>
+
+
+       <div class="card">
+           <h3>🤖 ML Models</h3>
+           <p>Train and compare machine learning algorithms.</p>
+       </div>
+
+
+       <div class="card">
+           <h3>🎯 Prediction</h3>
+           <p>Predict an individual student's placement.</p>
+       </div>
+
+
+       <div class="card">
+           <h3>📋 Reports</h3>
+           <p>View and download placement prediction results.</p>
+       </div>
+
+
+   </div>
+
+
+</section>
+
+
+
+
+<section class="section workflow">
+
+
+   <h2>How the System Works</h2>
+
+
+   <div class="flow">
+
+
+       <span>Student Data</span>
+       <b>→</b>
+
+
+       <span>Preprocessing</span>
+       <b>→</b>
+
+
+       <span>ML Model</span>
+       <b>→</b>
+
+
+       <span>Prediction</span>
+       <b>→</b>
+
+
+       <span>Report</span>
+
+
+   </div>
+
+
+</section>
+
+
+
+
+<section class="cta">
+
+
+   <h2>Ready to Predict Placement?</h2>
+
+
+   <a href="{{ url_for('prediction') }}" class="btn">
+       Predict Placement
+   </a>
+
+
+</section>
+
+
+{% endblock %}

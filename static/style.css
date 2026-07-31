@@ -1,0 +1,445 @@
+* {
+   margin: 0;
+   padding: 0;
+   box-sizing: border-box;
+}
+
+
+body {
+   font-family: Arial, sans-serif;
+   background: #f4f7fb;
+   color: #222;
+}
+
+
+/* Header */
+
+
+header {
+   background: #12355b;
+   color: white;
+   padding: 18px 30px;
+
+
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+
+
+   flex-wrap: wrap;
+}
+
+
+.logo {
+   font-size: 22px;
+   font-weight: bold;
+}
+
+
+nav {
+   display: flex;
+   gap: 10px;
+   flex-wrap: wrap;
+}
+
+
+nav a {
+   color: white;
+   text-decoration: none;
+   padding: 8px 10px;
+   border-radius: 5px;
+}
+
+
+nav a:hover {
+   background: #1d5d91;
+}
+
+
+
+
+/* Main */
+
+
+main {
+   min-height: 80vh;
+}
+
+
+
+
+/* Hero */
+
+
+.hero {
+   text-align: center;
+   padding: 80px 20px;
+
+
+   background: linear-gradient(
+       135deg,
+       #dceeff,
+       #ffffff
+   );
+}
+
+
+.hero h1 {
+   font-size: 44px;
+   margin-bottom: 20px;
+   color: #12355b;
+}
+
+
+.hero h2 {
+   font-size: 25px;
+   margin-bottom: 20px;
+}
+
+
+.hero p {
+   max-width: 800px;
+   margin: auto;
+   line-height: 1.7;
+   font-size: 17px;
+}
+
+
+
+
+/* Buttons */
+
+
+.buttons {
+   margin-top: 30px;
+}
+
+
+.btn,
+button {
+   display: inline-block;
+   background: #1769aa;
+   color: white;
+
+
+   border: none;
+   padding: 12px 22px;
+
+
+   border-radius: 6px;
+   text-decoration: none;
+
+
+   cursor: pointer;
+   margin: 8px;
+}
+
+
+.btn:hover,
+button:hover {
+   background: #0e4d7d;
+}
+
+
+.secondary {
+   background: #555;
+}
+
+
+
+
+/* Sections */
+
+
+.section,
+.page {
+   max-width: 1200px;
+   margin: auto;
+   padding: 45px 25px;
+}
+
+
+.section h2,
+.page h1,
+.page h2 {
+   margin-bottom: 20px;
+   color: #12355b;
+}
+
+
+.section p,
+.page p,
+.page li {
+   line-height: 1.7;
+}
+
+
+
+
+/* Cards */
+
+
+.cards {
+   display: grid;
+
+
+   grid-template-columns:
+       repeat(auto-fit, minmax(220px, 1fr));
+
+
+   gap: 20px;
+
+
+   margin-top: 25px;
+}
+
+
+.card {
+   background: white;
+
+
+   padding: 25px;
+
+
+   border-radius: 10px;
+
+
+   box-shadow:
+       0 3px 12px rgba(0, 0, 0, 0.08);
+}
+
+
+.card h3 {
+   color: #1769aa;
+   margin-bottom: 12px;
+}
+
+
+.card h2 {
+   font-size: 30px;
+}
+
+
+
+
+/* Workflow */
+
+
+.workflow {
+   text-align: center;
+}
+
+
+.flow {
+   display: flex;
+
+
+   justify-content: center;
+   align-items: center;
+
+
+   gap: 15px;
+
+
+   flex-wrap: wrap;
+
+
+   margin-top: 25px;
+}
+
+
+.flow span {
+   background: white;
+
+
+   padding: 15px 20px;
+
+
+   border-radius: 8px;
+
+
+   box-shadow:
+       0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+
+.flow b {
+   color: #1769aa;
+   font-size: 25px;
+}
+
+
+
+
+/* CTA */
+
+
+.cta {
+   text-align: center;
+
+
+   background: #12355b;
+
+
+   color: white;
+
+
+   padding: 50px 20px;
+}
+
+
+.cta h2 {
+   margin-bottom: 20px;
+}
+
+
+
+
+/* Forms */
+
+
+form {
+   max-width: 700px;
+   margin: 20px auto;
+}
+
+
+form label {
+   display: block;
+   margin-top: 15px;
+   margin-bottom: 6px;
+   font-weight: bold;
+}
+
+
+form input,
+form select,
+form textarea {
+   width: 100%;
+
+
+   padding: 12px;
+
+
+   border: 1px solid #ccc;
+
+
+   border-radius: 5px;
+
+
+   font-size: 15px;
+}
+
+
+
+
+/* Tables */
+
+
+table {
+   width: 100%;
+
+
+   border-collapse: collapse;
+
+
+   background: white;
+
+
+   margin-top: 25px;
+}
+
+
+th,
+td {
+   border: 1px solid #ddd;
+
+
+   padding: 14px;
+
+
+   text-align: center;
+}
+
+
+th {
+   background: #12355b;
+   color: white;
+}
+
+
+
+
+/* Chart */
+
+
+.chart-placeholder {
+   height: 300px;
+
+
+   background: white;
+
+
+   display: flex;
+
+
+   align-items: center;
+
+
+   justify-content: center;
+
+
+   border-radius: 10px;
+
+
+   margin-top: 25px;
+}
+
+
+
+
+/* Footer */
+
+
+footer {
+   background: #12355b;
+
+
+   color: white;
+
+
+   text-align: center;
+
+
+   padding: 25px;
+
+
+   line-height: 1.8;
+}
+
+
+
+
+/* Responsive */
+
+
+@media screen and (max-width: 900px) {
+
+
+   header {
+       flex-direction: column;
+       gap: 15px;
+   }
+
+
+   nav {
+       justify-content: center;
+   }
+
+
+   .hero h1 {
+       font-size: 34px;
+   }
+
+
+}
