@@ -1,0 +1,3 @@
+Linear Regression Equation
+========================================
+PlacementStatus = 0.0010 + (0.3787 × CGPA) + (0.0708 × AptitudeTestScore) + (0.0552 × CodingTestScore) + (0.3337 × MockInterviewScore)
