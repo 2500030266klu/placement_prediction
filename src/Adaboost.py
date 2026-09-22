@@ -1970,8 +1970,6 @@ plt.title(
 )
 
 
-
-
 plt.xticks(
 
 
@@ -1985,14 +1983,10 @@ plt.xticks(
 
 
 
-
 plt.legend()
 
 
-
-
 plt.tight_layout()
-
 
 
 

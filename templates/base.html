@@ -1,63 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-   <meta charset="UTF-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <title>{% block title %}University Placement Prediction System{% endblock %}</title>
 
-   <title>{% block title %} University Placement Prediction System{% endblock %}</title>
+    <!-- Google Fonts & Chart.js -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-
-   <link rel="stylesheet"
-         href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-
 
 <body>
 
-
 <header>
-   <div class="logo">
-       🎓 Placement Prediction System
-   </div>
+    <a href="{{ url_for('home') }}" class="logo">
+        🎓 Placement Prediction System
+    </a>
 
-
-   <nav>
-       <a href="{{ url_for('home') }}">Home</a>
-       <a href="{{ url_for('about') }}">About</a>
-       <a href="{{ url_for('dataset') }}">Dataset</a>
-       <a href="{{ url_for('preprocessing') }}">Preprocessing</a>
-       <a href="{{ url_for('visualization') }}">Visualization</a>
-       <a href="{{ url_for('models') }}">ML Models</a>
-       <a href="{{ url_for('prediction') }}">Prediction</a>
-       <a href="{{ url_for('dashboard') }}">Dashboard</a>
-       <a href="{{ url_for('reports') }}">Reports</a>
-       <a href="{{ url_for('contact') }}">Contact</a>
-   </nav>
+    <nav>
+        <a href="{{ url_for('home') }}" class="{% if active_page == 'home' %}active{% endif %}">Home</a>
+        <a href="{{ url_for('about') }}" class="{% if active_page == 'about' %}active{% endif %}">About</a>
+        <a href="{{ url_for('dataset') }}" class="{% if active_page == 'dataset' %}active{% endif %}">Dataset</a>
+        <a href="{{ url_for('preprocessing') }}" class="{% if active_page == 'preprocessing' %}active{% endif %}">Preprocessing</a>
+        <a href="{{ url_for('visualization') }}" class="{% if active_page == 'visualization' %}active{% endif %}">Visualization</a>
+        <a href="{{ url_for('models') }}" class="{% if active_page == 'models' %}active{% endif %}">ML Models</a>
+        <a href="{{ url_for('prediction') }}" class="{% if active_page == 'prediction' %}active{% endif %}">Prediction</a>
+        <a href="{{ url_for('dashboard') }}" class="{% if active_page == 'dashboard' %}active{% endif %}">Dashboard</a>
+        <a href="{{ url_for('reports') }}" class="{% if active_page == 'reports' %}active{% endif %}">Reports</a>
+        <a href="{{ url_for('contact') }}" class="{% if active_page == 'contact' %}active{% endif %}">Contact</a>
+    </nav>
 </header>
 
-
-
-
 <main>
-
-
-   {% block content %}
-
-
-   {% endblock %}
-
-
+    {% block content %}
+    {% endblock %}
 </main>
 
-
-
+<div id="toastNotification" class="toast">
+    <span id="toastIcon">✨</span>
+    <span id="toastMsg">Notification message</span>
+</div>
 
 <footer>
-   <p>© 2026 Placement Prediction System</p>
-   <p>Python | Flask | Pandas | Machine Learning</p>
+    <p>© 2026 University Placement Prediction System</p>
+    <p>Python | Flask | Pandas | Scikit-Learn | Machine Learning</p>
 </footer>
 
+<script>
+// Toast utility
+function showToast(message, icon = '✨') {
+    const toast = document.getElementById('toastNotification');
+    const toastMsg = document.getElementById('toastMsg');
+    const toastIcon = document.getElementById('toastIcon');
+    if (toast && toastMsg) {
+        toastMsg.textContent = message;
+        if (toastIcon) toastIcon.textContent = icon;
+        toast.classList.add('show');
+        setTimeout(() => {
+            toast.classList.remove('show');
+        }, 3600);
+    }
+}
+</script>
 
 </body>
 </html>

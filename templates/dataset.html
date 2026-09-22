@@ -1,57 +1,275 @@
 {% extends "base.html" %}
 
-
-{% block title %}Dataset{% endblock %}
-
+{% block title %}Dataset - Placement Prediction System{% endblock %}
 
 {% block content %}
 
-
 <div class="page">
 
+    <h1>Placement Dataset</h1>
+    <p>Comprehensive repository of 50,000 undergraduate student records capturing academic, competitive, and interview performance metrics.</p>
 
-   <h1>Placement Dataset</h1>
+    <div class="cards">
 
+        <div class="card">
+            <h3>👥 Total Students</h3>
+            <h2>{{ stats.total_students if stats else '50,000' }}</h2>
+            <p>Verified historical student candidate records.</p>
+        </div>
 
-   <div class="cards">
+        <div class="card">
+            <h3>📋 Total Features</h3>
+            <h2>{{ stats.total_features if stats else '32' }}</h2>
+            <p>Academic, skill, interview, and target columns.</p>
+        </div>
 
+        <div class="card">
+            <h3>🔍 Missing Values</h3>
+            <h2 style="background: linear-gradient(135deg, #f59e0b, #ef4444); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                {{ stats.missing_values if stats else '19,976' }}
+            </h2>
+            <p>Preprocessed via median & indicator imputation.</p>
+        </div>
 
-       <div class="card">
-           <h3>Total Students</h3>
-           <p>Dataset records will appear here.</p>
-       </div>
+        <div class="card">
+            <h3>✨ Duplicate Records</h3>
+            <h2 style="background: linear-gradient(135deg, #10b981, #06b6d4); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                {{ stats.duplicate_records if stats else '0' }}
+            </h2>
+            <p>Zero duplicate entries detected in raw data.</p>
+        </div>
 
+    </div>
 
-       <div class="card">
-           <h3>Total Features</h3>
-           <p>Number of columns will appear here.</p>
-       </div>
+    <h2>Dataset Operations</h2>
 
+    <div class="buttons" style="justify-content: flex-start; margin-bottom: 30px;">
+        <button type="button" onclick="openUploadModal()">
+            <span>📤</span> Upload Dataset
+        </button>
+        <button type="button" class="secondary" onclick="openViewDatasetModal()">
+            <span>👁️</span> View Dataset
+        </button>
+        <button type="button" class="secondary" onclick="openSummaryModal()">
+            <span>📊</span> Dataset Summary
+        </button>
+    </div>
 
-       <div class="card">
-           <h3>Missing Values</h3>
-           <p>Missing-value count will appear here.</p>
-       </div>
-
-
-       <div class="card">
-           <h3>Duplicate Records</h3>
-           <p>Duplicate count will appear here.</p>
-       </div>
-
-
-   </div>
-
-
-   <h2>Dataset Operations</h2>
-
-
-   <button>Upload Dataset</button>
-   <button>View Dataset</button>
-   <button>Dataset Summary</button>
-
+    <!-- Features Overview Table -->
+    <h2>Core Feature Highlights</h2>
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>Feature</th>
+                    <th>Category</th>
+                    <th>Scale / Values</th>
+                    <th>Impact on Placement</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>CGPA</strong></td>
+                    <td>Academic</td>
+                    <td>4.00 to 10.00</td>
+                    <td><span class="table-badge best">Highest Positive (r = +0.65)</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Aptitude Test Score</strong></td>
+                    <td>Skill Assessment</td>
+                    <td>30.2 to 100.0</td>
+                    <td><span class="table-badge best">High Positive (r = +0.58)</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Soft Skills Rating</strong></td>
+                    <td>Interview Readiness</td>
+                    <td>1.0 to 5.0</td>
+                    <td><span class="table-badge best">High Positive (r = +0.62)</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Projects Completed</strong></td>
+                    <td>Practical Experience</td>
+                    <td>0 to 5 Projects</td>
+                    <td><span class="table-badge" style="background:#e0e7ff; color:#3730a3;">Significant (r = +0.58)</span></td>
+                </tr>
+                <tr>
+                    <td><strong>History of Backlogs</strong></td>
+                    <td>Academic Standing</td>
+                    <td>Yes / No</td>
+                    <td><span class="table-badge" style="background:#ffe4e6; color:#be123c;">Negative Factor</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 
 </div>
 
+<!-- Modal 1: View Dataset -->
+<div id="viewDatasetModal" class="modal-overlay">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Dataset Records Preview (First 12 of 50,000)</h2>
+            <button type="button" class="modal-close" onclick="closeModal('viewDatasetModal')">✕</button>
+        </div>
+        <div id="datasetTableLoading" style="text-align: center; padding: 30px; color: #64748b;">
+            Loading dataset sample...
+        </div>
+        <div id="datasetTableContainer" class="table-wrapper" style="max-height: 480px; overflow: auto; display: none;">
+            <table id="datasetSampleTable">
+                <thead id="datasetSampleHead"></thead>
+                <tbody id="datasetSampleBody"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Modal 2: Dataset Summary -->
+<div id="summaryModal" class="modal-overlay">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Dataset Attribute Summary & Schema</h2>
+            <button type="button" class="modal-close" onclick="closeModal('summaryModal')">✕</button>
+        </div>
+        <div id="summaryTableContainer" class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Attribute</th>
+                        <th>Data Type</th>
+                        <th>Non-Null Count</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody id="summaryTableBody">
+                    <!-- Populated via API -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Modal 3: Upload Dataset -->
+<div id="uploadModal" class="modal-overlay">
+    <div class="modal-content" style="max-width: 540px;">
+        <div class="modal-header">
+            <h2>Upload Dataset File (.csv)</h2>
+            <button type="button" class="modal-close" onclick="closeModal('uploadModal')">✕</button>
+        </div>
+        <form id="uploadForm" onsubmit="handleDatasetUpload(event)" style="border: none; box-shadow: none; padding: 0; margin: 0;">
+            <div style="border: 2px dashed #cbd5e1; border-radius: 12px; padding: 32px 20px; text-align: center; background: #f8fafc; margin-bottom: 20px;">
+                <div style="font-size: 36px; margin-bottom: 10px;">📁</div>
+                <input type="file" id="datasetFileInput" accept=".csv" required style="display: block; margin: 0 auto;">
+                <p style="font-size: 13px; color: #64748b; margin-top: 10px;">Supported formats: CSV with standard student placement columns</p>
+            </div>
+            <div id="uploadFeedback" style="display: none; padding: 12px; border-radius: 8px; margin-bottom: 16px; font-size: 14px;"></div>
+            <button type="submit" id="uploadSubmitBtn">
+                <span>Upload & Validate</span>
+            </button>
+        </form>
+    </div>
+</div>
+
+<script>
+function closeModal(id) {
+    document.getElementById(id).style.display = 'none';
+}
+
+// Open and load View Dataset sample
+async function openViewDatasetModal() {
+    const modal = document.getElementById('viewDatasetModal');
+    modal.style.display = 'flex';
+
+    try {
+        const res = await fetch('/api/dataset-sample');
+        const data = await res.json();
+        if (data.success) {
+            const head = document.getElementById('datasetSampleHead');
+            const body = document.getElementById('datasetSampleBody');
+            head.innerHTML = '<tr>' + data.columns.map(c => `<th>${c}</th>`).join('') + '</tr>';
+            body.innerHTML = data.rows.map(row => {
+                return '<tr>' + row.map((cell, idx) => {
+                    if (data.columns[idx] === 'PlacementStatus') {
+                        return `<td><span class="table-badge ${cell == 1 ? 'best' : ''}" style="${cell == 0 ? 'background:#ffe4e6;color:#be123c;' : ''}">${cell == 1 ? 'Placed (1)' : 'Not Placed (0)'}</span></td>`;
+                    }
+                    return `<td>${cell}</td>`;
+                }).join('') + '</tr>';
+            }).join('');
+
+            document.getElementById('datasetTableLoading').style.display = 'none';
+            document.getElementById('datasetTableContainer').style.display = 'block';
+        }
+    } catch (e) {
+        document.getElementById('datasetTableLoading').textContent = 'Error loading dataset: ' + e;
+    }
+}
+
+// Open and load Dataset Summary
+async function openSummaryModal() {
+    const modal = document.getElementById('summaryModal');
+    modal.style.display = 'flex';
+
+    try {
+        const res = await fetch('/api/dataset-summary');
+        const data = await res.json();
+        if (data.success) {
+            const body = document.getElementById('summaryTableBody');
+            body.innerHTML = data.summary.map(s => `
+                <tr>
+                    <td><strong>${s.column}</strong></td>
+                    <td>${s.type}</td>
+                    <td>${s.non_null}</td>
+                    <td>${s.description}</td>
+                </tr>
+            `).join('');
+        }
+    } catch (e) {
+        console.error(e);
+    }
+}
+
+function openUploadModal() {
+    document.getElementById('uploadFeedback').style.display = 'none';
+    document.getElementById('uploadModal').style.display = 'flex';
+}
+
+async function handleDatasetUpload(e) {
+    e.preventDefault();
+    const fileInput = document.getElementById('datasetFileInput');
+    if (!fileInput.files.length) return;
+
+    const btn = document.getElementById('uploadSubmitBtn');
+    btn.innerHTML = '<span>⏳</span> Processing file...';
+    btn.disabled = true;
+
+    const formData = new FormData();
+    formData.append('file', fileInput.files[0]);
+
+    try {
+        const res = await fetch('/api/upload-dataset', {
+            method: 'POST',
+            body: formData
+        });
+        const data = await res.json();
+        const feedback = document.getElementById('uploadFeedback');
+        feedback.style.display = 'block';
+
+        if (data.success) {
+            feedback.style.background = '#dcfce7';
+            feedback.style.color = '#15803d';
+            feedback.textContent = `✔ ${data.message} Verified ${data.rows_previewed} sample rows and ${data.columns_count} columns.`;
+            showToast('Dataset verified successfully!', '📂');
+        } else {
+            feedback.style.background = '#fee2e2';
+            feedback.style.color = '#b91c1c';
+            feedback.textContent = `✖ ${data.message}`;
+        }
+    } catch (err) {
+        alert('Upload failed: ' + err);
+    } finally {
+        btn.innerHTML = '<span>Upload & Validate</span>';
+        btn.disabled = false;
+    }
+}
+</script>
 
 {% endblock %}

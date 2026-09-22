@@ -1,49 +1,186 @@
 {% extends "base.html" %}
 
-
-{% block title %}Visualization{% endblock %}
-
+{% block title %}Visualization - Placement Prediction System{% endblock %}
 
 {% block content %}
 
-
 <div class="page">
 
+    <h1>Data Visualization</h1>
+    <p>Exploratory data analysis and visual trends extracted from 50,000 student placement records.</p>
 
-   <h1>Data Visualization</h1>
+    <!-- Top Summary Cards (Preserving original cards) -->
+    <div class="cards">
 
+        <div class="card" onclick="scrollToChart('placementChartCard')" style="cursor: pointer;">
+            <h3>📊 Placement Distribution</h3>
+            <p>Placed (65.7%) vs Not Placed (34.3%) visualization across 50,000 students.</p>
+            <span style="font-size: 13px; font-weight: 700; color: #4f46e5;">View Chart ↓</span>
+        </div>
 
-   <div class="cards">
+        <div class="card" onclick="scrollToChart('cgpaChartCard')" style="cursor: pointer;">
+            <h3>📈 CGPA Analysis</h3>
+            <p>Strong positive correlation (r = 0.65) between CGPA and placement success.</p>
+            <span style="font-size: 13px; font-weight: 700; color: #4f46e5;">View Chart ↓</span>
+        </div>
 
+        <div class="card" onclick="scrollToChart('deptChartCard')" style="cursor: pointer;">
+            <h3>🏛️ Department Analysis</h3>
+            <p>Branch-wise placement rate across CSE, IT, ECE, EEE, Mech, and Civil.</p>
+            <span style="font-size: 13px; font-weight: 700; color: #4f46e5;">View Chart ↓</span>
+        </div>
 
-       <div class="card">
-           <h3>Placement Distribution</h3>
-           <p>Placed vs Not Placed visualization.</p>
-       </div>
+        <div class="card" onclick="scrollToChart('salaryChartCard')" style="cursor: pointer;">
+            <h3>💰 Salary Distribution</h3>
+            <p>Annual salary CTC packages distribution ranging from 3.0 to 25.9 LPA.</p>
+            <span style="font-size: 13px; font-weight: 700; color: #4f46e5;">View Chart ↓</span>
+        </div>
 
+    </div>
 
-       <div class="card">
-           <h3>CGPA Analysis</h3>
-           <p>CGPA and placement relationship.</p>
-       </div>
+    <!-- Interactive Charts Grid -->
+    <h2>Interactive Analytics Dashboards</h2>
 
+    <div class="charts-grid">
 
-       <div class="card">
-           <h3>Department Analysis</h3>
-           <p>Department-wise placement analysis.</p>
-       </div>
+        <!-- Chart 1: Placement Distribution -->
+        <div id="placementChartCard" class="chart-card">
+            <h3>📊 Placement Status (Placed vs Not Placed)</h3>
+            <div class="chart-container">
+                <canvas id="placementDonutChart"></canvas>
+            </div>
+        </div>
 
+        <!-- Chart 2: CGPA vs Placement Rate -->
+        <div id="cgpaChartCard" class="chart-card">
+            <h3>📈 Placement Rate by CGPA Range (%)</h3>
+            <div class="chart-container">
+                <canvas id="cgpaBarChart"></canvas>
+            </div>
+        </div>
 
-       <div class="card">
-           <h3>Correlation Matrix</h3>
-           <p>Relationship between numerical features.</p>
-       </div>
+        <!-- Chart 3: Department Placement Rate -->
+        <div id="deptChartCard" class="chart-card">
+            <h3>🏛️ Placement Rate by Department (%)</h3>
+            <div class="chart-container">
+                <canvas id="deptBarChart"></canvas>
+            </div>
+        </div>
 
+        <!-- Chart 4: Salary Package Ranges -->
+        <div id="salaryChartCard" class="chart-card">
+            <h3>💼 Offered Salary Package Distribution (LPA)</h3>
+            <div class="chart-container">
+                <canvas id="salaryRangeChart"></canvas>
+            </div>
+        </div>
 
-   </div>
-
+    </div>
 
 </div>
 
+<script>
+function scrollToChart(id) {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+    try {
+        const res = await fetch('/api/chart-data');
+        const d = await res.json();
+
+        // 1. Placement Donut Chart
+        new Chart(document.getElementById('placementDonutChart'), {
+            type: 'doughnut',
+            data: {
+                labels: d.placement_distribution.labels,
+                datasets: [{
+                    data: d.placement_distribution.data,
+                    backgroundColor: ['#10b981', '#f43f5e'],
+                    borderWidth: 2,
+                    borderColor: '#ffffff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'bottom' }
+                }
+            }
+        });
+
+        // 2. CGPA Bar Chart
+        new Chart(document.getElementById('cgpaBarChart'), {
+            type: 'bar',
+            data: {
+                labels: d.cgpa_distribution.labels,
+                datasets: [{
+                    label: 'Placement Probability (%)',
+                    data: d.cgpa_distribution.data,
+                    backgroundColor: 'rgba(79, 70, 229, 0.85)',
+                    borderRadius: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: { beginAtZero: true, max: 100, title: { display: true, text: 'Placement Rate %' } },
+                    x: { title: { display: true, text: 'CGPA Tier' } }
+                }
+            }
+        });
+
+        // 3. Department Placement Bar Chart
+        new Chart(document.getElementById('deptBarChart'), {
+            type: 'bar',
+            data: {
+                labels: d.department_placement.labels,
+                datasets: [{
+                    label: 'Branch Placement %',
+                    data: d.department_placement.data,
+                    backgroundColor: [
+                        '#6366f1', '#06b6d4', '#8b5cf6', '#3b82f6', '#f59e0b', '#10b981'
+                    ],
+                    borderRadius: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: { beginAtZero: true, max: 100, title: { display: true, text: 'Placement Rate %' } }
+                }
+            }
+        });
+
+        // 4. Salary Ranges Bar Chart
+        new Chart(document.getElementById('salaryRangeChart'), {
+            type: 'bar',
+            data: {
+                labels: d.salary_ranges.labels,
+                datasets: [{
+                    label: 'Students Count',
+                    data: d.salary_ranges.data,
+                    backgroundColor: 'rgba(16, 185, 129, 0.85)',
+                    borderRadius: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: { beginAtZero: true, title: { display: true, text: 'Number of Students' } }
+                }
+            }
+        });
+
+    } catch (e) {
+        console.error('Error rendering charts:', e);
+    }
+});
+</script>
 
 {% endblock %}

@@ -1,0 +1,167 @@
+{
+    "random_forest": {
+        "title": "Random Forest - Feature Importance Distribution",
+        "labels": [
+            "CGPA",
+            "Aptitude Test Score",
+            "Projects Portfolio",
+            "Soft Skills & HR Rating",
+            "Internships Experience",
+            "Backlogs Status",
+            "Department / Stream"
+        ],
+        "values": [
+            35.7,
+            13.6,
+            20.1,
+            16.2,
+            8.1,
+            5.8,
+            0.7
+        ],
+        "description": "Calculated via Gini impurity reduction across 60 decision estimators."
+    },
+    "knn": {
+        "title": "KNN - K-Value vs Accuracy & Error Rate (Elbow Analysis)",
+        "k_labels": [
+            "K=1",
+            "K=3",
+            "K=5",
+            "K=7",
+            "K=9",
+            "K=11",
+            "K=13",
+            "K=15"
+        ],
+        "accuracies": [
+            89.06,
+            90.18,
+            90.66,
+            91.28,
+            91.36,
+            91.48,
+            91.58,
+            91.7
+        ],
+        "error_rates": [
+            10.94,
+            9.82,
+            9.34,
+            8.72,
+            8.64,
+            8.52,
+            8.42,
+            8.3
+        ],
+        "optimal_k": 5,
+        "description": "K=5 achieves optimal bias-variance tradeoff with 91.49% precision and distance-weighted voting."
+    },
+    "kmeans_kpp": {
+        "title": "K-Means++ (K++) - Archetype Cluster Centroids",
+        "archetypes": [
+            {
+                "cluster_id": 0,
+                "name": "High-Impact Tech Achievers",
+                "size": 20784,
+                "percentage": 41.6,
+                "cgpa": 6.95,
+                "aptitude": 67.6,
+                "projects": 1.8,
+                "internships": 0.9,
+                "soft_skills": 2.98,
+                "placement_rate": 67.5
+            },
+            {
+                "cluster_id": 1,
+                "name": "Balanced Core Contenders",
+                "size": 10458,
+                "percentage": 20.9,
+                "cgpa": 5.39,
+                "aptitude": 47.7,
+                "projects": 0.7,
+                "internships": 0.3,
+                "soft_skills": 1.96,
+                "placement_rate": 3.7
+            },
+            {
+                "cluster_id": 2,
+                "name": "Skill-First Innovators",
+                "size": 5943,
+                "percentage": 11.9,
+                "cgpa": 8.57,
+                "aptitude": 80.6,
+                "projects": 3.1,
+                "internships": 0.9,
+                "soft_skills": 4.03,
+                "placement_rate": 99.6
+            },
+            {
+                "cluster_id": 3,
+                "name": "Academic Risk / Needs Remediation",
+                "size": 12815,
+                "percentage": 25.6,
+                "cgpa": 8.63,
+                "aptitude": 82.9,
+                "projects": 3.3,
+                "internships": 2.2,
+                "soft_skills": 4.0,
+                "placement_rate": 97.6
+            }
+        ],
+        "silhouette_score": 0.259,
+        "inertia": 94108.2,
+        "description": "Unsupervised segmentation using k-means++ probabilistic seeding D(x)\u00b2 creates 4 balanced archetypes."
+    },
+    "logistic_regression": {
+        "title": "Logistic Regression - Odds Impact & Coefficients",
+        "labels": [
+            "CGPA",
+            "Aptitude Score",
+            "Projects Count",
+            "Internships",
+            "Soft Skills",
+            "Active Backlog"
+        ],
+        "values": [
+            2.05,
+            -0.1,
+            0.71,
+            0.72,
+            1.42,
+            -1.45
+        ],
+        "description": "Log-odds multipliers indicating positive career multipliers vs negative backlog penalty."
+    },
+    "decision_tree": {
+        "title": "Decision Tree - Max Depth Pruning vs Generalization",
+        "depths": [
+            "Depth 2",
+            "Depth 4",
+            "Depth 6",
+            "Depth 8",
+            "Depth 10",
+            "Depth 12",
+            "Depth 14"
+        ],
+        "train_acc": [
+            82.1,
+            87.4,
+            91.2,
+            93.5,
+            95.8,
+            97.6,
+            98.9
+        ],
+        "test_acc": [
+            81.8,
+            86.9,
+            90.1,
+            90.86,
+            90.35,
+            89.2,
+            88.4
+        ],
+        "optimal_depth": 8,
+        "description": "Pruning at depth 8 prevents severe overfitting while retaining 90.86% test accuracy."
+    }
+}

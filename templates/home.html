@@ -1,179 +1,131 @@
 {% extends "base.html" %}
 
-
-{% block title %}
-Home - Placement Prediction System
-{% endblock %}
-
+{% block title %}Home - Placement Prediction System{% endblock %}
 
 {% block content %}
 
-
 <section class="hero">
 
+    <h1>Placement Prediction System</h1>
 
-   <h1>Placement Prediction System</h1>
+    <h2>
+        Predict Student Placement Opportunities Using Machine Learning
+    </h2>
 
+    <p>
+        Analyze academic performance, technical skills, internships,
+        projects, aptitude and communication skills to predict
+        student placement outcomes with high accuracy.
+    </p>
 
-   <h2>
-       Predict Student Placement Opportunities Using Machine Learning
-   </h2>
+    <div class="buttons">
 
+        <a href="{{ url_for('prediction') }}" class="btn">
+            <span>🎯</span> Start Prediction
+        </a>
 
-   <p>
-       Analyze academic performance, technical skills, internships,
-       projects, aptitude and communication skills to predict
-       student placement outcomes.
-   </p>
+        <a href="{{ url_for('dashboard') }}" class="btn secondary">
+            <span>📊</span> View Dashboard
+        </a>
 
-
-   <div class="buttons">
-
-
-       <a href="{{ url_for('prediction') }}" class="btn">
-           Start Prediction
-       </a>
-
-
-       <a href="{{ url_for('dashboard') }}" class="btn secondary">
-           View Dashboard
-       </a>
-
-
-   </div>
-
+    </div>
 
 </section>
-
-
-
 
 <section class="section">
 
+    <h2 class="accent-bar">About the System</h2>
 
-   <h2>About the System</h2>
+    <p>
+        The Placement Prediction System is an end-to-end machine-learning-powered web application designed to analyze multidimensional student performance metrics and predict campus placement success.
+    </p>
 
-
-   <p>
-       The Placement Prediction System is a machine-learning-based
-       web application designed to analyze student information and
-       predict placement outcomes.
-   </p>
-
-
-   <p>
-       The system helps students understand their placement
-       opportunities and helps placement officers analyze
-       student performance.
-   </p>
-
+    <p>
+        The platform enables students to understand their employability readiness, identify critical skill gaps, and explore expected salary packages, while equipping placement officers with institutional cohort analytics.
+    </p>
 
 </section>
-
-
-
 
 <section class="section">
 
+    <h2 class="accent-bar">Key Features</h2>
 
-   <h2>Key Features</h2>
+    <div class="cards">
 
+        <div class="card" onclick="window.location.href='{{ url_for('dataset') }}'" style="cursor: pointer;">
+            <h3>📂 Dataset</h3>
+            <p>Upload and analyze 50,000 student placement datasets with 32 features.</p>
+            <span style="font-size: 13px; font-weight: 700; color: #4f46e5; margin-top: auto;">Explore Data →</span>
+        </div>
 
-   <div class="cards">
+        <div class="card" onclick="window.location.href='{{ url_for('preprocessing') }}'" style="cursor: pointer;">
+            <h3>🔧 Preprocessing</h3>
+            <p>Clean missing values, encode data, and scale features with automated pipelines.</p>
+            <span style="font-size: 13px; font-weight: 700; color: #4f46e5; margin-top: auto;">View Pipeline →</span>
+        </div>
 
+        <div class="card" onclick="window.location.href='{{ url_for('visualization') }}'" style="cursor: pointer;">
+            <h3>📊 Visualization</h3>
+            <p>Analyze placement data using interactive graphs, charts, and distribution curves.</p>
+            <span style="font-size: 13px; font-weight: 700; color: #4f46e5; margin-top: auto;">View Charts →</span>
+        </div>
 
-       <div class="card">
-           <h3>📂 Dataset</h3>
-           <p>Upload and analyze placement datasets.</p>
-       </div>
+        <div class="card" onclick="window.location.href='{{ url_for('models') }}'" style="cursor: pointer;">
+            <h3>🤖 ML Models</h3>
+            <p>Train and compare Logistic Regression, Decision Tree, Random Forest, and KNN.</p>
+            <span style="font-size: 13px; font-weight: 700; color: #4f46e5; margin-top: auto;">Compare Models →</span>
+        </div>
 
+        <div class="card" onclick="window.location.href='{{ url_for('prediction') }}'" style="cursor: pointer;">
+            <h3>🎯 Prediction</h3>
+            <p>Predict an individual student's placement probability and estimated CTC package.</p>
+            <span style="font-size: 13px; font-weight: 700; color: #4f46e5; margin-top: auto;">Predict Now →</span>
+        </div>
 
-       <div class="card">
-           <h3>🔧 Preprocessing</h3>
-           <p>Clean missing values, encode data and scale features.</p>
-       </div>
+        <div class="card" onclick="window.location.href='{{ url_for('reports') }}'" style="cursor: pointer;">
+            <h3>📋 Reports</h3>
+            <p>View and download placement prediction results and audit summaries in CSV.</p>
+            <span style="font-size: 13px; font-weight: 700; color: #4f46e5; margin-top: auto;">Download Reports →</span>
+        </div>
 
-
-       <div class="card">
-           <h3>📊 Visualization</h3>
-           <p>Analyze placement data using graphs and charts.</p>
-       </div>
-
-
-       <div class="card">
-           <h3>🤖 ML Models</h3>
-           <p>Train and compare machine learning algorithms.</p>
-       </div>
-
-
-       <div class="card">
-           <h3>🎯 Prediction</h3>
-           <p>Predict an individual student's placement.</p>
-       </div>
-
-
-       <div class="card">
-           <h3>📋 Reports</h3>
-           <p>View and download placement prediction results.</p>
-       </div>
-
-
-   </div>
-
+    </div>
 
 </section>
-
-
-
 
 <section class="section workflow">
 
+    <h2>How the System Works</h2>
 
-   <h2>How the System Works</h2>
+    <div class="flow">
 
+        <span>Student Data</span>
+        <b>→</b>
 
-   <div class="flow">
+        <span>Preprocessing</span>
+        <b>→</b>
 
+        <span>ML Model</span>
+        <b>→</b>
 
-       <span>Student Data</span>
-       <b>→</b>
+        <span>Prediction</span>
+        <b>→</b>
 
+        <span>Report</span>
 
-       <span>Preprocessing</span>
-       <b>→</b>
-
-
-       <span>ML Model</span>
-       <b>→</b>
-
-
-       <span>Prediction</span>
-       <b>→</b>
-
-
-       <span>Report</span>
-
-
-   </div>
-
+    </div>
 
 </section>
-
-
-
 
 <section class="cta">
 
+    <h2>Ready to Predict Placement?</h2>
 
-   <h2>Ready to Predict Placement?</h2>
+    <p style="color: #cbd5e1; max-width: 600px; margin: 0 auto 24px;">Test student profiles, evaluate placement readiness, and get instant recommendations.</p>
 
-
-   <a href="{{ url_for('prediction') }}" class="btn">
-       Predict Placement
-   </a>
-
+    <a href="{{ url_for('prediction') }}" class="btn">
+        <span>🚀</span> Predict Placement
+    </a>
 
 </section>
-
 
 {% endblock %}

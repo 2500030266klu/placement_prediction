@@ -1,79 +1,319 @@
 {% extends "base.html" %}
 
-
-{% block title %}Prediction{% endblock %}
-
+{% block title %}Prediction - Placement Prediction System{% endblock %}
 
 {% block content %}
 
-
 <div class="page">
 
+    <h1>Student Placement Prediction</h1>
+    <p>Enter academic, skill, and performance details to predict placement likelihood using the trained Random Forest AI model.</p>
 
-   <h1>Student Placement Prediction</h1>
+    <!-- Quick Sample Fillers for Rapid Testing -->
+    <div style="max-width: 740px; margin: 0 auto 12px;">
+        <span style="font-size: 13px; font-weight: 700; color: #475569; margin-right: 8px;">Quick Test Profiles:</span>
+        <div class="sample-fillers" style="display: inline-flex; margin-bottom: 0;">
+            <span class="sample-pill" onclick="loadSample('topper')">🌟 High Performer (CSE)</span>
+            <span class="sample-pill" onclick="loadSample('average')">⚡ Average Profile (ECE)</span>
+            <span class="sample-pill" onclick="loadSample('struggling')">⚠️ At-Risk Profile (Mech)</span>
+        </div>
+    </div>
 
+    <form id="predictionForm">
+        <div class="form-grid">
+            <div>
+                <label for="student_id">Student ID</label>
+                <input type="text" id="student_id" name="student_id" placeholder="e.g. STU-2026-042" value="STU-2026-042" required>
+            </div>
 
-   <form>
+            <div>
+                <label for="department">Department</label>
+                <select id="department" name="department">
+                    <option value="CSE" selected>CSE</option>
+                    <option value="ECE">ECE</option>
+                    <option value="EEE">EEE</option>
+                    <option value="Mechanical">Mechanical</option>
+                    <option value="Civil">Civil</option>
+                </select>
+            </div>
 
+            <div>
+                <label for="cgpa">CGPA (0 - 10)</label>
+                <input type="number" id="cgpa" name="cgpa" step="0.01" min="4" max="10" placeholder="Enter CGPA (e.g. 8.45)" value="8.45" required>
+            </div>
 
-       <label>Student ID</label>
-       <input type="text" placeholder="Enter Student ID">
+            <div>
+                <label for="tenth_pct">10th Percentage</label>
+                <input type="number" id="tenth_pct" name="tenth_pct" step="0.1" min="35" max="100" placeholder="Enter 10th percentage" value="88.0">
+            </div>
 
+            <div>
+                <label for="twelfth_pct">12th Percentage</label>
+                <input type="number" id="twelfth_pct" name="twelfth_pct" step="0.1" min="35" max="100" placeholder="Enter 12th percentage" value="85.5">
+            </div>
 
-       <label>Department</label>
-       <select>
-           <option>CSE</option>
-           <option>ECE</option>
-           <option>EEE</option>
-           <option>Mechanical</option>
-           <option>Civil</option>
-       </select>
+            <div>
+                <label for="backlogs">Backlogs</label>
+                <input type="number" id="backlogs" name="backlogs" min="0" max="10" placeholder="Number of backlogs" value="0">
+            </div>
 
+            <div>
+                <label for="internship">Internship</label>
+                <select id="internship" name="internship">
+                    <option value="Yes" selected>Yes</option>
+                    <option value="No">No</option>
+                </select>
+            </div>
 
-       <label>CGPA</label>
-       <input type="number" step="0.01" placeholder="Enter CGPA">
+            <div>
+                <label for="projects">Number of Projects</label>
+                <input type="number" id="projects" name="projects" min="0" max="10" placeholder="Enter number of projects" value="3">
+            </div>
 
+            <div>
+                <label for="aptitude">Aptitude Score (0 - 100)</label>
+                <input type="number" id="aptitude" name="aptitude" step="0.1" min="0" max="100" placeholder="Enter aptitude score" value="82.0">
+            </div>
 
-       <label>10th Percentage</label>
-       <input type="number" placeholder="Enter 10th percentage">
+            <div>
+                <label for="communication">Communication Score (1 - 5)</label>
+                <input type="number" id="communication" name="communication" step="0.1" min="1" max="5" placeholder="Enter communication score" value="4.2">
+            </div>
+        </div>
 
+        <button type="button" id="predictBtn" onclick="submitPrediction()">
+            <span>🎯</span> Predict Placement
+        </button>
+    </form>
 
-       <label>12th Percentage</label>
-       <input type="number" placeholder="Enter 12th percentage">
+    <!-- Interactive Result Display Card -->
+    <div id="resultContainer" class="result-container">
+        <div id="resultCard" class="result-card placed">
+            <div class="result-header">
+                <div>
+                    <h3 id="resultTitle" style="margin: 0; font-size: 20px;">Prediction Result</h3>
+                    <span id="resultSub" style="font-size: 13.5px; color: #64748b;">Analysis for STU-2026-042 (CSE)</span>
+                </div>
+                <div id="statusBadge" class="status-badge placed">
+                    🎉 PLACED
+                </div>
+            </div>
 
+            <div class="result-stats">
+                <div class="stat-box">
+                    <div class="label">Placement Probability</div>
+                    <div id="statProbability" class="value" style="color: #4f46e5;">92.5%</div>
+                    <div class="progress-bar-bg">
+                        <div id="statProgressBar" class="progress-bar-fill" style="width: 92.5%;"></div>
+                    </div>
+                </div>
 
-       <label>Backlogs</label>
-       <input type="number" placeholder="Number of backlogs">
+                <div class="stat-box">
+                    <div class="label">Estimated Package</div>
+                    <div id="statSalary" class="value" style="color: #10b981;">₹ 11.2 LPA</div>
+                    <span style="font-size: 12px; color: #64748b;">Annual CTC range</span>
+                </div>
 
+                <div class="stat-box">
+                    <div class="label">KNN Neighborhood</div>
+                    <div id="statKnn" class="value" style="color: #2563eb;">91.5%</div>
+                    <span style="font-size: 12px; color: #64748b;">K=5 Distance-Weighted</span>
+                </div>
+            </div>
 
-       <label>Internship</label>
-       <select>
-           <option>Yes</option>
-           <option>No</option>
-       </select>
+            <!-- K-Means++ Cluster Archetype Banner -->
+            <div id="clusterArchetypeBanner" style="background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%); border: 1px solid #ddd6fe; border-radius: 12px; padding: 14px 18px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <span id="clusterIcon" style="font-size: 28px;">🔬</span>
+                    <div>
+                        <div style="font-size: 11px; text-transform: uppercase; font-weight: 700; color: #7c3aed; letter-spacing: 0.5px;">K-Means++ (K++) Unsupervised Student Archetype</div>
+                        <div id="clusterName" style="font-size: 16px; font-weight: 800; color: #4c1d95;">Skill-First Innovators</div>
+                        <div id="clusterDesc" style="font-size: 12.5px; color: #6d28d9; margin-top: 2px;">Elite performance with high aptitude & portfolio strength.</div>
+                    </div>
+                </div>
+                <span class="badge-pill kpp" style="background: #ffffff; color: #7c3aed; border-color: #c4b5fd;">K-Means++ Cluster</span>
+            </div>
 
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
+                <div class="recommendations-box" style="background: #f8fafc;">
+                    <h4><span style="color: #10b981;">✔</span> Key Strengths</h4>
+                    <ul id="strengthsList" style="margin: 8px 0 0 16px; padding: 0; font-size: 14px; color: #334155;">
+                        <li>Strong Academic Standing (CGPA >= 8.0)</li>
+                        <li>Internship & Project Experience</li>
+                    </ul>
+                </div>
 
-       <label>Number of Projects</label>
-       <input type="number" placeholder="Enter number of projects">
+                <div class="recommendations-box" style="background: #f8fafc;">
+                    <h4><span style="color: #f59e0b;">💡</span> Recommendations</h4>
+                    <ul id="recommendationsList" style="margin: 8px 0 0 16px; padding: 0; font-size: 14px; color: #334155;">
+                        <li>Continue solving competitive programming questions.</li>
+                    </ul>
+                </div>
+            </div>
 
-
-       <label>Aptitude Score</label>
-       <input type="number" placeholder="Enter aptitude score">
-
-
-       <label>Communication Score</label>
-       <input type="number" placeholder="Enter communication score">
-
-
-       <button type="button">
-           Predict Placement
-       </button>
-
-
-   </form>
-
+            <div style="text-align: center; margin-top: 24px;">
+                <button type="button" class="btn secondary" onclick="resetForm()">
+                    🔄 Test Another Profile
+                </button>
+            </div>
+        </div>
+    </div>
 
 </div>
 
+<script>
+function loadSample(type) {
+    if (type === 'topper') {
+        document.getElementById('student_id').value = 'STU-2026-TOP';
+        document.getElementById('department').value = 'CSE';
+        document.getElementById('cgpa').value = '9.15';
+        document.getElementById('tenth_pct').value = '92.5';
+        document.getElementById('twelfth_pct').value = '90.0';
+        document.getElementById('backlogs').value = '0';
+        document.getElementById('internship').value = 'Yes';
+        document.getElementById('projects').value = '4';
+        document.getElementById('aptitude').value = '88.5';
+        document.getElementById('communication').value = '4.6';
+    } else if (type === 'average') {
+        document.getElementById('student_id').value = 'STU-2026-MID';
+        document.getElementById('department').value = 'ECE';
+        document.getElementById('cgpa').value = '7.45';
+        document.getElementById('tenth_pct').value = '78.0';
+        document.getElementById('twelfth_pct').value = '74.0';
+        document.getElementById('backlogs').value = '0';
+        document.getElementById('internship').value = 'Yes';
+        document.getElementById('projects').value = '2';
+        document.getElementById('aptitude').value = '68.0';
+        document.getElementById('communication').value = '3.5';
+    } else if (type === 'struggling') {
+        document.getElementById('student_id').value = 'STU-2026-RISK';
+        document.getElementById('department').value = 'Mechanical';
+        document.getElementById('cgpa').value = '5.40';
+        document.getElementById('tenth_pct').value = '62.0';
+        document.getElementById('twelfth_pct').value = '58.0';
+        document.getElementById('backlogs').value = '2';
+        document.getElementById('internship').value = 'No';
+        document.getElementById('projects').value = '1';
+        document.getElementById('aptitude').value = '45.0';
+        document.getElementById('communication').value = '2.2';
+    }
+    showToast('Loaded ' + type + ' test profile!', '📋');
+}
+
+async function submitPrediction() {
+    const btn = document.getElementById('predictBtn');
+    const originalText = btn.innerHTML;
+    btn.innerHTML = '<span>⏳</span> Analyzing Profile...';
+    btn.disabled = true;
+
+    const payload = {
+        student_id: document.getElementById('student_id').value,
+        department: document.getElementById('department').value,
+        cgpa: parseFloat(document.getElementById('cgpa').value) || 7.0,
+        tenth_pct: parseFloat(document.getElementById('tenth_pct').value) || 75,
+        twelfth_pct: parseFloat(document.getElementById('twelfth_pct').value) || 75,
+        backlogs: document.getElementById('backlogs').value,
+        internship: document.getElementById('internship').value,
+        projects: parseInt(document.getElementById('projects').value) || 1,
+        aptitude: parseFloat(document.getElementById('aptitude').value) || 60,
+        communication: parseFloat(document.getElementById('communication').value) || 3.5
+    };
+
+    try {
+        const response = await fetch('/api/predict', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+        const res = await response.json();
+
+        if (res.success) {
+            const container = document.getElementById('resultContainer');
+            const card = document.getElementById('resultCard');
+            const statusBadge = document.getElementById('statusBadge');
+            const sub = document.getElementById('resultSub');
+            const prob = document.getElementById('statProbability');
+            const bar = document.getElementById('statProgressBar');
+            const sal = document.getElementById('statSalary');
+            const strengthsList = document.getElementById('strengthsList');
+            const recsList = document.getElementById('recommendationsList');
+
+            sub.textContent = `Analysis for ${res.student_id} (${res.department})`;
+            prob.textContent = res.probability + '%';
+            bar.style.width = res.probability + '%';
+
+            if (res.placed) {
+                card.className = 'result-card placed';
+                statusBadge.className = 'status-badge placed';
+                statusBadge.innerHTML = '🎉 LIKELY PLACED';
+                sal.textContent = res.salary_package > 0 ? `₹ ${res.salary_package} LPA` : '₹ 6.5 LPA';
+                bar.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
+            } else {
+                card.className = 'result-card not-placed';
+                statusBadge.className = 'status-badge not-placed';
+                statusBadge.innerHTML = '⚠️ NEEDS ENHANCEMENT';
+                sal.textContent = 'Eligible after skills boost';
+                bar.style.background = 'linear-gradient(135deg, #f43f5e 0%, #e11d48 100%)';
+            }
+
+            // KNN Score
+            const statKnn = document.getElementById('statKnn');
+            if (statKnn) {
+                statKnn.textContent = (res.knn_probability !== undefined && res.knn_probability !== null) ? `${res.knn_probability}%` : `${res.probability}%`;
+            }
+
+            // K-Means++ Cluster Archetype
+            if (res.cluster_archetype) {
+                const cName = document.getElementById('clusterName');
+                const cDesc = document.getElementById('clusterDesc');
+                const cIcon = document.getElementById('clusterIcon');
+                if (cName) cName.textContent = res.cluster_archetype.name || 'Core Contenders';
+                if (cDesc) cDesc.textContent = res.cluster_archetype.description || 'Standard placement profile.';
+                if (cIcon && res.cluster_archetype.icon) cIcon.textContent = res.cluster_archetype.icon;
+            }
+
+            // Strengths
+            strengthsList.innerHTML = '';
+            if (res.strengths && res.strengths.length > 0) {
+                res.strengths.forEach(s => {
+                    const li = document.createElement('li');
+                    li.textContent = s;
+                    strengthsList.appendChild(li);
+                });
+            } else {
+                strengthsList.innerHTML = '<li>Focus on building foundational skills</li>';
+            }
+
+            // Recommendations
+            recsList.innerHTML = '';
+            if (res.recommendations && res.recommendations.length > 0) {
+                res.recommendations.forEach(r => {
+                    const li = document.createElement('li');
+                    li.textContent = r;
+                    recsList.appendChild(li);
+                });
+            } else {
+                recsList.innerHTML = '<li>Keep maintaining this outstanding record!</li>';
+            }
+
+            container.style.display = 'block';
+            container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            showToast('Prediction completed!', '🎯');
+        } else {
+            alert('Prediction error: ' + (res.error || 'Unknown error'));
+        }
+    } catch (err) {
+        alert('Server connection error: ' + err);
+    } finally {
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+    }
+}
+
+function resetForm() {
+    document.getElementById('resultContainer').style.display = 'none';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
 
 {% endblock %}
