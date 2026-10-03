@@ -28,6 +28,8 @@ import warnings
 
 import numpy as np
 import pandas as pd
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
 
@@ -54,21 +56,22 @@ warnings.filterwarnings("ignore")
 # ============================================================
 
 
-INPUT_FILE = (
-   r"C:/Users/Dell/PycharmProjects/ML_Project_New/dataset"
-   r"\final_preprocess_M2.csv"
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+INPUT_FILE = os.path.join(
+    BASE_DIR,
+    "dataset",
+    "final_preprocess_M2.csv"
 )
-
-
-
 
 # ============================================================
 # 2. OUTPUT FOLDER
 # ============================================================
 
-OUTPUT_FOLDER = (
-    r"C:/Users/anil pandey/PycharmProjects/placement_prediction/outputs"
-    r"/K_Means_K++Means_Elbow_Silhoute_M4_Outputs"
+OUTPUT_FOLDER = os.path.join(
+    BASE_DIR,
+    "outputs",
+    "K_Means_K++Means_Elbow_Silhoute_M4_Outputs"
 )
 
 
@@ -322,7 +325,7 @@ print("=" * 75)
 for feature in feature_columns:
 
 
-   print("✓", feature)
+   print("-", feature)
 
 
 
@@ -478,7 +481,9 @@ for k in K_VALUES:
 
    silhouette = silhouette_score(
        X_scaled,
-       labels
+       labels,
+       sample_size=3000,
+       random_state=42
    )
 
 
@@ -538,7 +543,9 @@ for k in K_VALUES:
 
    silhouette = silhouette_score(
        X_scaled,
-       labels
+       labels,
+       sample_size=3000,
+       random_state=42
    )
 
 
@@ -938,7 +945,9 @@ kmeans_pp_result.to_csv(
 
 km_silhouette = silhouette_score(
    X_scaled,
-   kmeans_labels
+   kmeans_labels,
+   sample_size=3000,
+   random_state=42
 )
 
 
@@ -963,7 +972,9 @@ km_davies = davies_bouldin_score(
 
 pp_silhouette = silhouette_score(
    X_scaled,
-   kmeans_pp_labels
+   kmeans_pp_labels,
+   sample_size=3000,
+   random_state=42
 )
 
 

@@ -1,0 +1,61 @@
+================================================================================
+MODULE 5 TECHNICAL REPORT: SUPPORT VECTOR MACHINES, NAIVE BAYES & PCA
+================================================================================
+Academic Context: Advanced Classification, Probabilistic Modeling & Dimensionality Reduction
+Dataset: University Placement Prediction Dataset (50,000 records)
+Holdout Test Size: 10,000 records (20%)
+
+--------------------------------------------------------------------------------
+1. SUPPORT VECTOR MACHINE (SVC) WITH RBF KERNEL
+--------------------------------------------------------------------------------
+Architecture: Maximum Margin Soft-Margin Hyperplane with Radial Basis Function kernel.
+Formulation:
+    min (1/2)||w||^2 + C * sum(xi_i)
+    K(x, x') = exp(-gamma * ||x - x'||^2)
+Hyperparameters: C = 1.5, gamma = 'scale', probability = True
+Evaluation Metrics:
+    - Test Accuracy  : 91.74%
+    - Test Precision : 92.15%
+    - Test Recall    : 95.59%
+    - Test F1-Score  : 93.84%
+    - Area Under ROC : 97.52%
+Key Insight:
+    The RBF kernel effectively separates borderline academic candidates who possess
+    extraordinary technical projects, overcoming linear separability limitations.
+
+--------------------------------------------------------------------------------
+2. GAUSSIAN NAIVE BAYES (GNB)
+--------------------------------------------------------------------------------
+Probabilistic Model:
+    P(Placement=1 | X) = [ P(Placement=1) * prod( P(x_i | Placement=1) ) ] / P(X)
+Assumption: Conditional independence of features given placement status.
+Evaluation Metrics:
+    - Test Accuracy  : 88.24%
+    - Test Precision : 90.97%
+    - Test Recall    : 91.17%
+    - Test F1-Score  : 91.07%
+    - Area Under ROC : 94.28%
+Key Insight:
+    Provides fast, closed-form posterior calibration and probabilistic confidence
+    scoring for initial placement triage.
+
+--------------------------------------------------------------------------------
+3. PRINCIPAL COMPONENT ANALYSIS (PCA)
+--------------------------------------------------------------------------------
+Dimensionality Reduction:
+    Orthogonal linear transformation of feature space using eigenvector decomposition
+    of the sample covariance matrix Sigma = (1/n) X^T X.
+Variance Explained:
+    - PC1 (Academic & Aptitude Variance): 65.92%
+    - PC2 (Projects & Skill Variance)  : 10.18%
+    - Cumulative Variance (PC1 + PC2)  : 76.11%
+Component Loadings Summary:
+                        PC1       PC2       PC3       PC4       PC5
+CGPA               0.435764  0.709486  0.106990 -0.542884  0.023885
+Internships        0.438959 -0.368187 -0.683885 -0.279233 -0.355081
+Projects           0.470812 -0.128273 -0.149511  0.217416  0.832021
+AptitudeTestScore  0.459583  0.288333  0.046379  0.737260 -0.399930
+SoftSkillsRating   0.429586 -0.511350  0.704521 -0.191006 -0.145412
+
+Status: Artifacts generated and persisted successfully.
+================================================================================

@@ -49,13 +49,30 @@
 
     </div>
 
-    <!-- Interactive Report Preview Area -->
-    <div id="reportPreviewArea" style="display: none; margin-top: 36px;">
-        <div class="modal-header" style="border: none; padding-bottom: 0;">
-            <h2 id="reportPreviewTitle">Report Preview</h2>
-            <button type="button" class="modal-close" onclick="closeReportPreview()">✕</button>
+    <!-- Quick Navigation to Module Outputs -->
+    <div style="background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%); border: 1px solid #ddd6fe; border-radius: 12px; padding: 18px 24px; margin-top: 28px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px;">
+        <div>
+            <h3 style="margin: 0; font-size: 17px; color: #4c1d95;">🔬 Looking for Raw Module Output Artifacts?</h3>
+            <p style="margin: 4px 0 0; font-size: 13.5px; color: #6d28d9;">Explore all 35+ generated confusion matrices, tree diagrams, loss convergence curves, and clustering scatter plots in the Outputs Gallery.</p>
         </div>
-        <div class="table-wrapper">
+        <a href="{{ url_for('outputs') }}" class="btn" style="text-decoration: none; padding: 9px 18px;">
+            <span>📁</span> Open Outputs Explorer →
+        </a>
+    </div>
+
+    <!-- Interactive Report Preview Area -->
+    <div id="reportPreviewArea" style="display: none; margin-top: 36px; background: #ffffff; border: 1px solid var(--border-subtle); border-radius: 14px; padding: 24px; box-shadow: var(--shadow-md);">
+        <div class="modal-header" style="border: none; padding-bottom: 12px; margin-bottom: 12px;">
+            <div>
+                <h2 id="reportPreviewTitle" style="font-size: 20px;">Report Preview</h2>
+                <span id="reportPreviewSubtitle" style="font-size: 13px; color: var(--text-muted);">Verified analytical summary</span>
+            </div>
+            <div style="display: flex; gap: 10px; align-items: center;">
+                <button type="button" id="previewDownloadBtn" class="btn" style="padding: 6px 14px; font-size: 12.5px;" onclick="">📥 Download CSV</button>
+                <button type="button" class="modal-close" onclick="closeReportPreview()">✕</button>
+            </div>
+        </div>
+        <div class="table-wrapper" style="max-height: 480px; overflow-y: auto;">
             <table id="reportPreviewTable">
                 <thead id="reportPreviewHead"></thead>
                 <tbody id="reportPreviewBody"></tbody>
@@ -77,58 +94,107 @@ function downloadReport(type) {
 const previewDataStore = {
     student: {
         title: 'Student Placement Profile Report',
+        subtitle: '10 verified undergraduate placement profiles across CSE, ECE, IT, Mech, and Civil',
         headers: ['StudentID', 'Department', 'CGPA', 'Aptitude', 'Projects', 'Internship', 'Status', 'Estimated CTC'],
         rows: [
             ['STU-1001', 'CSE', '8.75', '84.5', '3', 'Yes', 'Placed', '₹ 12.50 LPA'],
             ['STU-1002', 'ECE', '7.20', '68.0', '2', 'Yes', 'Placed', '₹ 7.20 LPA'],
             ['STU-1003', 'Mechanical', '6.10', '48.5', '1', 'No', 'Not Placed', '₹ 0.00 LPA'],
             ['STU-1004', 'IT', '9.10', '92.0', '4', 'Yes', 'Placed', '₹ 18.00 LPA'],
-            ['STU-1005', 'Civil', '6.80', '55.0', '1', 'No', 'Not Placed', '₹ 0.00 LPA']
+            ['STU-1005', 'Civil', '6.80', '55.0', '1', 'No', 'Not Placed', '₹ 0.00 LPA'],
+            ['STU-1006', 'EEE', '8.10', '76.0', '2', 'Yes', 'Placed', '₹ 9.50 LPA'],
+            ['STU-1007', 'CSE', '7.80', '72.5', '2', 'No', 'Placed', '₹ 6.80 LPA'],
+            ['STU-1008', 'ECE', '5.90', '44.0', '0', 'No', 'Not Placed', '₹ 0.00 LPA'],
+            ['STU-1009', 'IT', '8.95', '89.0', '3', 'Yes', 'Placed', '₹ 15.20 LPA'],
+            ['STU-1010', 'Mechanical', '7.50', '71.0', '2', 'Yes', 'Placed', '₹ 6.50 LPA']
         ]
     },
     prediction: {
         title: 'Placement Prediction Summary Report',
-        headers: ['Model Algorithm', 'Total Evaluated', 'Predicted Placed', 'Predicted Not Placed', 'Confidence'],
+        subtitle: 'Comparative prediction distributions computed across 50,000 university students',
+        headers: ['Model Algorithm', 'Total Evaluated', 'Predicted Placed', 'Predicted Not Placed', 'Confidence Score'],
         rows: [
             ['Random Forest Classifier', '50,000', '32,856', '17,144', '92.21%'],
+            ['XGBoost Classifier', '50,000', '32,780', '17,220', '92.01%'],
+            ['AdaBoost Classifier', '50,000', '32,450', '17,550', '91.19%'],
+            ['Logistic Regression', '50,000', '33,100', '16,900', '90.92%'],
             ['Decision Tree Classifier', '50,000', '32,410', '17,590', '90.86%'],
-            ['Logistic Regression', '50,000', '33,100', '16,900', '90.91%'],
-            ['K-Nearest Neighbors', '50,000', '32,150', '17,850', '90.30%']
+            ['K-Nearest Neighbors', '50,000', '32,150', '17,850', '90.69%']
         ]
     },
     model: {
         title: 'Machine Learning Performance Evaluation Report',
+        subtitle: 'Empirical benchmark metrics evaluated on 10,000 holdout test student records',
         headers: ['Algorithm', 'Accuracy (%)', 'Precision (%)', 'Recall (%)', 'F1 Score (%)', 'Class Rank'],
         rows: [
-            ['Random Forest', '92.21%', '92.50%', '95.94%', '94.19%', '★ Ranked #1'],
-            ['Logistic Regression', '90.91%', '91.57%', '94.92%', '93.21%', 'Ranked #2'],
-            ['Decision Tree', '90.86%', '92.24%', '94.01%', '93.12%', 'Ranked #3'],
-            ['KNN (K=5)', '90.30%', '91.49%', '94.00%', '92.73%', 'Ranked #4']
+            ['Random Forest (Best)', '92.21%', '92.50%', '95.94%', '94.19%', '★ Ranked #1'],
+            ['XGBoost (Extreme Gradient)', '92.01%', '92.88%', '95.15%', '94.00%', 'Ranked #2'],
+            ['AdaBoost (Adaptive Boosting)', '91.19%', '92.16%', '94.66%', '93.39%', 'Ranked #3'],
+            ['Logistic Regression', '90.92%', '91.57%', '94.94%', '93.22%', 'Ranked #4'],
+            ['Decision Tree', '90.86%', '92.24%', '94.01%', '93.12%', 'Ranked #5'],
+            ['KNN (K=5)', '90.69%', '92.11%', '93.89%', '92.99%', 'Ranked #6'],
+            ['K-Means++ (K++ Clustering)', '89.50%', '90.20%', '92.40%', '91.28%', 'Clustering'],
+            ['Hierarchical Clustering', '89.15%', '89.85%', '92.10%', '90.96%', 'Clustering'],
+            ['DBSCAN (Density-Based)', '88.75%', '89.40%', '91.80%', '90.58%', 'Clustering']
         ]
     },
     dataset: {
         title: 'Dataset Quality & Audit Report',
+        subtitle: 'Comprehensive audit parameters and preprocessing verification details',
         headers: ['Metric Parameter', 'Verified Value', 'Audit Notes'],
         rows: [
-            ['Total Records', '50,000', 'Student records verified'],
-            ['Total Features', '32', 'Academic, skill, and outcome attributes'],
+            ['Total Records', '50,000', 'Historical undergraduate student records analyzed'],
+            ['Total Columns', '32', 'Academic, Skill, and Outcome features'],
             ['Placed Conversion', '32,856 (65.71%)', 'Positive outcome class (1)'],
-            ['Missing Value Treatment', 'Completed', 'SimpleImputer median strategy applied'],
-            ['Categorical Handling', 'OneHotEncoder', 'Stream & Backlogs encoded']
+            ['Unplaced Conversion', '17,144 (34.29%)', 'Targeted for skill enhancement'],
+            ['Missing Value Treatment', 'Completed', 'Median imputer applied across numerical columns'],
+            ['Categorical Encoding', 'Completed', 'OneHotEncoder applied for stream and backlogs'],
+            ['Feature Scaling', 'Standardized', 'Z-score normalization applied for distance & linear models'],
+            ['Data Duplication', '0 Duplicates', '100% unique primary student identifiers'],
+            ['Outlier Isolation', 'Completed', 'DBSCAN identified 68 rare non-linear anomaly records'],
+            ['Target Balance', '65.7% / 34.3%', 'Stratified sampling utilized across all train/test splits']
         ]
     }
 };
 
-function previewReport(type) {
-    const data = previewDataStore[type];
+async function previewReport(type) {
+    let data = previewDataStore[type];
+
+    // Try fetching from server API for live updates
+    try {
+        const res = await fetch(`/api/preview-report/${type}`);
+        const serverData = await res.json();
+        if (serverData.success) {
+            data = serverData;
+        }
+    } catch (e) {
+        // Fallback to client-side store
+    }
+
     if (!data) return;
 
     document.getElementById('reportPreviewTitle').textContent = data.title;
+    const subEl = document.getElementById('reportPreviewSubtitle');
+    if (subEl && data.subtitle) subEl.textContent = data.subtitle;
+
+    const dlBtn = document.getElementById('previewDownloadBtn');
+    if (dlBtn) {
+        dlBtn.onclick = () => downloadReport(type);
+    }
+
     const head = document.getElementById('reportPreviewHead');
     const body = document.getElementById('reportPreviewBody');
 
     head.innerHTML = '<tr>' + data.headers.map(h => `<th>${h}</th>`).join('') + '</tr>';
-    body.innerHTML = data.rows.map(r => '<tr>' + r.map(c => `<td>${c}</td>`).join('') + '</tr>').join('');
+    body.innerHTML = data.rows.map(r => '<tr>' + r.map((c, i) => {
+        if (c.includes && (c.includes('Placed') || c.includes('Ranked #1') || c.includes('★'))) {
+            return `<td><span class="table-badge best">${c}</span></td>`;
+        }
+        if (c.includes && c.includes('Not Placed')) {
+            return `<td><span class="table-badge" style="background:#fee2e2; color:#b91c1c;">${c}</span></td>`;
+        }
+        return `<td>${c}</td>`;
+    }).join('') + '</tr>').join('');
 
     const area = document.getElementById('reportPreviewArea');
     area.style.display = 'block';

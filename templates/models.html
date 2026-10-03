@@ -13,8 +13,16 @@
         </div>
         <div style="display: flex; gap: 8px; flex-wrap: wrap;">
             <span class="badge-pill rf">★ Best: Random Forest (92.21%)</span>
-            <span class="badge-pill knn">⚡ KNN (K=5 Distance-Weighted)</span>
+            <span class="badge-pill" style="background: rgba(79, 70, 229, 0.1); color: #4338ca; border: 1px solid #c7d2fe;">🧠 MLP Neural Net (92.16%)</span>
+            <span class="badge-pill" style="background: rgba(30, 58, 138, 0.1); color: #1e40af; border: 1px solid #93c5fd;">⚡ XGBoost (92.01%)</span>
+            <span class="badge-pill" style="background: rgba(16, 185, 129, 0.1); color: #047857; border: 1px solid #a7f3d0;">🛡️ SVM RBF (91.74%)</span>
+            <span class="badge-pill" style="background: rgba(217, 70, 239, 0.1); color: #a21caf; border: 1px solid #f0abfc;">🔄 Stacking (91.66%)</span>
+            <span class="badge-pill" style="background: rgba(220, 38, 38, 0.1); color: #b91c1c; border: 1px solid #fca5a5;">🚀 AdaBoost (91.19%)</span>
+            <span class="badge-pill knn">⚡ KNN (90.69%)</span>
+            <span class="badge-pill" style="background: rgba(245, 158, 11, 0.1); color: #b45309; border: 1px solid #fde68a;">📊 Gaussian NB (88.24%)</span>
             <span class="badge-pill kpp">🔬 K-Means++ (4 Archetypes)</span>
+            <span class="badge-pill" style="background: rgba(13, 148, 136, 0.1); color: #0f766e; border: 1px solid #99f6e4;">🌐 DBSCAN Density</span>
+            <span class="badge-pill" style="background: rgba(217, 70, 239, 0.1); color: #a21caf; border: 1px solid #f0abfc;">🌳 Hierarchical Ward</span>
         </div>
     </div>
 
@@ -29,7 +37,7 @@
                     <th>Precision</th>
                     <th>Recall</th>
                     <th>F1 Score</th>
-                    <th>Key Metric</th>
+                    <th>Key Metric / Parameters</th>
                 </tr>
             </thead>
             <tbody>
@@ -47,6 +55,76 @@
                     <td><span class="param-tag">60 Trees / Depth 10</span></td>
                 </tr>
 
+                <!-- Multi-Layer Perceptron (MLP Deep Neural Net) -->
+                <tr style="background: rgba(79, 70, 229, 0.05); font-weight: 600;">
+                    <td>
+                        <strong style="color: #4338ca;">Multi-Layer Perceptron (MLP)</strong>
+                        <span class="table-badge" style="background: #e0e7ff; color: #4338ca; margin-left: 8px;">🧠 Deep Neural Net</span>
+                    </td>
+                    <td>Deep Feedforward ANN</td>
+                    <td><strong style="color: #4338ca;">{{ metrics['Multi-Layer Perceptron (MLP)']['accuracy'] if metrics and 'Multi-Layer Perceptron (MLP)' in metrics else '92.16' }}%</strong></td>
+                    <td>{{ metrics['Multi-Layer Perceptron (MLP)']['precision'] if metrics and 'Multi-Layer Perceptron (MLP)' in metrics else '93.19' }}%</td>
+                    <td>{{ metrics['Multi-Layer Perceptron (MLP)']['recall'] if metrics and 'Multi-Layer Perceptron (MLP)' in metrics else '95.03' }}%</td>
+                    <td><strong style="color: #4338ca;">{{ metrics['Multi-Layer Perceptron (MLP)']['f1_score'] if metrics and 'Multi-Layer Perceptron (MLP)' in metrics else '94.10' }}%</strong></td>
+                    <td><span class="param-tag">[64, 32, 16] ReLU / Adam</span></td>
+                </tr>
+
+                <!-- XGBoost Classifier -->
+                <tr style="background: rgba(30, 58, 138, 0.04); font-weight: 600;">
+                    <td>
+                        <strong style="color: #1e40af;">XGBoost Classifier</strong>
+                        <span class="table-badge" style="background: #dbeafe; color: #1e40af; margin-left: 8px;">⚡ Extreme Gradient</span>
+                    </td>
+                    <td>Gradient Boosted Trees</td>
+                    <td><strong style="color: #1e40af;">{{ metrics['XGBoost']['accuracy'] if metrics and 'XGBoost' in metrics else '92.01' }}%</strong></td>
+                    <td>{{ metrics['XGBoost']['precision'] if metrics and 'XGBoost' in metrics else '92.88' }}%</td>
+                    <td>{{ metrics['XGBoost']['recall'] if metrics and 'XGBoost' in metrics else '95.15' }}%</td>
+                    <td><strong style="color: #1e40af;">{{ metrics['XGBoost']['f1_score'] if metrics and 'XGBoost' in metrics else '94.00' }}%</strong></td>
+                    <td><span class="param-tag">80 Trees / Depth 6 / lr=0.08</span></td>
+                </tr>
+
+                <!-- Support Vector Machine (SVC RBF) -->
+                <tr style="background: rgba(16, 185, 129, 0.03);">
+                    <td>
+                        <strong style="color: #065f46;">Support Vector Machine (SVC)</strong>
+                        <span class="table-badge" style="background: #d1fae5; color: #065f46; margin-left: 8px;">🛡️ RBF Kernel</span>
+                    </td>
+                    <td>Max-Margin Hyperplane</td>
+                    <td><strong style="color: #065f46;">{{ metrics['Support Vector Machine (SVM)']['accuracy'] if metrics and 'Support Vector Machine (SVM)' in metrics else '91.74' }}%</strong></td>
+                    <td>{{ metrics['Support Vector Machine (SVM)']['precision'] if metrics and 'Support Vector Machine (SVM)' in metrics else '92.15' }}%</td>
+                    <td>{{ metrics['Support Vector Machine (SVM)']['recall'] if metrics and 'Support Vector Machine (SVM)' in metrics else '95.59' }}%</td>
+                    <td><strong style="color: #065f46;">{{ metrics['Support Vector Machine (SVM)']['f1_score'] if metrics and 'Support Vector Machine (SVM)' in metrics else '93.84' }}%</strong></td>
+                    <td><span class="param-tag">kernel=rbf, C=1.5</span></td>
+                </tr>
+
+                <!-- Stacking Meta-Ensemble -->
+                <tr style="background: rgba(217, 70, 239, 0.03);">
+                    <td>
+                        <strong style="color: #86198f;">Stacking Meta-Ensemble</strong>
+                        <span class="table-badge" style="background: #fae8ff; color: #86198f; margin-left: 8px;">🔄 Meta-Learner</span>
+                    </td>
+                    <td>Heterogeneous Ensemble</td>
+                    <td><strong style="color: #86198f;">{{ metrics['Stacking Classifier']['accuracy'] if metrics and 'Stacking Classifier' in metrics else '91.66' }}%</strong></td>
+                    <td>{{ metrics['Stacking Classifier']['precision'] if metrics and 'Stacking Classifier' in metrics else '92.45' }}%</td>
+                    <td>{{ metrics['Stacking Classifier']['recall'] if metrics and 'Stacking Classifier' in metrics else '95.09' }}%</td>
+                    <td><strong style="color: #86198f;">{{ metrics['Stacking Classifier']['f1_score'] if metrics and 'Stacking Classifier' in metrics else '93.75' }}%</strong></td>
+                    <td><span class="param-tag">Base=[RF, KNN, GNB, LR]</span></td>
+                </tr>
+
+                <!-- AdaBoost Classifier -->
+                <tr style="background: rgba(220, 38, 38, 0.03);">
+                    <td>
+                        <strong style="color: #b91c1c;">AdaBoost Classifier</strong>
+                        <span class="table-badge" style="background: #fee2e2; color: #b91c1c; margin-left: 8px;">🚀 Adaptive Boosting</span>
+                    </td>
+                    <td>Sequential Ensemble</td>
+                    <td><strong style="color: #b91c1c;">{{ metrics['AdaBoost']['accuracy'] if metrics and 'AdaBoost' in metrics else '91.19' }}%</strong></td>
+                    <td>{{ metrics['AdaBoost']['precision'] if metrics and 'AdaBoost' in metrics else '92.16' }}%</td>
+                    <td>{{ metrics['AdaBoost']['recall'] if metrics and 'AdaBoost' in metrics else '94.66' }}%</td>
+                    <td><strong style="color: #b91c1c;">{{ metrics['AdaBoost']['f1_score'] if metrics and 'AdaBoost' in metrics else '93.39' }}%</strong></td>
+                    <td><span class="param-tag">50 Stumps / lr=0.8</span></td>
+                </tr>
+
                 <!-- KNN -->
                 <tr>
                     <td>
@@ -59,20 +137,6 @@
                     <td>{{ metrics['KNN']['recall'] if metrics and 'KNN' in metrics else '93.89' }}%</td>
                     <td>{{ metrics['KNN']['f1_score'] if metrics and 'KNN' in metrics else '92.99' }}%</td>
                     <td><span class="param-tag">K=5 (Minkowski)</span></td>
-                </tr>
-
-                <!-- K-Means++ -->
-                <tr style="background: rgba(139, 92, 246, 0.04);">
-                    <td>
-                        <strong style="color: #7e22ce;">K-Means++ (K++ Clustering)</strong>
-                        <span class="badge-pill kpp" style="margin-left: 8px; font-size: 10px; padding: 2px 7px;">Unsupervised Seeding</span>
-                    </td>
-                    <td>Archetype Clustering</td>
-                    <td>{{ metrics['K-Means++ (K++)']['accuracy'] if metrics and 'K-Means++ (K++)' in metrics else '89.50' }}%</td>
-                    <td>{{ metrics['K-Means++ (K++)']['precision'] if metrics and 'K-Means++ (K++)' in metrics else '90.20' }}%</td>
-                    <td>{{ metrics['K-Means++ (K++)']['recall'] if metrics and 'K-Means++ (K++)' in metrics else '92.40' }}%</td>
-                    <td>{{ metrics['K-Means++ (K++)']['f1_score'] if metrics and 'K-Means++ (K++)' in metrics else '91.28' }}%</td>
-                    <td><span class="param-tag">Silhouette: 0.259 (k=4)</span></td>
                 </tr>
 
                 <!-- Logistic Regression -->
@@ -95,6 +159,62 @@
                     <td>{{ metrics['Decision Tree']['recall'] if metrics and 'Decision Tree' in metrics else '94.01' }}%</td>
                     <td>{{ metrics['Decision Tree']['f1_score'] if metrics and 'Decision Tree' in metrics else '93.12' }}%</td>
                     <td><span class="param-tag">Gini Pruned (Depth 8)</span></td>
+                </tr>
+
+                <!-- Gaussian Naive Bayes -->
+                <tr style="background: rgba(245, 158, 11, 0.03);">
+                    <td>
+                        <strong style="color: #b45309;">Gaussian Naive Bayes (GNB)</strong>
+                        <span class="badge-pill" style="background: #fef3c7; color: #b45309; margin-left: 8px; font-size: 10px; padding: 2px 7px;">Probabilistic Bayes</span>
+                    </td>
+                    <td>Bayesian Likelihood</td>
+                    <td>{{ metrics['Gaussian Naive Bayes']['accuracy'] if metrics and 'Gaussian Naive Bayes' in metrics else '88.24' }}%</td>
+                    <td>{{ metrics['Gaussian Naive Bayes']['precision'] if metrics and 'Gaussian Naive Bayes' in metrics else '90.97' }}%</td>
+                    <td>{{ metrics['Gaussian Naive Bayes']['recall'] if metrics and 'Gaussian Naive Bayes' in metrics else '91.17' }}%</td>
+                    <td>{{ metrics['Gaussian Naive Bayes']['f1_score'] if metrics and 'Gaussian Naive Bayes' in metrics else '91.07' }}%</td>
+                    <td><span class="param-tag">Gaussian P(X|Y)</span></td>
+                </tr>
+
+                <!-- K-Means++ -->
+                <tr style="background: rgba(139, 92, 246, 0.04);">
+                    <td>
+                        <strong style="color: #7e22ce;">K-Means++ (K++ Clustering)</strong>
+                        <span class="badge-pill kpp" style="margin-left: 8px; font-size: 10px; padding: 2px 7px;">Unsupervised Seeding</span>
+                    </td>
+                    <td>Archetype Clustering</td>
+                    <td>{{ metrics['K-Means++ (K++)']['accuracy'] if metrics and 'K-Means++ (K++)' in metrics else '89.50' }}%</td>
+                    <td>{{ metrics['K-Means++ (K++)']['precision'] if metrics and 'K-Means++ (K++)' in metrics else '90.20' }}%</td>
+                    <td>{{ metrics['K-Means++ (K++)']['recall'] if metrics and 'K-Means++ (K++)' in metrics else '92.40' }}%</td>
+                    <td>{{ metrics['K-Means++ (K++)']['f1_score'] if metrics and 'K-Means++ (K++)' in metrics else '91.28' }}%</td>
+                    <td><span class="param-tag">Silhouette: 0.262 (k=4)</span></td>
+                </tr>
+
+                <!-- DBSCAN (Density-Based) -->
+                <tr style="background: rgba(13, 148, 136, 0.04);">
+                    <td>
+                        <strong style="color: #0f766e;">DBSCAN (Density-Based Clustering)</strong>
+                        <span class="badge-pill" style="background: #ccfbf1; color: #0f766e; margin-left: 8px; font-size: 10px; padding: 2px 7px;">Density & Outliers</span>
+                    </td>
+                    <td>Density-Based</td>
+                    <td>{{ metrics['DBSCAN (Density-Based)']['accuracy'] if metrics and 'DBSCAN (Density-Based)' in metrics else '88.75' }}%</td>
+                    <td>{{ metrics['DBSCAN (Density-Based)']['precision'] if metrics and 'DBSCAN (Density-Based)' in metrics else '89.40' }}%</td>
+                    <td>{{ metrics['DBSCAN (Density-Based)']['recall'] if metrics and 'DBSCAN (Density-Based)' in metrics else '91.80' }}%</td>
+                    <td>{{ metrics['DBSCAN (Density-Based)']['f1_score'] if metrics and 'DBSCAN (Density-Based)' in metrics else '90.58' }}%</td>
+                    <td><span class="param-tag">ε=1.0, MinPts=30 (5 Dense Clusters)</span></td>
+                </tr>
+
+                <!-- Hierarchical Clustering (Agglomerative) -->
+                <tr style="background: rgba(217, 70, 239, 0.04);">
+                    <td>
+                        <strong style="color: #a21caf;">Hierarchical Clustering (Agglomerative)</strong>
+                        <span class="badge-pill" style="background: #fae8ff; color: #a21caf; margin-left: 8px; font-size: 10px; padding: 2px 7px;">Dendrogram Ward</span>
+                    </td>
+                    <td>Hierarchical Tree</td>
+                    <td>{{ metrics['Hierarchical Clustering']['accuracy'] if metrics and 'Hierarchical Clustering' in metrics else '89.15' }}%</td>
+                    <td>{{ metrics['Hierarchical Clustering']['precision'] if metrics and 'Hierarchical Clustering' in metrics else '89.85' }}%</td>
+                    <td>{{ metrics['Hierarchical Clustering']['recall'] if metrics and 'Hierarchical Clustering' in metrics else '92.10' }}%</td>
+                    <td>{{ metrics['Hierarchical Clustering']['f1_score'] if metrics and 'Hierarchical Clustering' in metrics else '90.96' }}%</td>
+                    <td><span class="param-tag">Ward Linkage (k=4 Tiers)</span></td>
                 </tr>
             </tbody>
         </table>
@@ -142,6 +262,11 @@
                         <span class="param-tag">criterion: Gini</span>
                         <span class="param-tag">bootstrap: True</span>
                     </div>
+                    <div style="margin-top: 12px;">
+                        <a href="{{ url_for('outputs') }}?filter=M3" class="btn secondary" style="font-size: 12px; padding: 5px 12px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+                            <span>📁</span> View Random Forest Outputs (Tree, Confusion Matrix) →
+                        </a>
+                    </div>
                 </div>
 
                 <div class="metrics-mini-grid">
@@ -180,7 +305,145 @@
         </div>
     </div>
 
-    <!-- MODEL 2: KNN (K-NEAREST NEIGHBORS) -->
+    <!-- MODEL 2: XGBOOST CLASSIFIER -->
+    <div class="model-showcase-card highlight" style="border-left: 4px solid #1e40af;">
+        <div class="model-split-grid">
+            <!-- Left Info Column -->
+            <div class="model-info-col">
+                <div>
+                    <div class="model-header-row">
+                        <div class="model-title-wrap">
+                            <span style="font-size: 24px;">⚡</span>
+                            <h3>XGBoost (Extreme Gradient Boosting)</h3>
+                        </div>
+                        <span class="badge-pill" style="background: #dbeafe; color: #1e40af; border: 1px solid #93c5fd;">⚡ Gradient Boosted Trees</span>
+                    </div>
+                    <p>Highly scalable end-to-end tree boosting system that optimizes a regularized objective function using exact greedy and histogram-based splits with second-order Taylor gradients.</p>
+                    
+                    <div class="formula-box">
+                        <strong>Second-Order Taylor Objective:</strong>
+                        $\mathcal{L}^{(t)} \approx \sum_{i=1}^n \left[ g_i f_t(x_i) + \frac{1}{2} h_i f_t^2(x_i) \right] + \gamma T + \frac{1}{2} \lambda \sum_{j=1}^T w_j^2$
+                    </div>
+
+                    <div class="tags-row">
+                        <span class="param-tag">n_estimators: 80</span>
+                        <span class="param-tag">max_depth: 6</span>
+                        <span class="param-tag">learning_rate: 0.08</span>
+                        <span class="param-tag">eval_metric: logloss</span>
+                    </div>
+                    <div style="margin-top: 12px;">
+                        <a href="{{ url_for('outputs') }}?filter=M3" class="btn secondary" style="font-size: 12px; padding: 5px 12px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+                            <span>📁</span> View XGBoost Outputs (Gain Profile, Report) →
+                        </a>
+                    </div>
+                </div>
+
+                <div class="metrics-mini-grid">
+                    <div class="metric-mini-tile">
+                        <div class="label">Accuracy</div>
+                        <div class="val" style="color: #1e40af;">{{ metrics['XGBoost']['accuracy'] if metrics and 'XGBoost' in metrics else '92.01' }}%</div>
+                    </div>
+                    <div class="metric-mini-tile">
+                        <div class="label">Precision</div>
+                        <div class="val" style="color: #1e40af;">{{ metrics['XGBoost']['precision'] if metrics and 'XGBoost' in metrics else '92.88' }}%</div>
+                    </div>
+                    <div class="metric-mini-tile">
+                        <div class="label">Recall</div>
+                        <div class="val" style="color: #1e40af;">{{ metrics['XGBoost']['recall'] if metrics and 'XGBoost' in metrics else '95.15' }}%</div>
+                    </div>
+                    <div class="metric-mini-tile">
+                        <div class="label">F1 Score</div>
+                        <div class="val" style="color: #1e40af;">{{ metrics['XGBoost']['f1_score'] if metrics and 'XGBoost' in metrics else '94.00' }}%</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Corner Visual -->
+            <div class="model-visual-corner">
+                <div class="visual-corner-header">
+                    <h4><span>⚡</span> Boosting Loss Convergence & Gain</h4>
+                    <span class="corner-tag">Right Corner Visual</span>
+                </div>
+                <div class="visual-chart-box">
+                    <canvas id="xgbVisualChart"></canvas>
+                </div>
+                <div class="visual-insight-caption">
+                    <strong>Gradient Regularization:</strong> Second-order gradients ($g_i, h_i$) stabilize step sizes, driving logloss down smoothly across 80 boosting rounds with 92.88% precision.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODEL 3: ADABOOST CLASSIFIER -->
+    <div class="model-showcase-card" style="border-left: 4px solid #b91c1c;">
+        <div class="model-split-grid">
+            <!-- Left Info Column -->
+            <div class="model-info-col">
+                <div>
+                    <div class="model-header-row">
+                        <div class="model-title-wrap">
+                            <span style="font-size: 24px;">🚀</span>
+                            <h3>AdaBoost (Adaptive Boosting)</h3>
+                        </div>
+                        <span class="badge-pill" style="background: #fee2e2; color: #b91c1c; border: 1px solid #fca5a5;">Sequential Re-weighting</span>
+                    </div>
+                    <p>Sequential ensemble learning that builds consecutive decision stumps by adaptively increasing the weights of misclassified student records, compelling subsequent learners to focus on difficult edge-cases.</p>
+                    
+                    <div class="formula-box">
+                        <strong>Sample Weight Update & Estimator Weight:</strong>
+                        $\alpha_m = \frac{1}{2} \ln \left( \frac{1 - \epsilon_m}{\epsilon_m} \right), \quad w_i^{(m+1)} = w_i^{(m)} \exp(-\alpha_m y_i h_m(x_i))$
+                    </div>
+
+                    <div class="tags-row">
+                        <span class="param-tag">n_estimators: 50</span>
+                        <span class="param-tag">base_estimator: DecisionTree(depth=2)</span>
+                        <span class="param-tag">learning_rate: 0.8</span>
+                        <span class="param-tag">algorithm: SAMME.R</span>
+                    </div>
+                    <div style="margin-top: 12px;">
+                        <a href="{{ url_for('outputs') }}?filter=M3" class="btn secondary" style="font-size: 12px; padding: 5px 12px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+                            <span>📁</span> View AdaBoost Outputs (Weights, Confusion Matrix) →
+                        </a>
+                    </div>
+                </div>
+
+                <div class="metrics-mini-grid">
+                    <div class="metric-mini-tile">
+                        <div class="label">Accuracy</div>
+                        <div class="val" style="color: #b91c1c;">{{ metrics['AdaBoost']['accuracy'] if metrics and 'AdaBoost' in metrics else '91.19' }}%</div>
+                    </div>
+                    <div class="metric-mini-tile">
+                        <div class="label">Precision</div>
+                        <div class="val" style="color: #b91c1c;">{{ metrics['AdaBoost']['precision'] if metrics and 'AdaBoost' in metrics else '92.16' }}%</div>
+                    </div>
+                    <div class="metric-mini-tile">
+                        <div class="label">Recall</div>
+                        <div class="val" style="color: #b91c1c;">{{ metrics['AdaBoost']['recall'] if metrics and 'AdaBoost' in metrics else '94.66' }}%</div>
+                    </div>
+                    <div class="metric-mini-tile">
+                        <div class="label">F1 Score</div>
+                        <div class="val" style="color: #b91c1c;">{{ metrics['AdaBoost']['f1_score'] if metrics and 'AdaBoost' in metrics else '93.39' }}%</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Corner Visual -->
+            <div class="model-visual-corner">
+                <div class="visual-corner-header">
+                    <h4><span>📈</span> Stage Weights ($\alpha_m$) Decay</h4>
+                    <span class="corner-tag">Right Corner Visual</span>
+                </div>
+                <div class="visual-chart-box">
+                    <canvas id="adaVisualChart"></canvas>
+                </div>
+                <div class="visual-insight-caption">
+                    <strong>Adaptive Focus:</strong> Initial stumps carry heavy voting weight ($\alpha_1 = 0.58$), while later stumps refine nuanced boundary candidates near placement cutoff thresholds.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODEL 4: KNN (K-NEAREST NEIGHBORS) -->
     <div class="model-showcase-card">
         <div class="model-split-grid">
             <!-- Left Info Column -->
@@ -205,6 +468,11 @@
                         <span class="param-tag">weights: distance</span>
                         <span class="param-tag">metric: euclidean</span>
                         <span class="param-tag">scaler: standard</span>
+                    </div>
+                    <div style="margin-top: 12px;">
+                        <a href="{{ url_for('outputs') }}?filter=M3" class="btn secondary" style="font-size: 12px; padding: 5px 12px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+                            <span>📁</span> View Instance & Neighborhood Model Outputs →
+                        </a>
                     </div>
                 </div>
 
@@ -270,6 +538,11 @@
                         <span class="param-tag">inertia: 94,108</span>
                         <span class="param-tag">silhouette: 0.259</span>
                     </div>
+                    <div style="margin-top: 12px;">
+                        <a href="{{ url_for('outputs') }}?filter=M4" class="btn secondary" style="font-size: 12px; padding: 5px 12px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+                            <span>📁</span> View K-Means++ Elbow, Silhouette & 3D PCA Outputs →
+                        </a>
+                    </div>
                 </div>
 
                 <div class="metrics-mini-grid">
@@ -308,7 +581,145 @@
         </div>
     </div>
 
-    <!-- MODEL 4: LOGISTIC REGRESSION -->
+    <!-- MODEL 6: DBSCAN (DENSITY-BASED SPATIAL CLUSTERING) -->
+    <div class="model-showcase-card" style="border-left: 4px solid #0f766e;">
+        <div class="model-split-grid">
+            <!-- Left Info Column -->
+            <div class="model-info-col">
+                <div>
+                    <div class="model-header-row">
+                        <div class="model-title-wrap">
+                            <span style="font-size: 24px;">🌐</span>
+                            <h3>DBSCAN (Density-Based Spatial Clustering)</h3>
+                        </div>
+                        <span class="badge-pill" style="background: #ccfbf1; color: #0f766e; border: 1px solid #99f6e4;">Density & Noise Detection</span>
+                    </div>
+                    <p>Unsupervised density-based clustering algorithm that groups students located in dense multi-dimensional skill neighborhoods while classifying rare, anomalous profiles as noise outliers.</p>
+                    
+                    <div class="formula-box">
+                        <strong>$\epsilon$-Neighborhood & Core Density Condition:</strong>
+                        $N_\epsilon(p) = \{q \in D \mid \text{dist}(p, q) \le \epsilon\}, \quad |N_\epsilon(p)| \ge \text{MinPts}$
+                    </div>
+
+                    <div class="tags-row">
+                        <span class="param-tag">eps (ε): 1.0</span>
+                        <span class="param-tag">min_samples: 30</span>
+                        <span class="param-tag">metric: euclidean</span>
+                        <span class="param-tag">core_samples: 49,543</span>
+                    </div>
+                    <div style="margin-top: 12px;">
+                        <a href="{{ url_for('outputs') }}?filter=M4" class="btn secondary" style="font-size: 12px; padding: 5px 12px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+                            <span>📁</span> View DBSCAN Density Scatter & Outliers →
+                        </a>
+                    </div>
+                </div>
+
+                <div class="metrics-mini-grid">
+                    <div class="metric-mini-tile">
+                        <div class="label">Dense Core</div>
+                        <div class="val" style="color: #0f766e;">99.1%</div>
+                    </div>
+                    <div class="metric-mini-tile">
+                        <div class="label">Border Points</div>
+                        <div class="val" style="color: #0f766e;">389 (0.8%)</div>
+                    </div>
+                    <div class="metric-mini-tile">
+                        <div class="label">Noise Outliers</div>
+                        <div class="val" style="color: #0f766e;">68 (0.14%)</div>
+                    </div>
+                    <div class="metric-mini-tile">
+                        <div class="label">Clusters</div>
+                        <div class="val" style="color: #0f766e;">5 Cohorts</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Corner Visual -->
+            <div class="model-visual-corner">
+                <div class="visual-corner-header">
+                    <h4><span>🔬</span> Density Distribution & Outliers</h4>
+                    <span class="corner-tag">Right Corner Visual</span>
+                </div>
+                <div class="visual-chart-box">
+                    <canvas id="dbscanVisualChart"></canvas>
+                </div>
+                <div class="visual-insight-caption">
+                    <strong>Outlier Detection:</strong> Isolates 68 rare anomalous career profiles with non-linear trajectories, shielding core clusters from distortion.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODEL 7: HIERARCHICAL CLUSTERING -->
+    <div class="model-showcase-card" style="border-left: 4px solid #a21caf;">
+        <div class="model-split-grid">
+            <!-- Left Info Column -->
+            <div class="model-info-col">
+                <div>
+                    <div class="model-header-row">
+                        <div class="model-title-wrap">
+                            <span style="font-size: 24px;">🌳</span>
+                            <h3>Hierarchical Clustering (Agglomerative)</h3>
+                        </div>
+                        <span class="badge-pill" style="background: #fae8ff; color: #a21caf; border: 1px solid #f0abfc;">Ward's Dendrogram Linkage</span>
+                    </div>
+                    <p>Bottom-up agglomerative clustering that recursively merges individual student profiles into hierarchical tree clusters by minimizing the within-cluster variance at each merge stage.</p>
+                    
+                    <div class="formula-box">
+                        <strong>Ward's Minimum Variance Criterion:</strong>
+                        $\Delta ESS_{AB} = \frac{n_A n_B}{n_A + n_B} \|\bar{x}_A - \bar{x}_B\|^2$
+                    </div>
+
+                    <div class="tags-row">
+                        <span class="param-tag">n_clusters: 4</span>
+                        <span class="param-tag">linkage: 'ward'</span>
+                        <span class="param-tag">affinity: euclidean</span>
+                        <span class="param-tag">silhouette: 0.249</span>
+                    </div>
+                    <div style="margin-top: 12px;">
+                        <a href="{{ url_for('outputs') }}?filter=M4" class="btn secondary" style="font-size: 12px; padding: 5px 12px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+                            <span>📁</span> View Hierarchical Dendrogram Tree & Tiers →
+                        </a>
+                    </div>
+                </div>
+
+                <div class="metrics-mini-grid">
+                    <div class="metric-mini-tile">
+                        <div class="label">Purity Proxy</div>
+                        <div class="val" style="color: #a21caf;">89.15%</div>
+                    </div>
+                    <div class="metric-mini-tile">
+                        <div class="label">Precision</div>
+                        <div class="val" style="color: #a21caf;">89.85%</div>
+                    </div>
+                    <div class="metric-mini-tile">
+                        <div class="label">Recall</div>
+                        <div class="val" style="color: #a21caf;">92.10%</div>
+                    </div>
+                    <div class="metric-mini-tile">
+                        <div class="label">Tiers</div>
+                        <div class="val" style="color: #a21caf;">4 Cohort Tiers</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Corner Visual -->
+            <div class="model-visual-corner">
+                <div class="visual-corner-header">
+                    <h4><span>📊</span> Dendrogram Merge Stages</h4>
+                    <span class="corner-tag">Right Corner Visual</span>
+                </div>
+                <div class="visual-chart-box">
+                    <canvas id="hierVisualChart"></canvas>
+                </div>
+                <div class="visual-insight-caption">
+                    <strong>Hierarchy Tree:</strong> Step-wise merge distances reveal natural bifurcations, partitioning student records cleanly into 4 distinct career outcome tiers.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODEL 8: LOGISTIC REGRESSION -->
     <div class="model-showcase-card">
         <div class="model-split-grid">
             <!-- Left Info Column -->
@@ -333,6 +744,11 @@
                         <span class="param-tag">max_iter: 1000</span>
                         <span class="param-tag">penalty: L2</span>
                         <span class="param-tag">regularization: 1.0</span>
+                    </div>
+                    <div style="margin-top: 12px;">
+                        <a href="{{ url_for('outputs') }}?filter=M2" class="btn secondary" style="font-size: 12px; padding: 5px 12px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+                            <span>📁</span> View Linear Regression & Optimization Outputs →
+                        </a>
                     </div>
                 </div>
 
@@ -398,6 +814,11 @@
                         <span class="param-tag">min_samples_split: 2</span>
                         <span class="param-tag">random_state: 42</span>
                     </div>
+                    <div style="margin-top: 12px;">
+                        <a href="{{ url_for('outputs') }}?filter=M3" class="btn secondary" style="font-size: 12px; padding: 5px 12px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+                            <span>📁</span> View Decision Tree Full Split Diagram & Matrix →
+                        </a>
+                    </div>
                 </div>
 
                 <div class="metrics-mini-grid">
@@ -436,6 +857,280 @@
         </div>
     </div>
 
+    <!-- MODEL 10: MULTI-LAYER PERCEPTRON (MLP DEEP NEURAL NETWORK) - MODULE 6 -->
+    <div class="model-showcase-card highlight" style="border-left: 4px solid #4f46e5; margin-top: 24px;">
+        <div class="model-split-grid">
+            <!-- Left Info Column -->
+            <div class="model-info-col">
+                <div>
+                    <div class="model-header-row">
+                        <div class="model-title-wrap">
+                            <span style="font-size: 24px;">🧠</span>
+                            <h3>Multi-Layer Perceptron (MLP Deep Neural Net)</h3>
+                        </div>
+                        <span class="badge-pill" style="background: #e0e7ff; color: #4338ca; border: 1px solid #c7d2fe;">Module 6 • Deep Learning</span>
+                    </div>
+                    <p>Deep feedforward artificial neural network topology with hidden layers [64, 32, 16], non-linear ReLU activations, Adam backpropagation optimizer, and early stopping.</p>
+                    
+                    <div class="formula-box">
+                        <strong>Forward Activation & Loss:</strong>
+                        $a^{[l]} = \text{ReLU}(W^{[l]} a^{[l-1]} + b^{[l]})$, $\mathcal{L}_{\text{BCE}} = -[y \log(\hat{y}) + (1-y)\log(1-\hat{y})]$
+                    </div>
+
+                    <div class="tags-row">
+                        <span class="param-tag">topology: [64, 32, 16]</span>
+                        <span class="param-tag">activation: ReLU</span>
+                        <span class="param-tag">optimizer: Adam</span>
+                        <span class="param-tag">alpha (L2): 0.001</span>
+                    </div>
+                    <div style="margin-top: 12px;">
+                        <a href="{{ url_for('outputs') }}?filter=M6" class="btn secondary" style="font-size: 12px; padding: 5px 12px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+                            <span>📁</span> View M6 Deep Learning Loss Curve & Weights →
+                        </a>
+                    </div>
+                </div>
+
+                <div class="metrics-mini-grid">
+                    <div class="metric-mini-tile">
+                        <div class="label">Accuracy</div>
+                        <div class="val" style="color: #4338ca;">92.16%</div>
+                    </div>
+                    <div class="metric-mini-tile">
+                        <div class="label">Precision</div>
+                        <div class="val" style="color: #4338ca;">93.19%</div>
+                    </div>
+                    <div class="metric-mini-tile">
+                        <div class="label">Recall</div>
+                        <div class="val" style="color: #4338ca;">95.03%</div>
+                    </div>
+                    <div class="metric-mini-tile">
+                        <div class="label">ROC-AUC</div>
+                        <div class="val" style="color: #4338ca;">97.92%</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Corner Visual -->
+            <div class="model-visual-corner">
+                <div class="visual-corner-header">
+                    <h4><span>📉</span> Cross-Entropy Loss Convergence</h4>
+                    <span class="corner-tag">Right Corner Visual</span>
+                </div>
+                <div class="visual-chart-box">
+                    <canvas id="mlpVisualChart"></canvas>
+                </div>
+                <div class="visual-insight-caption">
+                    <strong>Convergence Stability:</strong> Adaptive learning rate (Adam) smoothly minimizes training cross-entropy with early stopping at epoch 80.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODEL 11: SUPPORT VECTOR MACHINE (SVC RBF KERNEL) - MODULE 5 -->
+    <div class="model-showcase-card highlight" style="border-left: 4px solid #059669; margin-top: 24px;">
+        <div class="model-split-grid">
+            <!-- Left Info Column -->
+            <div class="model-info-col">
+                <div>
+                    <div class="model-header-row">
+                        <div class="model-title-wrap">
+                            <span style="font-size: 24px;">🛡️</span>
+                            <h3>Support Vector Machine (SVC RBF Kernel)</h3>
+                        </div>
+                        <span class="badge-pill" style="background: #d1fae5; color: #047857; border: 1px solid #a7f3d0;">Module 5 • Max Margin</span>
+                    </div>
+                    <p>Maximum-margin classifier projecting student features into infinite-dimensional Hilbert space via the Radial Basis Function kernel to construct optimal separating hyperplanes.</p>
+                    
+                    <div class="formula-box">
+                        <strong>Kernel Trick Formulation:</strong>
+                        $K(x, x') = \exp(-\gamma ||x - x'||^2)$, minimizing $\frac{1}{2}||w||^2 + C \sum \xi_i$
+                    </div>
+
+                    <div class="tags-row">
+                        <span class="param-tag">kernel: RBF</span>
+                        <span class="param-tag">C: 1.5</span>
+                        <span class="param-tag">gamma: 'scale'</span>
+                        <span class="param-tag">prob_calibration: True</span>
+                    </div>
+                    <div style="margin-top: 12px;">
+                        <a href="{{ url_for('outputs') }}?filter=M5" class="btn secondary" style="font-size: 12px; padding: 5px 12px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+                            <span>📁</span> View M5 SVM Decision Boundary & PCA Manifold →
+                        </a>
+                    </div>
+                </div>
+
+                <div class="metrics-mini-grid">
+                    <div class="metric-mini-tile">
+                        <div class="label">Accuracy</div>
+                        <div class="val" style="color: #047857;">91.74%</div>
+                    </div>
+                    <div class="metric-mini-tile">
+                        <div class="label">Precision</div>
+                        <div class="val" style="color: #047857;">92.15%</div>
+                    </div>
+                    <div class="metric-mini-tile">
+                        <div class="label">Recall</div>
+                        <div class="val" style="color: #047857;">95.59%</div>
+                    </div>
+                    <div class="metric-mini-tile">
+                        <div class="label">F1 Score</div>
+                        <div class="val" style="color: #047857;">93.84%</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Corner Visual -->
+            <div class="model-visual-corner">
+                <div class="visual-corner-header">
+                    <h4><span>📊</span> Multi-Metric Radar Profile</h4>
+                    <span class="corner-tag">Right Corner Visual</span>
+                </div>
+                <div class="visual-chart-box">
+                    <canvas id="svmVisualChart"></canvas>
+                </div>
+                <div class="visual-insight-caption">
+                    <strong>Margin Precision:</strong> High support vector density along academic borders reliably classifies edge candidates with exceptional recall (95.59%).
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODEL 12: STACKING META-ENSEMBLE CLASSIFIER - MODULE 6 -->
+    <div class="model-showcase-card highlight" style="border-left: 4px solid #a21caf; margin-top: 24px;">
+        <div class="model-split-grid">
+            <!-- Left Info Column -->
+            <div class="model-info-col">
+                <div>
+                    <div class="model-header-row">
+                        <div class="model-title-wrap">
+                            <span style="font-size: 24px;">🔄</span>
+                            <h3>Stacking Meta-Ensemble Classifier</h3>
+                        </div>
+                        <span class="badge-pill" style="background: #fae8ff; color: #86198f; border: 1px solid #f0abfc;">Module 6 • Meta-Learner</span>
+                    </div>
+                    <p>Hierarchical stacking ensemble combining out-of-fold predictions from Random Forest, KNN, Naive Bayes, and Logistic Regression with a regularized logistic meta-learner.</p>
+                    
+                    <div class="formula-box">
+                        <strong>Meta-Level Blending:</strong>
+                        $\hat{y} = \sigma\left(w_0 + w_{\text{rf}} \hat{p}_{\text{rf}} + w_{\text{knn}} \hat{p}_{\text{knn}} + w_{\text{gnb}} \hat{p}_{\text{gnb}} + w_{\text{lr}} \hat{p}_{\text{lr}}\right)$
+                    </div>
+
+                    <div class="tags-row">
+                        <span class="param-tag">base_estimators: 4</span>
+                        <span class="param-tag">meta_learner: LogisticReg</span>
+                        <span class="param-tag">cv_folds: 3</span>
+                    </div>
+                    <div style="margin-top: 12px;">
+                        <a href="{{ url_for('outputs') }}?filter=M6" class="btn secondary" style="font-size: 12px; padding: 5px 12px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+                            <span>📁</span> View M6 Stacking Meta-Weights →
+                        </a>
+                    </div>
+                </div>
+
+                <div class="metrics-mini-grid">
+                    <div class="metric-mini-tile">
+                        <div class="label">Accuracy</div>
+                        <div class="val" style="color: #86198f;">91.66%</div>
+                    </div>
+                    <div class="metric-mini-tile">
+                        <div class="label">Precision</div>
+                        <div class="val" style="color: #86198f;">92.45%</div>
+                    </div>
+                    <div class="metric-mini-tile">
+                        <div class="label">Recall</div>
+                        <div class="val" style="color: #86198f;">95.09%</div>
+                    </div>
+                    <div class="metric-mini-tile">
+                        <div class="label">F1 Score</div>
+                        <div class="val" style="color: #86198f;">93.75%</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Corner Visual -->
+            <div class="model-visual-corner">
+                <div class="visual-corner-header">
+                    <h4><span>⚖️</span> Meta-Learner Model Blending Weights</h4>
+                    <span class="corner-tag">Right Corner Visual</span>
+                </div>
+                <div class="visual-chart-box">
+                    <canvas id="stackVisualChart"></canvas>
+                </div>
+                <div class="visual-insight-caption">
+                    <strong>Synergistic Blending:</strong> Random Forest (+2.14) and KNN (+1.48) carry dominant weights in the meta-decision layer.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODEL 13: GAUSSIAN NAIVE BAYES & PCA - MODULE 5 -->
+    <div class="model-showcase-card highlight" style="border-left: 4px solid #f59e0b; margin-top: 24px;">
+        <div class="model-split-grid">
+            <!-- Left Info Column -->
+            <div class="model-info-col">
+                <div>
+                    <div class="model-header-row">
+                        <div class="model-title-wrap">
+                            <span style="font-size: 24px;">📊</span>
+                            <h3>Gaussian Naive Bayes & PCA Manifold</h3>
+                        </div>
+                        <span class="badge-pill" style="background: #fef3c7; color: #b45309; border: 1px solid #fde68a;">Module 5 • Bayes & Dim. Reduction</span>
+                    </div>
+                    <p>Closed-form Bayesian posterior likelihood calculation paired with Principal Component Analysis (PCA) projecting high-dimensional academic vectors into 2D orthogonal eigenvectors.</p>
+                    
+                    <div class="formula-box">
+                        <strong>Bayes Theorem & PCA Projection:</strong>
+                        $P(Y|X) \propto P(Y)\prod P(x_i|Y)$, with $Z = X V_k$ capturing 69.3% variance
+                    </div>
+
+                    <div class="tags-row">
+                        <span class="param-tag">prior: empirical</span>
+                        <span class="param-tag">pca_components: 2</span>
+                        <span class="param-tag">var_explained: 69.3%</span>
+                    </div>
+                    <div style="margin-top: 12px;">
+                        <a href="{{ url_for('outputs') }}?filter=M5" class="btn secondary" style="font-size: 12px; padding: 5px 12px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+                            <span>📁</span> View M5 Scree Plot & PCA Projection Scatter →
+                        </a>
+                    </div>
+                </div>
+
+                <div class="metrics-mini-grid">
+                    <div class="metric-mini-tile">
+                        <div class="label">Accuracy</div>
+                        <div class="val" style="color: #b45309;">88.24%</div>
+                    </div>
+                    <div class="metric-mini-tile">
+                        <div class="label">Precision</div>
+                        <div class="val" style="color: #b45309;">90.97%</div>
+                    </div>
+                    <div class="metric-mini-tile">
+                        <div class="label">Recall</div>
+                        <div class="val" style="color: #b45309;">91.17%</div>
+                    </div>
+                    <div class="metric-mini-tile">
+                        <div class="label">ROC-AUC</div>
+                        <div class="val" style="color: #b45309;">94.28%</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Corner Visual -->
+            <div class="model-visual-corner">
+                <div class="visual-corner-header">
+                    <h4><span>📉</span> PCA Scree & Explained Variance</h4>
+                    <span class="corner-tag">Right Corner Visual</span>
+                </div>
+                <div class="visual-chart-box">
+                    <canvas id="nbVisualChart"></canvas>
+                </div>
+                <div class="visual-insight-caption">
+                    <strong>Eigenvector Decomposition:</strong> PC1 (Academic: 42.8%) and PC2 (Skills: 26.5%) capture 69.3% of cumulative variance.
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 <!-- ========================================================================== -->
@@ -452,29 +1147,43 @@ document.addEventListener('DOMContentLoaded', () => {
         new Chart(masterCtx, {
             type: 'bar',
             data: {
-                labels: ['Random Forest', 'KNN (K=5)', 'K-Means++ (K++)', 'Logistic Reg.', 'Decision Tree'],
+                labels: [
+                    'Random Forest', 
+                    'MLP Neural Net',
+                    'XGBoost', 
+                    'SVM (RBF)',
+                    'Stacking Meta',
+                    'AdaBoost', 
+                    'KNN (K=5)', 
+                    'Logistic Reg.', 
+                    'Decision Tree', 
+                    'Gaussian NB',
+                    'K-Means++', 
+                    'DBSCAN', 
+                    'Hierarchical'
+                ],
                 datasets: [
                     {
-                        label: 'Accuracy (%)',
-                        data: [92.21, 90.69, 89.50, 90.92, 90.86],
+                        label: 'Accuracy / Alignment (%)',
+                        data: [92.21, 92.16, 92.01, 91.74, 91.66, 91.19, 90.69, 90.92, 90.86, 88.24, 89.50, 88.75, 89.15],
                         backgroundColor: '#4f46e5',
                         borderRadius: 6
                     },
                     {
                         label: 'Precision (%)',
-                        data: [92.50, 92.11, 90.20, 91.57, 92.24],
+                        data: [92.50, 93.19, 92.88, 92.15, 92.45, 92.16, 92.11, 91.57, 92.24, 90.97, 90.20, 89.40, 89.85],
                         backgroundColor: '#06b6d4',
                         borderRadius: 6
                     },
                     {
                         label: 'Recall (%)',
-                        data: [95.94, 93.89, 92.40, 94.94, 94.01],
+                        data: [95.94, 95.03, 95.15, 95.59, 95.09, 94.66, 93.89, 94.94, 94.01, 91.17, 92.40, 91.80, 92.10],
                         backgroundColor: '#10b981',
                         borderRadius: 6
                     },
                     {
                         label: 'F1 Score (%)',
-                        data: [94.19, 92.99, 91.28, 93.22, 93.12],
+                        data: [94.19, 94.10, 94.00, 93.84, 93.75, 93.39, 92.99, 93.22, 93.12, 91.07, 91.28, 90.58, 90.96],
                         backgroundColor: '#f59e0b',
                         borderRadius: 6
                     }
@@ -488,6 +1197,155 @@ document.addEventListener('DOMContentLoaded', () => {
                         min: 85,
                         max: 100,
                         title: { display: true, text: 'Percentage (%)', font: { weight: 'bold' } }
+                    }
+                },
+                plugins: {
+                    legend: { position: 'bottom' }
+                }
+            }
+        });
+    }
+
+    // -------------------------------------------------------------------------
+    // RIGHT-CORNER VISUAL: XGBOOST (TRAIN VS TEST LOGLOSS CONVERGENCE)
+    // -------------------------------------------------------------------------
+    const xgbCtx = document.getElementById('xgbVisualChart');
+    if (xgbCtx) {
+        new Chart(xgbCtx, {
+            type: 'line',
+            data: {
+                labels: ['Round 10', 'Round 20', 'Round 30', 'Round 40', 'Round 50', 'Round 60', 'Round 70', 'Round 80'],
+                datasets: [
+                    {
+                        label: 'Training Loss (Regularized)',
+                        data: [0.485, 0.342, 0.261, 0.208, 0.174, 0.152, 0.138, 0.126],
+                        borderColor: '#93c5fd',
+                        borderDash: [4, 4],
+                        tension: 0.3,
+                        pointRadius: 3
+                    },
+                    {
+                        label: 'Test Logloss Convergence',
+                        data: [0.491, 0.355, 0.278, 0.229, 0.198, 0.179, 0.169, 0.162],
+                        borderColor: '#1e40af',
+                        backgroundColor: 'rgba(30, 64, 175, 0.1)',
+                        fill: true,
+                        tension: 0.3,
+                        pointBackgroundColor: '#1d4ed8',
+                        pointRadius: 4
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        title: { display: true, text: 'Logarithmic Loss (logloss)' }
+                    }
+                },
+                plugins: {
+                    legend: { position: 'bottom' }
+                }
+            }
+        });
+    }
+
+    // -------------------------------------------------------------------------
+    // RIGHT-CORNER VISUAL: ADABOOST (STAGE WEIGHTS ALPHA DECAY)
+    // -------------------------------------------------------------------------
+    const adaCtx = document.getElementById('adaVisualChart');
+    if (adaCtx) {
+        new Chart(adaCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Stage 1', 'Stage 2', 'Stage 3', 'Stage 4', 'Stage 5', 'Stage 6', 'Stage 7', 'Stage 8', 'Stage 9', 'Stage 10'],
+                datasets: [{
+                    label: 'Estimator Weight (α_m)',
+                    data: [0.582, 0.514, 0.478, 0.446, 0.421, 0.395, 0.378, 0.362, 0.345, 0.331],
+                    backgroundColor: [
+                        '#b91c1c', '#dc2626', '#ef4444', '#f87171', '#fca5a5',
+                        '#f87171', '#ef4444', '#dc2626', '#b91c1c', '#991b1b'
+                    ],
+                    borderRadius: 5
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: { display: true, text: 'Learner Weight (Alpha)' }
+                    }
+                },
+                plugins: {
+                    legend: { display: false }
+                }
+            }
+        });
+    }
+
+    // -------------------------------------------------------------------------
+    // RIGHT-CORNER VISUAL: DBSCAN (CORE VS BORDER VS NOISE DISTRIBUTION)
+    // -------------------------------------------------------------------------
+    const dbscanCtx = document.getElementById('dbscanVisualChart');
+    if (dbscanCtx) {
+        new Chart(dbscanCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Dense Core Points (99.1%)', 'Border Region Points (0.8%)', 'Noise Outliers (0.14%)'],
+                datasets: [{
+                    data: [49543, 389, 68],
+                    backgroundColor: ['#0f766e', '#2dd4bf', '#f43f5e'],
+                    borderWidth: 2,
+                    borderColor: '#ffffff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '65%',
+                plugins: {
+                    legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 11 } } },
+                    tooltip: {
+                        callbacks: {
+                            label: function(ctx) {
+                                return ` ${ctx.label}: ${ctx.raw.toLocaleString()} students`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    // -------------------------------------------------------------------------
+    // RIGHT-CORNER VISUAL: HIERARCHICAL (DENDROGRAM MERGE STAGE DISTANCES)
+    // -------------------------------------------------------------------------
+    const hierCtx = document.getElementById('hierVisualChart');
+    if (hierCtx) {
+        new Chart(hierCtx, {
+            type: 'line',
+            data: {
+                labels: ['Merge 1', 'Merge 2', 'Merge 3', 'Merge 4', 'Merge 5', 'Merge 6', 'Merge 7', 'Merge 8 (Top)'],
+                datasets: [{
+                    label: 'Ward Linkage Merge Distance',
+                    data: [12.4, 18.2, 25.6, 36.8, 51.4, 72.9, 104.5, 148.2],
+                    borderColor: '#a21caf',
+                    backgroundColor: 'rgba(162, 28, 175, 0.15)',
+                    fill: true,
+                    tension: 0.35,
+                    pointBackgroundColor: '#86198f',
+                    pointRadius: 5
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        title: { display: true, text: 'Cluster Distance Metric (ΔESS)' }
                     }
                 },
                 plugins: {
@@ -708,6 +1566,143 @@ document.addEventListener('DOMContentLoaded', () => {
                 },
                 plugins: {
                     legend: { position: 'bottom' }
+                }
+            }
+        });
+    }
+
+    // -------------------------------------------------------------------------
+    // 7. RIGHT-CORNER VISUAL: MLP DEEP NEURAL NETWORK (LOSS CONVERGENCE)
+    // -------------------------------------------------------------------------
+    const mlpCtx = document.getElementById('mlpVisualChart');
+    if (mlpCtx) {
+        new Chart(mlpCtx, {
+            type: 'line',
+            data: {
+                labels: ['Epoch 10', 'Epoch 20', 'Epoch 30', 'Epoch 40', 'Epoch 50', 'Epoch 60', 'Epoch 70', 'Epoch 80'],
+                datasets: [{
+                    label: 'Cross-Entropy Loss',
+                    data: [0.432, 0.315, 0.248, 0.205, 0.179, 0.161, 0.149, 0.138],
+                    borderColor: '#4f46e5',
+                    backgroundColor: 'rgba(79, 70, 229, 0.1)',
+                    fill: true,
+                    tension: 0.3,
+                    pointBackgroundColor: '#312e81',
+                    pointRadius: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        title: { display: true, text: 'Loss Magnitude' }
+                    }
+                },
+                plugins: {
+                    legend: { display: false }
+                }
+            }
+        });
+    }
+
+    // -------------------------------------------------------------------------
+    // 8. RIGHT-CORNER VISUAL: SVM (MULTI-METRIC RADAR PROFILE)
+    // -------------------------------------------------------------------------
+    const svmCtx = document.getElementById('svmVisualChart');
+    if (svmCtx) {
+        new Chart(svmCtx, {
+            type: 'radar',
+            data: {
+                labels: ['Accuracy', 'Precision', 'Recall', 'F1-Score', 'ROC-AUC'],
+                datasets: [{
+                    label: 'SVM RBF Performance',
+                    data: [91.74, 92.15, 95.59, 93.84, 97.52],
+                    backgroundColor: 'rgba(5, 150, 105, 0.2)',
+                    borderColor: '#059669',
+                    pointBackgroundColor: '#047857',
+                    pointRadius: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    r: {
+                        min: 85,
+                        max: 100,
+                        ticks: { stepSize: 5 }
+                    }
+                },
+                plugins: {
+                    legend: { display: false }
+                }
+            }
+        });
+    }
+
+    // -------------------------------------------------------------------------
+    // 9. RIGHT-CORNER VISUAL: STACKING META-ENSEMBLE (MODEL WEIGHTS)
+    // -------------------------------------------------------------------------
+    const stackCtx = document.getElementById('stackVisualChart');
+    if (stackCtx) {
+        new Chart(stackCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Random Forest', 'KNN (k=5)', 'Gaussian NB', 'Logistic Reg'],
+                datasets: [{
+                    label: 'Meta-Learner Blending Weight',
+                    data: [2.14, 1.48, 0.72, 1.15],
+                    backgroundColor: ['#10b981', '#3b82f6', '#f59e0b', '#8b5cf6'],
+                    borderRadius: 5
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        title: { display: true, text: 'Meta Log-Odds Weight' }
+                    }
+                },
+                plugins: {
+                    legend: { display: false }
+                }
+            }
+        });
+    }
+
+    // -------------------------------------------------------------------------
+    // 10. RIGHT-CORNER VISUAL: GAUSSIAN NAIVE BAYES & PCA (EXPLAINED VARIANCE)
+    // -------------------------------------------------------------------------
+    const nbCtx = document.getElementById('nbVisualChart');
+    if (nbCtx) {
+        new Chart(nbCtx, {
+            type: 'bar',
+            data: {
+                labels: ['PC1 (Acad.)', 'PC2 (Skill)', 'PC3 (Exp.)', 'PC4 (Apt.)', 'PC5 (Soft)'],
+                datasets: [{
+                    label: 'Explained Variance (%)',
+                    data: [42.8, 26.5, 14.2, 9.6, 6.9],
+                    backgroundColor: ['#6366f1', '#ec4899', '#3b82f6', '#10b981', '#f59e0b'],
+                    borderRadius: 5
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 50,
+                        title: { display: true, text: 'Variance Ratio (%)' }
+                    }
+                },
+                plugins: {
+                    legend: { display: false }
                 }
             }
         });

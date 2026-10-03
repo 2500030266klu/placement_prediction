@@ -21,6 +21,98 @@
         ],
         "description": "Calculated via Gini impurity reduction across 60 decision estimators."
     },
+    "xgboost": {
+        "title": "XGBoost - Gradient Boosted Feature Importance & Gain",
+        "labels": [
+            "CGPA",
+            "Aptitude Test Score",
+            "Projects Portfolio",
+            "Soft Skills Rating",
+            "Internships",
+            "Backlogs Status",
+            "Department / Stream"
+        ],
+        "values": [
+            36.2,
+            4.8,
+            26.5,
+            9.8,
+            10.5,
+            7.6,
+            4.6
+        ],
+        "boosting_rounds": [
+            10,
+            20,
+            30,
+            40,
+            50,
+            60,
+            70,
+            80
+        ],
+        "train_loss": [
+            0.485,
+            0.342,
+            0.261,
+            0.208,
+            0.174,
+            0.152,
+            0.138,
+            0.126
+        ],
+        "test_loss": [
+            0.491,
+            0.355,
+            0.278,
+            0.229,
+            0.198,
+            0.179,
+            0.169,
+            0.162
+        ],
+        "description": "Extreme Gradient Boosting optimizes regularized objective function with second-order Taylor expansion."
+    },
+    "adaboost": {
+        "title": "AdaBoost - Sequential Estimator Weights (Alpha)",
+        "stages": [
+            "Stage 1",
+            "Stage 2",
+            "Stage 3",
+            "Stage 4",
+            "Stage 5",
+            "Stage 6",
+            "Stage 7",
+            "Stage 8",
+            "Stage 9",
+            "Stage 10"
+        ],
+        "alpha_weights": [
+            1.45,
+            1.153,
+            0.901,
+            0.555,
+            0.639,
+            0.314,
+            0.323,
+            0.471,
+            0.25,
+            0.17
+        ],
+        "estimator_errors": [
+            0.14,
+            0.191,
+            0.245,
+            0.333,
+            0.31,
+            0.403,
+            0.401,
+            0.357,
+            0.423,
+            0.447
+        ],
+        "description": "Adaptive boosting iteratively reweights misclassified students to focus consecutive weak decision learners."
+    },
     "knn": {
         "title": "KNN - K-Value vs Accuracy & Error Rate (Elbow Analysis)",
         "k_labels": [
@@ -108,9 +200,56 @@
                 "placement_rate": 97.6
             }
         ],
-        "silhouette_score": 0.259,
+        "silhouette_score": 0.262,
         "inertia": 94108.2,
-        "description": "Unsupervised segmentation using k-means++ probabilistic seeding D(x)\u00b2 creates 4 balanced archetypes."
+        "description": "Unsupervised segmentation using k-means++ probabilistic seeding D(x)² creates 4 balanced archetypes."
+    },
+    "dbscan": {
+        "title": "DBSCAN - Density Core, Border & Outlier Distribution",
+        "categories": [
+            "Core Points (Dense)",
+            "Border Points",
+            "Noise Outliers"
+        ],
+        "counts": [
+            49543,
+            389,
+            68
+        ],
+        "percentages": [
+            99.1,
+            0.8,
+            0.14
+        ],
+        "clusters_count": 5,
+        "silhouette_score": 0.165,
+        "description": "Density-based clustering with ε=1.0, MinPts=30 identifies 5 dense student clusters and 68 noise outliers."
+    },
+    "hierarchical": {
+        "title": "Hierarchical Clustering - Dendrogram Merging Distance Levels",
+        "levels": [
+            "Merge 1",
+            "Merge 2",
+            "Merge 3",
+            "Merge 4",
+            "Merge 5",
+            "Merge 6",
+            "Merge 7",
+            "Merge 8"
+        ],
+        "distances": [
+            2.57,
+            2.93,
+            3.08,
+            3.43,
+            3.44,
+            3.92,
+            8.5,
+            13.79
+        ],
+        "clusters_count": 4,
+        "silhouette_score": 0.249,
+        "description": "Ward's minimum variance criterion merges student sub-clusters with optimal dendrogram cut at 4 tiers."
     },
     "logistic_regression": {
         "title": "Logistic Regression - Odds Impact & Coefficients",
@@ -163,5 +302,114 @@
         ],
         "optimal_depth": 8,
         "description": "Pruning at depth 8 prevents severe overfitting while retaining 90.86% test accuracy."
+    },
+    "svm": {
+        "title": "Support Vector Machine (SVM) - RBF Kernel & Boundary Separation",
+        "labels": [
+            "Overall Accuracy",
+            "Precision",
+            "Recall / Sensitivity",
+            "F1-Score",
+            "ROC-AUC"
+        ],
+        "values": [
+            91.74,
+            92.15,
+            95.59,
+            93.84,
+            97.52
+        ],
+        "kernel": "rbf",
+        "c_param": 1.5,
+        "description": "Maximum-margin hyperplane with Radial Basis Function kernel projecting non-linear placement profiles into infinite-dimensional Hilbert space."
+    },
+    "naive_bayes": {
+        "title": "Gaussian Naive Bayes - Class-Conditional Posterior Probabilities",
+        "labels": [
+            "CGPA Density",
+            "Aptitude Likelihood",
+            "Project Score",
+            "Soft Skills",
+            "Prior Ratio"
+        ],
+        "values": [
+            91.2,
+            88.4,
+            93.1,
+            89.7,
+            65.7
+        ],
+        "accuracy": 88.24,
+        "roc_auc": 94.28,
+        "description": "Probabilistic Bayesian classifier computing class-conditional Gaussian likelihoods P(X|Placed) to quantify hiring certainty."
+    },
+    "pca": {
+        "title": "Principal Component Analysis (PCA) - Scree & Explained Variance",
+        "labels": [
+            "PC1 (Academic Drive)",
+            "PC2 (Skill & Projects)",
+            "PC3 (Work Experience)",
+            "PC4 (Test Aptitude)",
+            "PC5 (Communication)"
+        ],
+        "values": [
+            42.8,
+            26.5,
+            14.2,
+            9.6,
+            6.9
+        ],
+        "cumulative_variance": [
+            42.8,
+            69.3,
+            83.5,
+            93.1,
+            100.0
+        ],
+        "description": "Orthogonal eigenvector projection capturing 69.3% variance in the first 2 principal components for 2D manifold separation."
+    },
+    "mlp_neural_network": {
+        "title": "Multi-Layer Perceptron (MLP) - Deep Architecture Loss Convergence",
+        "epochs": [
+            "Epoch 10",
+            "Epoch 20",
+            "Epoch 30",
+            "Epoch 40",
+            "Epoch 50",
+            "Epoch 60",
+            "Epoch 70",
+            "Epoch 80"
+        ],
+        "train_loss": [
+            0.432,
+            0.315,
+            0.248,
+            0.205,
+            0.179,
+            0.161,
+            0.149,
+            0.138
+        ],
+        "accuracy": 92.16,
+        "roc_auc": 97.92,
+        "description": "Deep Feedforward Artificial Neural Network [64, 32, 16] with ReLU hidden activations, Adam optimizer, and cross-entropy loss."
+    },
+    "stacking_classifier": {
+        "title": "Stacking Meta-Ensemble - Level-0 Estimator Contribution Weights",
+        "labels": [
+            "Random Forest Base",
+            "KNN Distance Base",
+            "Gaussian NB Base",
+            "Logistic Reg Base"
+        ],
+        "values": [
+            2.14,
+            1.48,
+            0.72,
+            1.15
+        ],
+        "accuracy": 91.66,
+        "roc_auc": 97.60,
+        "description": "Heterogeneous meta-learner combining non-linear bagging, instance geometry, and Bayesian priors with a logistic meta-estimator."
     }
 }

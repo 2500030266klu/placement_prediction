@@ -5,6 +5,18 @@
         "recall": 95.94,
         "f1_score": 94.19
     },
+    "XGBoost": {
+        "accuracy": 92.01,
+        "precision": 92.88,
+        "recall": 95.15,
+        "f1_score": 94.0
+    },
+    "AdaBoost": {
+        "accuracy": 91.19,
+        "precision": 92.16,
+        "recall": 94.66,
+        "f1_score": 93.39
+    },
     "KNN": {
         "accuracy": 90.69,
         "precision": 92.11,
@@ -23,14 +35,72 @@
         "recall": 94.01,
         "f1_score": 93.12
     },
+    "Support Vector Machine (SVM)": {
+        "accuracy": 91.74,
+        "precision": 92.15,
+        "recall": 95.59,
+        "f1_score": 93.84,
+        "roc_auc": 97.52,
+        "kernel": "rbf",
+        "c_param": 1.5
+    },
+    "Gaussian Naive Bayes": {
+        "accuracy": 88.24,
+        "precision": 90.97,
+        "recall": 91.17,
+        "f1_score": 91.07,
+        "roc_auc": 94.28,
+        "prior": "empirical"
+    },
+    "Multi-Layer Perceptron (MLP)": {
+        "accuracy": 92.16,
+        "precision": 93.19,
+        "recall": 95.03,
+        "f1_score": 94.10,
+        "roc_auc": 97.92,
+        "architecture": "[64, 32, 16] ReLU"
+    },
+    "Stacking Classifier": {
+        "accuracy": 91.66,
+        "precision": 92.45,
+        "recall": 95.09,
+        "f1_score": 93.75,
+        "roc_auc": 97.60,
+        "meta_learner": "Logistic Regression"
+    },
     "K-Means++ (K++)": {
         "accuracy": 89.5,
         "precision": 90.2,
         "recall": 92.4,
         "f1_score": 91.28,
-        "silhouette_score": 0.259,
+        "silhouette_score": 0.262,
         "inertia": 94108.2,
         "clusters_count": 4,
         "init_method": "k-means++"
+    },
+    "DBSCAN (Density-Based)": {
+        "accuracy": 88.75,
+        "precision": 89.4,
+        "recall": 91.8,
+        "f1_score": 90.58,
+        "silhouette_score": 0.165,
+        "clusters_count": 5,
+        "core_samples": 49543,
+        "border_samples": 389,
+        "noise_points": 68,
+        "noise_percentage": 0.14,
+        "eps": 1.0,
+        "min_samples": 30
+    },
+    "Hierarchical Clustering": {
+        "accuracy": 89.15,
+        "precision": 89.85,
+        "recall": 92.1,
+        "f1_score": 90.96,
+        "silhouette_score": 0.249,
+        "clusters_count": 4,
+        "linkage": "ward",
+        "affinity": "euclidean",
+        "sample_size": 5000
     }
 }

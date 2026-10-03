@@ -1,0 +1,10 @@
+Parameter,Value
+Algorithm,Random Forest Classifier
+Number of Trees,100
+Criterion,gini
+Maximum Depth,10
+Minimum Samples Split,10
+Minimum Samples Leaf,5
+Maximum Features,sqrt
+Bootstrap,True
+Random State,42

@@ -1,0 +1,6 @@
+Layer,Neurons / Dimension,Activation,Function
+Input Layer,13,Linear / Identity,Standardized Student Academic & Skill Vectors
+Hidden Layer 1,64,ReLU,High-dimensional non-linear feature interaction extraction
+Hidden Layer 2,32,ReLU,Latent employability abstract feature abstraction
+Hidden Layer 3,16,ReLU,Pre-classification compression & regularization
+Output Layer,1,Logistic Sigmoid,"Binary placement probability prediction [0, 1]"

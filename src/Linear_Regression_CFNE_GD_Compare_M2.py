@@ -9,6 +9,8 @@
 import os
 import numpy as np
 import pandas as pd
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
 
@@ -23,9 +25,9 @@ from sklearn.preprocessing import StandardScaler
 # 1. LOAD DATASET
 # ============================================================
 
-
-# Relative path pointing to your project's dataset directory
-data = pd.read_csv("dataset/final_preprocess_M2.csv")
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+DATASET_PATH = os.path.join(BASE_DIR, "dataset", "final_preprocess_M2.csv")
+data = pd.read_csv(DATASET_PATH)
 
 
 # Extract all columns except last column
@@ -43,8 +45,7 @@ y = data.iloc[:, -1].values
 # ============================================================
 
 
-# Relative path to save output images in your active project
-IMAGE_FOLDER = "outputs/Linear_Regression_CFNE_GD_Compare_M2"
+IMAGE_FOLDER = os.path.join(BASE_DIR, "outputs", "Linear_Regression_CFNE_GD_Compare_M2")
 
 
 os.makedirs(IMAGE_FOLDER, exist_ok=True)

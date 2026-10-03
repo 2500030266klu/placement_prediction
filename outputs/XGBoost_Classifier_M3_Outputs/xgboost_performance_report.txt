@@ -1,0 +1,16 @@
+XGBOOST CLASSIFIER BENCHMARK REPORT
+=============================================
+Accuracy : 91.87%
+Precision: 92.54%
+Recall   : 95.31%
+F1 Score : 93.91%
+
+Classification Report:
+              precision    recall  f1-score   support
+
+           0       0.90      0.85      0.88      3429
+           1       0.93      0.95      0.94      6571
+
+    accuracy                           0.92     10000
+   macro avg       0.92      0.90      0.91     10000
+weighted avg       0.92      0.92      0.92     10000

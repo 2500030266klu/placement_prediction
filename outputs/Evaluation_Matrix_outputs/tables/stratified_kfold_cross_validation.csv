@@ -1,0 +1,4 @@
+Model,Fold 1 Acc (%),Fold 2 Acc (%),Fold 3 Acc (%),Fold 4 Acc (%),Fold 5 Acc (%),Mean CV Accuracy (%),Std Deviation (±%)
+Random Forest (M3),91.4,91.25,90.55,91.1,91.1,91.08,0.29
+AdaBoost (M3),91.1,89.9,90.4,90.05,91.75,90.64,0.69
+KNN Classifier (M3),89.25,89.9,89.75,89.75,90.2,89.77,0.31

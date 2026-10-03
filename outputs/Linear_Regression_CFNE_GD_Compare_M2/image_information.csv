@@ -1,0 +1,4 @@
+Image,Description
+actual_vs_predicted.png,Actual values versus predictions from both methods
+residual_comparison.png,Residual comparison between Normal Equation and Gradient Descent
+gradient_descent_loss.png,MSE loss across Gradient Descent epochs

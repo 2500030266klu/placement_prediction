@@ -1,0 +1,4 @@
+Module,Model,Accuracy (%),Precision (%),Recall (%),F1-Score (%),ROC-AUC (%),Parameters
+Module 5,Support Vector Machine (SVC RBF),91.74,92.15,95.59,93.84,97.52,"kernel=rbf, C=1.5, gamma=scale"
+Module 5,Gaussian Naive Bayes (GNB),88.24,90.97,91.17,91.07,94.28,"priors=empirical, var_smoothing=1e-9"
+Module 5,PCA Dimensionality Reduction,76.11,100.0,76.11,76.11,76.11,"n_components=2, explained_var=76.1%"

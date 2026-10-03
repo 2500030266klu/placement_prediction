@@ -71,9 +71,21 @@
         </div>
 
         <div class="card" onclick="window.location.href='{{ url_for('models') }}'" style="cursor: pointer;">
-            <h3>🤖 ML Models</h3>
-            <p>Train and compare Logistic Regression, Decision Tree, Random Forest, and KNN.</p>
+            <h3>🤖 ML Models (M1–M6)</h3>
+            <p>Train and compare Random Forest, XGBoost, SVM (RBF), Naive Bayes, MLP Neural Network, and Stacking Meta-Ensemble.</p>
             <span style="font-size: 13px; font-weight: 700; color: #4f46e5; margin-top: auto;">Compare Models →</span>
+        </div>
+
+        <div class="card" onclick="window.location.href='{{ url_for('outputs') }}'" style="cursor: pointer;">
+            <h3>📁 Model Outputs</h3>
+            <p>Explore 55+ generated confusion matrices, tree diagrams, loss curves, PCA manifolds, and cluster charts.</p>
+            <span style="font-size: 13px; font-weight: 700; color: #4f46e5; margin-top: auto;">Explore Outputs →</span>
+        </div>
+
+        <div class="card" onclick="window.location.href='{{ url_for('evaluation') }}'" style="cursor: pointer; border-left: 3px solid #10b981;">
+            <h3>🎯 Evaluation Matrix</h3>
+            <p>Multi-model confusion matrix grids, ROC/PR curves, 5-Fold cross validation, and interactive threshold simulators.</p>
+            <span style="font-size: 13px; font-weight: 700; color: #047857; margin-top: auto;">Explore Evaluation →</span>
         </div>
 
         <div class="card" onclick="window.location.href='{{ url_for('prediction') }}'" style="cursor: pointer;">

@@ -1,0 +1,4 @@
+Model Name,Accuracy (%),Precision (%),Recall / Sensitivity (%),Specificity (%),F1-Score (%),ROC-AUC (%),Balanced Acc (%),MCC,True Positives (TP),True Negatives (TN),False Positives (FP),False Negatives (FN)
+Random Forest (M3),92.26,92.05,96.48,84.31,94.21,97.82,90.4,0.828,3151,1462,272,115
+AdaBoost (M3),91.26,91.81,95.1,84.03,93.43,97.35,89.56,0.805,3106,1457,277,160
+KNN Classifier (M3),90.7,91.82,94.15,84.2,92.97,95.82,89.18,0.793,3075,1460,274,191

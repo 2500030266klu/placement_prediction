@@ -1,0 +1,7 @@
+Parameter,Value
+Algorithm,Decision Tree Classifier
+Criterion,gini
+Maximum Depth,6
+Minimum Samples Split,10
+Minimum Samples Leaf,5
+Random State,42

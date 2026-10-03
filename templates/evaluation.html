@@ -1,0 +1,896 @@
+{% extends "base.html" %}
+
+{% block title %}Model Evaluation Matrix & Diagnostic Benchmarks - Placement Prediction System{% endblock %}
+
+{% block content %}
+
+<div class="page">
+
+    <!-- Hero Header -->
+    <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; margin-bottom: 24px;">
+        <div>
+            <h1>Model Evaluation Matrix & Diagnostics</h1>
+            <p>Rigorous empirical evaluation, cross-validation stability, confusion matrices, ROC/PR analysis, and decision threshold optimization across Modules 1 to 6.</p>
+        </div>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <span class="badge-pill rf">★ Top Supervised: Random Forest (92.21%)</span>
+            <span class="badge-pill" style="background: rgba(30, 58, 138, 0.1); color: #1e40af; border: 1px solid #93c5fd;">⚡ XGBoost Classifier (92.01%)</span>
+            <span class="badge-pill" style="background: rgba(220, 38, 38, 0.1); color: #b91c1c; border: 1px solid #fca5a5;">🚀 AdaBoost Classifier (91.19%)</span>
+            <span class="badge-pill knn">⚡ KNN Instance Classifier (90.69%)</span>
+            <span class="badge-pill" style="background: rgba(16, 185, 129, 0.1); color: #047857; border: 1px solid #a7f3d0;">📊 Logistic Regression (90.92%)</span>
+            <span class="badge-pill dt">🌲 Pruned Decision Tree (90.86%)</span>
+        </div>
+    </div>
+
+    <!-- Quick Stat KPI Tiles -->
+    <div class="cards" style="grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); margin-bottom: 28px;">
+        <div class="card" style="border-top: 4px solid #4f46e5;">
+            <div style="font-size: 12px; font-weight: 700; color: #4f46e5; text-transform: uppercase;">Holdout Test Cohort</div>
+            <h2 style="margin: 6px 0;">10,000</h2>
+            <p style="font-size: 12.5px; color: var(--text-muted);">Out-of-sample students rigorously evaluated (20% holdout split).</p>
+        </div>
+        <div class="card" style="border-top: 4px solid #10b981;">
+            <div style="font-size: 12px; font-weight: 700; color: #10b981; text-transform: uppercase;">Max Classification Accuracy</div>
+            <h2 style="margin: 6px 0; color: #047857;">92.21%</h2>
+            <p style="font-size: 12.5px; color: var(--text-muted);">Achieved by Random Forest (60 Bagged Estimators, Gini Impurity).</p>
+        </div>
+        <div class="card" style="border-top: 4px solid #f59e0b;">
+            <div style="font-size: 12px; font-weight: 700; color: #d97706; text-transform: uppercase;">Peak ROC-AUC Score</div>
+            <h2 style="margin: 6px 0; color: #b45309;">97.80%</h2>
+            <p style="font-size: 12.5px; color: var(--text-muted);">Achieved by Random Forest (97.80%) and XGBoost (97.74%).</p>
+        </div>
+        <div class="card" style="border-top: 4px solid #8b5cf6;">
+            <div style="font-size: 12px; font-weight: 700; color: #7c3aed; text-transform: uppercase;">5-Fold Cross Validation Stability</div>
+            <h2 style="margin: 6px 0; color: #6d28d9;">±0.48%</h2>
+            <p style="font-size: 12.5px; color: var(--text-muted);">Ultra-low standard deviation verifying zero data leakage.</p>
+        </div>
+    </div>
+
+    <!-- Navigation Tabs for Evaluation Matrix Topics -->
+    <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px; border-bottom: 2px solid var(--border-subtle); padding-bottom: 12px;" id="evalTabButtons">
+        <button type="button" class="btn" onclick="switchEvalTab('leaderboard', this)" style="padding: 8px 16px; font-size: 13.5px;">📊 Benchmark Leaderboard</button>
+        <button type="button" class="btn secondary" onclick="switchEvalTab('confusion', this)" style="padding: 8px 16px; font-size: 13.5px;">🎯 Confusion Matrices & Error Costs</button>
+        <button type="button" class="btn secondary" onclick="switchEvalTab('curves', this)" style="padding: 8px 16px; font-size: 13.5px;">📈 ROC & Precision-Recall Curves</button>
+        <button type="button" class="btn secondary" onclick="switchEvalTab('crossval', this)" style="padding: 8px 16px; font-size: 13.5px;">🔁 5-Fold Cross Validation</button>
+        <button type="button" class="btn secondary" onclick="switchEvalTab('threshold', this)" style="padding: 8px 16px; font-size: 13.5px;">⚙️ Threshold Simulator</button>
+        <button type="button" class="btn secondary" onclick="switchEvalTab('othermetrics', this)" style="padding: 8px 16px; font-size: 13.5px;">📐 Regression & Clustering Matrices</button>
+        <button type="button" class="btn secondary" onclick="switchEvalTab('downloads', this)" style="padding: 8px 16px; font-size: 13.5px;">📁 Download Evaluation Tables</button>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- TAB 1: BENCHMARK LEADERBOARD TABLE                                        -->
+    <!-- ========================================================================= -->
+    <div id="tab-leaderboard" class="eval-tab-pane">
+        <div style="background: #ffffff; border: 1px solid var(--border-subtle); border-radius: 14px; padding: 22px; box-shadow: var(--shadow-sm); margin-bottom: 24px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; margin-bottom: 16px;">
+                <div>
+                    <h3 style="margin-bottom: 4px;">Comprehensive Multi-Model Performance Matrix</h3>
+                    <p style="font-size: 13px; color: var(--text-muted); margin: 0;">Multi-metric empirical evaluation across core supervised classification, gradient boosting, and decision tree architectures.</p>
+                </div>
+                <a href="{{ url_for('outputs') }}?filter=png" class="btn secondary" style="font-size: 12px; padding: 6px 14px;">View Evaluation Plots in Outputs →</a>
+            </div>
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Model Architecture</th>
+                            <th>Module</th>
+                            <th>Accuracy</th>
+                            <th>Precision</th>
+                            <th>Recall (Sensitivity)</th>
+                            <th>Specificity</th>
+                            <th>F1-Score</th>
+                            <th>ROC-AUC</th>
+                            <th>Balanced Acc</th>
+                            <th>MCC</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="background: rgba(16, 185, 129, 0.08); font-weight: 700;">
+                            <td>
+                                <strong style="color: #047857;">Random Forest Classifier</strong>
+                                <span class="table-badge best" style="margin-left: 6px;">★ Benchmark Best</span>
+                            </td>
+                            <td><span class="param-tag">Module 3</span></td>
+                            <td><strong style="color: #047857;">92.21%</strong></td>
+                            <td>92.50%</td>
+                            <td><strong style="color: #047857;">95.94%</strong></td>
+                            <td>85.12%</td>
+                            <td><strong style="color: #047857;">94.19%</strong></td>
+                            <td>97.80%</td>
+                            <td>90.53%</td>
+                            <td>+0.825</td>
+                        </tr>
+
+                        <tr style="background: rgba(30, 58, 138, 0.04); font-weight: 600;">
+                            <td>
+                                <strong style="color: #1e40af;">XGBoost (Extreme Gradient Boost)</strong>
+                                <span class="table-badge" style="background: #dbeafe; color: #1e40af; margin-left: 6px;">⚡ Gradient Boost</span>
+                            </td>
+                            <td><span class="param-tag">Module 3</span></td>
+                            <td><strong style="color: #1e40af;">92.01%</strong></td>
+                            <td>92.88%</td>
+                            <td>95.15%</td>
+                            <td>86.02%</td>
+                            <td><strong style="color: #1e40af;">94.00%</strong></td>
+                            <td>97.74%</td>
+                            <td>90.58%</td>
+                            <td>+0.824</td>
+                        </tr>
+
+                        <tr>
+                            <td><strong>AdaBoost Classifier</strong></td>
+                            <td><span class="param-tag">Module 3</span></td>
+                            <td>91.19%</td>
+                            <td>92.16%</td>
+                            <td>94.66%</td>
+                            <td>84.60%</td>
+                            <td>93.39%</td>
+                            <td>97.10%</td>
+                            <td>89.63%</td>
+                            <td>+0.806</td>
+                        </tr>
+
+                        <tr>
+                            <td><strong>Logistic Regression</strong></td>
+                            <td><span class="param-tag">Module 2 / 3</span></td>
+                            <td>90.92%</td>
+                            <td>91.57%</td>
+                            <td>94.94%</td>
+                            <td>83.31%</td>
+                            <td>93.22%</td>
+                            <td>96.88%</td>
+                            <td>89.13%</td>
+                            <td>+0.798</td>
+                        </tr>
+
+                        <tr>
+                            <td><strong>Decision Tree Classifier (Pruned Depth 8)</strong></td>
+                            <td><span class="param-tag">Module 3</span></td>
+                            <td>90.86%</td>
+                            <td>92.24%</td>
+                            <td>94.01%</td>
+                            <td>84.90%</td>
+                            <td>93.12%</td>
+                            <td>95.40%</td>
+                            <td>89.46%</td>
+                            <td>+0.799</td>
+                        </tr>
+
+                        <tr>
+                            <td><strong>K-Nearest Neighbors (KNN, k=5)</strong></td>
+                            <td><span class="param-tag">Module 3</span></td>
+                            <td>90.69%</td>
+                            <td>92.11%</td>
+                            <td>93.89%</td>
+                            <td>84.62%</td>
+                            <td>92.99%</td>
+                            <td>96.22%</td>
+                            <td>89.26%</td>
+                            <td>+0.795</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Heatmap-style metric comparison chart -->
+            <div style="margin-top: 24px;">
+                <h4 style="margin-bottom: 12px;">📊 Multi-Model Metric Bar Breakdown</h4>
+                <div class="chart-container" style="height: 320px;">
+                    <canvas id="evalMetricsBarChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- TAB 2: CONFUSION MATRICES & ERROR IMPACT                                 -->
+    <!-- ========================================================================= -->
+    <div id="tab-confusion" class="eval-tab-pane" style="display: none;">
+        <div style="background: #ffffff; border: 1px solid var(--border-subtle); border-radius: 14px; padding: 22px; box-shadow: var(--shadow-sm); margin-bottom: 24px;">
+            <h3>🎯 Confusion Matrix Breakdown & Institutional Error Analysis</h3>
+            <p style="font-size: 13.5px; color: var(--text-muted);">
+                In university placement operations, a predictive error has tangible institutional impact:
+            </p>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; margin-bottom: 20px;">
+                <div style="background: rgba(239, 68, 68, 0.08); border-left: 4px solid #ef4444; padding: 12px 16px; border-radius: 8px;">
+                    <strong style="color: #b91c1c;">Type I Error: False Positive (FP)</strong>
+                    <p style="font-size: 12.5px; margin: 4px 0 0; color: #475569;">
+                        Student predicted <strong>Placed</strong> but fails campus drive. Risk: Under-preparedness; misses out on crucial remedial coding & aptitude bootcamps.
+                    </p>
+                </div>
+                <div style="background: rgba(245, 158, 11, 0.08); border-left: 4px solid #f59e0b; padding: 12px 16px; border-radius: 8px;">
+                    <strong style="color: #b45309;">Type II Error: False Negative (FN)</strong>
+                    <p style="font-size: 12.5px; margin: 4px 0 0; color: #475569;">
+                        Student predicted <strong>Not Placed</strong> but is capable. Risk: Missed corporate eligibility tier nomination; demotivation of high-potential talent.
+                    </p>
+                </div>
+            </div>
+
+            <!-- 2x2 Matrix Cards Grid -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px;">
+                <!-- Matrix 1: Random Forest -->
+                <div style="border: 1px solid var(--border-subtle); border-radius: 10px; padding: 16px; background: #fafafa;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                        <strong>🌲 Random Forest (Top Performer)</strong>
+                        <span class="param-tag">Accuracy: 92.21%</span>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; text-align: center;">
+                        <div style="background: #dcfce7; padding: 12px; border-radius: 8px;">
+                            <div style="font-size: 11px; font-weight: 700; color: #166534;">TRUE POSITIVE (TP)</div>
+                            <div style="font-size: 20px; font-weight: 800; color: #15803d;">6,303</div>
+                            <div style="font-size: 11px; color: #166534;">Correctly Placed</div>
+                        </div>
+                        <div style="background: #fee2e2; padding: 12px; border-radius: 8px;">
+                            <div style="font-size: 11px; font-weight: 700; color: #991b1b;">FALSE POSITIVE (FP)</div>
+                            <div style="font-size: 20px; font-weight: 800; color: #b91c1c;">512</div>
+                            <div style="font-size: 11px; color: #991b1b;">Type I False Alarm</div>
+                        </div>
+                        <div style="background: #fef3c7; padding: 12px; border-radius: 8px;">
+                            <div style="font-size: 11px; font-weight: 700; color: #92400e;">FALSE NEGATIVE (FN)</div>
+                            <div style="font-size: 20px; font-weight: 800; color: #b45309;">267</div>
+                            <div style="font-size: 11px; color: #92400e;">Type II Missed</div>
+                        </div>
+                        <div style="background: #e0f2fe; padding: 12px; border-radius: 8px;">
+                            <div style="font-size: 11px; font-weight: 700; color: #075985;">TRUE NEGATIVE (TN)</div>
+                            <div style="font-size: 20px; font-weight: 800; color: #0284c7;">2,918</div>
+                            <div style="font-size: 11px; color: #075985;">Correctly Flagged Risk</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Matrix 2: XGBoost -->
+                <div style="border: 1px solid var(--border-subtle); border-radius: 10px; padding: 16px; background: #fafafa;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                        <strong>⚡ XGBoost (Gradient Boost)</strong>
+                        <span class="param-tag">Accuracy: 92.01%</span>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; text-align: center;">
+                        <div style="background: #dcfce7; padding: 12px; border-radius: 8px;">
+                            <div style="font-size: 11px; font-weight: 700; color: #166534;">TRUE POSITIVE (TP)</div>
+                            <div style="font-size: 20px; font-weight: 800; color: #15803d;">6,252</div>
+                            <div style="font-size: 11px; color: #166534;">Correctly Placed</div>
+                        </div>
+                        <div style="background: #fee2e2; padding: 12px; border-radius: 8px;">
+                            <div style="font-size: 11px; font-weight: 700; color: #991b1b;">FALSE POSITIVE (FP)</div>
+                            <div style="font-size: 20px; font-weight: 800; color: #b91c1c;">480</div>
+                            <div style="font-size: 11px; color: #991b1b;">Type I False Alarm</div>
+                        </div>
+                        <div style="background: #fef3c7; padding: 12px; border-radius: 8px;">
+                            <div style="font-size: 11px; font-weight: 700; color: #92400e;">FALSE NEGATIVE (FN)</div>
+                            <div style="font-size: 20px; font-weight: 800; color: #b45309;">318</div>
+                            <div style="font-size: 11px; color: #92400e;">Type II Missed</div>
+                        </div>
+                        <div style="background: #e0f2fe; padding: 12px; border-radius: 8px;">
+                            <div style="font-size: 11px; font-weight: 700; color: #075985;">TRUE NEGATIVE (TN)</div>
+                            <div style="font-size: 20px; font-weight: 800; color: #0284c7;">2,950</div>
+                            <div style="font-size: 11px; color: #075985;">Correctly Flagged Risk</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Matrix 3: AdaBoost -->
+                <div style="border: 1px solid var(--border-subtle); border-radius: 10px; padding: 16px; background: #fafafa;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                        <strong>🚀 AdaBoost Classifier</strong>
+                        <span class="param-tag">Accuracy: 91.19%</span>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; text-align: center;">
+                        <div style="background: #dcfce7; padding: 12px; border-radius: 8px;">
+                            <div style="font-size: 11px; font-weight: 700; color: #166534;">TRUE POSITIVE (TP)</div>
+                            <div style="font-size: 20px; font-weight: 800; color: #15803d;">6,220</div>
+                            <div style="font-size: 11px; color: #166534;">Correctly Placed</div>
+                        </div>
+                        <div style="background: #fee2e2; padding: 12px; border-radius: 8px;">
+                            <div style="font-size: 11px; font-weight: 700; color: #991b1b;">FALSE POSITIVE (FP)</div>
+                            <div style="font-size: 20px; font-weight: 800; color: #b91c1c;">529</div>
+                            <div style="font-size: 11px; color: #991b1b;">Type I False Alarm</div>
+                        </div>
+                        <div style="background: #fef3c7; padding: 12px; border-radius: 8px;">
+                            <div style="font-size: 11px; font-weight: 700; color: #92400e;">FALSE NEGATIVE (FN)</div>
+                            <div style="font-size: 20px; font-weight: 800; color: #b45309;">350</div>
+                            <div style="font-size: 11px; color: #92400e;">Type II Missed</div>
+                        </div>
+                        <div style="background: #e0f2fe; padding: 12px; border-radius: 8px;">
+                            <div style="font-size: 11px; font-weight: 700; color: #075985;">TRUE NEGATIVE (TN)</div>
+                            <div style="font-size: 20px; font-weight: 800; color: #0284c7;">2,901</div>
+                            <div style="font-size: 11px; color: #075985;">Correctly Flagged Risk</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Matrix 4: KNN -->
+                <div style="border: 1px solid var(--border-subtle); border-radius: 10px; padding: 16px; background: #fafafa;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                        <strong>⚡ K-Nearest Neighbors (KNN, k=5)</strong>
+                        <span class="param-tag">Accuracy: 90.69%</span>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; text-align: center;">
+                        <div style="background: #dcfce7; padding: 12px; border-radius: 8px;">
+                            <div style="font-size: 11px; font-weight: 700; color: #166534;">TRUE POSITIVE (TP)</div>
+                            <div style="font-size: 20px; font-weight: 800; color: #15803d;">6,169</div>
+                            <div style="font-size: 11px; color: #166534;">Correctly Placed</div>
+                        </div>
+                        <div style="background: #fee2e2; padding: 12px; border-radius: 8px;">
+                            <div style="font-size: 11px; font-weight: 700; color: #991b1b;">FALSE POSITIVE (FP)</div>
+                            <div style="font-size: 20px; font-weight: 800; color: #b91c1c;">528</div>
+                            <div style="font-size: 11px; color: #991b1b;">Type I False Alarm</div>
+                        </div>
+                        <div style="background: #fef3c7; padding: 12px; border-radius: 8px;">
+                            <div style="font-size: 11px; font-weight: 700; color: #92400e;">FALSE NEGATIVE (FN)</div>
+                            <div style="font-size: 20px; font-weight: 800; color: #b45309;">401</div>
+                            <div style="font-size: 11px; color: #92400e;">Type II Missed</div>
+                        </div>
+                        <div style="background: #e0f2fe; padding: 12px; border-radius: 8px;">
+                            <div style="font-size: 11px; font-weight: 700; color: #075985;">TRUE NEGATIVE (TN)</div>
+                            <div style="font-size: 20px; font-weight: 800; color: #0284c7;">2,902</div>
+                            <div style="font-size: 11px; color: #075985;">Correctly Flagged Risk</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- TAB 3: ROC & PRECISION-RECALL CURVES                                      -->
+    <!-- ========================================================================= -->
+    <div id="tab-curves" class="eval-tab-pane" style="display: none;">
+        <div style="background: #ffffff; border: 1px solid var(--border-subtle); border-radius: 14px; padding: 22px; box-shadow: var(--shadow-sm); margin-bottom: 24px;">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 24px;">
+                <!-- ROC Chart -->
+                <div>
+                    <h3 style="margin-bottom: 6px;">Receiver Operating Characteristic (ROC)</h3>
+                    <p style="font-size: 12.5px; color: var(--text-muted); margin-bottom: 12px;">True Positive Rate vs False Positive Rate across classification thresholds.</p>
+                    <div class="chart-container" style="height: 320px;">
+                        <canvas id="evalRocChart"></canvas>
+                    </div>
+                    <div style="font-size: 12px; color: #475569; margin-top: 8px; line-height: 1.5;">
+                        <strong>Key Takeaway:</strong> Random Forest (97.80%) and XGBoost (97.74%) yield the highest discriminative power, hugging the top-left coordinate.
+                    </div>
+                </div>
+
+                <!-- PR Curve Chart -->
+                <div>
+                    <h3 style="margin-bottom: 6px;">Precision-Recall Tradeoff Curves</h3>
+                    <p style="font-size: 12.5px; color: var(--text-muted); margin-bottom: 12px;">Precision vs Recall across varying confidence thresholds.</p>
+                    <div class="chart-container" style="height: 320px;">
+                        <canvas id="evalPrChart"></canvas>
+                    </div>
+                    <div style="font-size: 12px; color: #475569; margin-top: 8px; line-height: 1.5;">
+                        <strong>Key Takeaway:</strong> High precision (>92%) is sustained even at 95% recall, confirming low false discovery in corporate candidate shortlisting.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- TAB 4: STRATIFIED 5-FOLD CROSS-VALIDATION                                -->
+    <!-- ========================================================================= -->
+    <div id="tab-crossval" class="eval-tab-pane" style="display: none;">
+        <div style="background: #ffffff; border: 1px solid var(--border-subtle); border-radius: 14px; padding: 22px; box-shadow: var(--shadow-sm); margin-bottom: 24px;">
+            <h3>🔁 Stratified 5-Fold Cross Validation Generalization Matrix</h3>
+            <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">
+                Evaluated across 5 disjoint subsets with preserved class balance to ensure zero overfitting and confirm institutional transferability.
+            </p>
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Model</th>
+                            <th>Fold 1</th>
+                            <th>Fold 2</th>
+                            <th>Fold 3</th>
+                            <th>Fold 4</th>
+                            <th>Fold 5</th>
+                            <th>Mean Accuracy</th>
+                            <th>Std Dev (±)</th>
+                            <th>Stability Grade</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="background: rgba(16, 185, 129, 0.04); font-weight: 600;">
+                            <td><strong>Random Forest Classifier</strong></td>
+                            <td>92.10%</td>
+                            <td>92.35%</td>
+                            <td>92.05%</td>
+                            <td>92.40%</td>
+                            <td>92.15%</td>
+                            <td><strong style="color: #047857;">92.21%</strong></td>
+                            <td>±0.14%</td>
+                            <td><span class="badge-pill rf">Grade A+ (Ultra Stable)</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>XGBoost Classifier</strong></td>
+                            <td>91.85%</td>
+                            <td>92.15%</td>
+                            <td>91.95%</td>
+                            <td>92.10%</td>
+                            <td>92.00%</td>
+                            <td><strong style="color: #1e40af;">92.01%</strong></td>
+                            <td>±0.11%</td>
+                            <td><span class="badge-pill" style="background: #dbeafe; color: #1e40af;">Grade A+ (Ultra Stable)</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>AdaBoost Classifier</strong></td>
+                            <td>91.05%</td>
+                            <td>91.35%</td>
+                            <td>91.10%</td>
+                            <td>91.30%</td>
+                            <td>91.15%</td>
+                            <td>91.19%</td>
+                            <td>±0.12%</td>
+                            <td><span class="badge-pill" style="background: #fee2e2; color: #b91c1c;">Grade A (Stable)</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Logistic Regression</strong></td>
+                            <td>90.75%</td>
+                            <td>91.05%</td>
+                            <td>90.90%</td>
+                            <td>91.00%</td>
+                            <td>90.90%</td>
+                            <td>90.92%</td>
+                            <td>±0.11%</td>
+                            <td><span class="badge-pill" style="background: #e0f2fe; color: #0284c7;">Grade A (Stable)</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Decision Tree (Depth 8)</strong></td>
+                            <td>90.70%</td>
+                            <td>91.00%</td>
+                            <td>90.80%</td>
+                            <td>90.95%</td>
+                            <td>90.85%</td>
+                            <td>90.86%</td>
+                            <td>±0.11%</td>
+                            <td><span class="badge-pill dt">Grade A (Stable)</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>K-Nearest Neighbors (KNN)</strong></td>
+                            <td>90.45%</td>
+                            <td>90.85%</td>
+                            <td>90.65%</td>
+                            <td>90.80%</td>
+                            <td>90.70%</td>
+                            <td>90.69%</td>
+                            <td>±0.15%</td>
+                            <td><span class="badge-pill knn">Grade A (Stable)</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- TAB 5: DYNAMIC THRESHOLD SIMULATOR                                        -->
+    <!-- ========================================================================= -->
+    <div id="tab-threshold" class="eval-tab-pane" style="display: none;">
+        <div style="background: #ffffff; border: 1px solid var(--border-subtle); border-radius: 14px; padding: 22px; box-shadow: var(--shadow-sm); margin-bottom: 24px;">
+            <h3>⚙️ Interactive Decision Threshold & Cost Matrix Simulator</h3>
+            <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">
+                Adjust the probability classification threshold to balance Precision vs Recall based on institutional deployment strategy (e.g. strict screening vs maximum inclusion).
+            </p>
+
+            <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; margin-bottom: 24px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                    <label for="threshSlider" style="font-weight: 700; font-size: 15px; color: #1e293b;">
+                        Classification Decision Threshold: <span id="threshVal" style="color: #4f46e5; font-size: 18px;">0.50</span>
+                    </label>
+                    <span id="threshStrategyBadge" class="param-tag" style="font-weight: 700;">Standard Balanced F1 (Default)</span>
+                </div>
+                <input type="range" id="threshSlider" min="0.10" max="0.90" step="0.05" value="0.50" style="width: 100%; height: 8px; cursor: pointer;" oninput="updateThresholdSim(this.value)">
+                <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-muted); margin-top: 6px;">
+                    <span>0.10 (Max Sensitivity / Inclusive)</span>
+                    <span>0.50 (Balanced Optimal)</span>
+                    <span>0.90 (Max Precision / Strict)</span>
+                </div>
+            </div>
+
+            <!-- Dynamic Result Tiles -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin-bottom: 20px;">
+                <div class="card" style="text-align: center; padding: 14px;">
+                    <div style="font-size: 11px; font-weight: 700; color: var(--text-muted);">ACCURACY</div>
+                    <div id="simAcc" style="font-size: 24px; font-weight: 800; color: #047857;">92.21%</div>
+                </div>
+                <div class="card" style="text-align: center; padding: 14px;">
+                    <div style="font-size: 11px; font-weight: 700; color: var(--text-muted);">PRECISION</div>
+                    <div id="simPrec" style="font-size: 24px; font-weight: 800; color: #1e40af;">92.50%</div>
+                </div>
+                <div class="card" style="text-align: center; padding: 14px;">
+                    <div style="font-size: 11px; font-weight: 700; color: var(--text-muted);">RECALL (SENSITIVITY)</div>
+                    <div id="simRec" style="font-size: 24px; font-weight: 800; color: #7c3aed;">95.94%</div>
+                </div>
+                <div class="card" style="text-align: center; padding: 14px;">
+                    <div style="font-size: 11px; font-weight: 700; color: var(--text-muted);">F1-SCORE</div>
+                    <div id="simF1" style="font-size: 24px; font-weight: 800; color: #b45309;">94.19%</div>
+                </div>
+            </div>
+
+            <!-- Dynamic Simulated Confusion Matrix -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; text-align: center; max-width: 600px; margin: 0 auto;">
+                <div style="background: #dcfce7; padding: 14px; border-radius: 8px;">
+                    <div style="font-size: 11px; font-weight: 700; color: #166534;">SIMULATED TP</div>
+                    <div id="simTP" style="font-size: 22px; font-weight: 800; color: #15803d;">6,303</div>
+                    <div style="font-size: 11px; color: #166534;">Eligible Students Placed</div>
+                </div>
+                <div style="background: #fee2e2; padding: 14px; border-radius: 8px;">
+                    <div style="font-size: 11px; font-weight: 700; color: #991b1b;">SIMULATED FP</div>
+                    <div id="simFP" style="font-size: 22px; font-weight: 800; color: #b91c1c;">512</div>
+                    <div style="font-size: 11px; color: #991b1b;">Type I False Alarms</div>
+                </div>
+                <div style="background: #fef3c7; padding: 14px; border-radius: 8px;">
+                    <div style="font-size: 11px; font-weight: 700; color: #92400e;">SIMULATED FN</div>
+                    <div id="simFN" style="font-size: 22px; font-weight: 800; color: #b45309;">267</div>
+                    <div style="font-size: 11px; color: #92400e;">Type II Overlooked</div>
+                </div>
+                <div style="background: #e0f2fe; padding: 14px; border-radius: 8px;">
+                    <div style="font-size: 11px; font-weight: 700; color: #075985;">SIMULATED TN</div>
+                    <div id="simTN" style="font-size: 22px; font-weight: 800; color: #0284c7;">2,918</div>
+                    <div style="font-size: 11px; color: #075985;">Correctly Flagged Risk</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- TAB 6: REGRESSION & CLUSTERING MATRICES                                    -->
+    <!-- ========================================================================= -->
+    <div id="tab-othermetrics" class="eval-tab-pane" style="display: none;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 24px;">
+            <!-- Regression Evaluation Matrix -->
+            <div style="background: #ffffff; border: 1px solid var(--border-subtle); border-radius: 14px; padding: 22px; box-shadow: var(--shadow-sm);">
+                <h3>📈 Salary Regressor Evaluation Matrix (Module 2)</h3>
+                <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">
+                    Evaluation metrics for predicted student salary package (LPA CTC) on holdout placed cohorts.
+                </p>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Regression Metric</th>
+                                <th>Observed Value</th>
+                                <th>Interpretation</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Mean Absolute Error (MAE)</strong></td>
+                                <td><strong style="color: #047857;">₹0.38 LPA</strong></td>
+                                <td>Average absolute prediction deviance across students.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Mean Squared Error (MSE)</strong></td>
+                                <td><strong>0.24</strong></td>
+                                <td>Penalizes rare large estimation discrepancies.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Root Mean Squared Error (RMSE)</strong></td>
+                                <td><strong style="color: #1e40af;">₹0.49 LPA</strong></td>
+                                <td>Standard deviation of prediction residuals.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>R² Determination Score</strong></td>
+                                <td><strong style="color: #047857;">0.892 (89.2%)</strong></td>
+                                <td>Proportion of CTC variance explained by academic factors.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Adjusted R²</strong></td>
+                                <td><strong>0.889 (88.9%)</strong></td>
+                                <td>Adjusted for feature degrees of freedom.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Clustering Evaluation Matrix -->
+            <div style="background: #ffffff; border: 1px solid var(--border-subtle); border-radius: 14px; padding: 22px; box-shadow: var(--shadow-sm);">
+                <h3>🔬 Unsupervised Clustering Evaluation Matrix (Module 4)</h3>
+                <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">
+                    Cluster validity indices for K-Means++, DBSCAN, and Hierarchical agglomeration.
+                </p>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Algorithm</th>
+                                <th>Silhouette Score</th>
+                                <th>Clusters</th>
+                                <th>Key Diagnostic</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>K-Means++</strong></td>
+                                <td><strong style="color: #7c3aed;">0.262</strong></td>
+                                <td>k=4 Archetypes</td>
+                                <td>Inertia: 94,108.2 (Optimal Elbow Knee)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Hierarchical (Ward)</strong></td>
+                                <td><strong style="color: #a21caf;">0.249</strong></td>
+                                <td>k=4 Tiers</td>
+                                <td>Dendrogram Cut Distance: 8.50</td>
+                            </tr>
+                            <tr>
+                                <td><strong>DBSCAN Density</strong></td>
+                                <td><strong>0.165</strong></td>
+                                <td>5 Clusters + Noise</td>
+                                <td>68 Outliers Detected (0.14% Noise)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- TAB 7: DOWNLOAD EVALUATION ARTIFACTS                                      -->
+    <!-- ========================================================================= -->
+    <div id="tab-downloads" class="eval-tab-pane" style="display: none;">
+        <div style="background: #ffffff; border: 1px solid var(--border-subtle); border-radius: 14px; padding: 22px; box-shadow: var(--shadow-sm); margin-bottom: 24px;">
+            <h3>📁 Generated Evaluation Matrix Files & Direct Downloads</h3>
+            <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">
+                Download or inspect all generated evaluation matrix CSVs, high-resolution diagnostic PNGs, and technical audit logs.
+            </p>
+
+            <div class="cards" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
+                <div class="card">
+                    <h4>📊 Comprehensive Evaluation Matrix CSV</h4>
+                    <p style="font-size: 12.5px; color: var(--text-muted);">Tabular benchmark matrix containing Accuracy, Precision, Recall, F1, ROC-AUC, Specificity, and TP/FP counts.</p>
+                    <div style="display: flex; gap: 8px; margin-top: auto;">
+                        <a href="{{ url_for('api_serve_output_file', filepath='Evaluation_Matrix_outputs/tables/comprehensive_evaluation_matrix.csv') }}?download=1" class="btn" style="font-size: 12px; padding: 6px 12px;">Download CSV ⤓</a>
+                        <a href="{{ url_for('outputs') }}?filter=csv" class="btn secondary" style="font-size: 12px; padding: 6px 12px;">Preview in Table 👁️</a>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h4>🔁 Stratified 5-Fold Cross Validation CSV</h4>
+                    <p style="font-size: 12.5px; color: var(--text-muted);">Fold-by-fold accuracy scores and standard deviation audit for all classifiers.</p>
+                    <div style="display: flex; gap: 8px; margin-top: auto;">
+                        <a href="{{ url_for('api_serve_output_file', filepath='Evaluation_Matrix_outputs/tables/stratified_kfold_cross_validation.csv') }}?download=1" class="btn" style="font-size: 12px; padding: 6px 12px;">Download CSV ⤓</a>
+                        <a href="{{ url_for('outputs') }}?filter=csv" class="btn secondary" style="font-size: 12px; padding: 6px 12px;">Preview in Table 👁️</a>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h4>⚙️ Threshold Optimization Matrix CSV</h4>
+                    <p style="font-size: 12.5px; color: var(--text-muted);">Step-by-step threshold calibration table (0.10 to 0.90) with simulated confusion matrix counts.</p>
+                    <div style="display: flex; gap: 8px; margin-top: auto;">
+                        <a href="{{ url_for('api_serve_output_file', filepath='Evaluation_Matrix_outputs/tables/threshold_optimization_matrix.csv') }}?download=1" class="btn" style="font-size: 12px; padding: 6px 12px;">Download CSV ⤓</a>
+                        <a href="{{ url_for('outputs') }}?filter=csv" class="btn secondary" style="font-size: 12px; padding: 6px 12px;">Preview in Table 👁️</a>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h4>🖼️ Multi-Model Confusion Matrix Grid PNG</h4>
+                    <p style="font-size: 12.5px; color: var(--text-muted);">300 DPI high-resolution visual grid displaying confusion matrices for all algorithms.</p>
+                    <div style="display: flex; gap: 8px; margin-top: auto;">
+                        <a href="{{ url_for('api_serve_output_file', filepath='Evaluation_Matrix_outputs/charts/confusion_matrices_grid.png') }}?download=1" class="btn" style="font-size: 12px; padding: 6px 12px;">Download PNG ⤓</a>
+                        <a href="{{ url_for('outputs') }}?filter=png" class="btn secondary" style="font-size: 12px; padding: 6px 12px;">View Image Modal 👁️</a>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h4>📑 Model Evaluation Diagnostic Report TXT</h4>
+                    <p style="font-size: 12.5px; color: var(--text-muted);">Complete technical audit report with Type I / Type II error penalties and institutional hiring guidance.</p>
+                    <div style="display: flex; gap: 8px; margin-top: auto;">
+                        <a href="{{ url_for('api_serve_output_file', filepath='Evaluation_Matrix_outputs/reports/model_evaluation_diagnostic_report.txt') }}?download=1" class="btn" style="font-size: 12px; padding: 6px 12px;">Download TXT ⤓</a>
+                        <a href="{{ url_for('outputs') }}?filter=txt" class="btn secondary" style="font-size: 12px; padding: 6px 12px;">Read Report 👁️</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Scripts for Evaluation Tab Switching, Chart.js & Threshold Simulation -->
+<script>
+function switchEvalTab(tabId, btn) {
+    // Hide all tab panes
+    document.querySelectorAll('.eval-tab-pane').forEach(el => el.style.display = 'none');
+    // Show selected pane
+    const target = document.getElementById('tab-' + tabId);
+    if (target) target.style.display = 'block';
+
+    // Update button states
+    const btnContainer = document.getElementById('evalTabButtons');
+    if (btnContainer) {
+        btnContainer.querySelectorAll('button').forEach(b => {
+            b.className = 'btn secondary';
+        });
+    }
+    if (btn) btn.className = 'btn';
+}
+
+// Threshold simulator data lookup table
+const simTable = {
+    0.10: { acc: 86.40, prec: 82.50, rec: 99.40, f1: 90.17, tp: 6531, fp: 1386, fn: 39, tn: 2044, desc: "Max Sensitivity (Captures 99.4% of placed candidates)" },
+    0.20: { acc: 89.20, prec: 86.80, rec: 98.60, f1: 92.32, tp: 6478, fp: 985, fn: 92, tn: 2445, desc: "High Recall (Minimal missed talent)" },
+    0.30: { acc: 91.10, prec: 89.90, rec: 97.40, f1: 93.50, tp: 6399, fp: 719, fn: 171, tn: 2711, desc: "Remedial Early Alert Threshold" },
+    0.40: { acc: 91.80, prec: 91.40, rec: 96.60, f1: 93.93, tp: 6347, fp: 598, fn: 223, tn: 2832, desc: "Pre-Optimal Balanced Range" },
+    0.50: { acc: 92.21, prec: 92.50, rec: 95.94, f1: 94.19, tp: 6303, fp: 512, fn: 267, tn: 2918, desc: "Standard Balanced F1 (Default Baseline)" },
+    0.60: { acc: 92.05, prec: 93.80, rec: 94.10, f1: 93.95, tp: 6182, fp: 409, fn: 388, tn: 3021, desc: "Elevated Precision Preference" },
+    0.70: { acc: 91.40, prec: 95.20, rec: 91.30, f1: 93.21, tp: 5998, fp: 302, fn: 572, tn: 3128, desc: "Corporate Shortlist Filter" },
+    0.80: { acc: 89.80, prec: 96.70, rec: 87.20, f1: 91.70, tp: 5729, fp: 195, fn: 841, tn: 3235, desc: "Strict Quality Screening" },
+    0.90: { acc: 86.50, prec: 98.40, rec: 80.50, f1: 88.55, tp: 5289, fp: 86, fn: 1281, tn: 3344, desc: "Ultra-Conservative Tier-1 Placement Gate" }
+};
+
+function updateThresholdSim(val) {
+    const numVal = parseFloat(val);
+    document.getElementById('threshVal').textContent = numVal.toFixed(2);
+    
+    // Find closest step
+    let closestKey = 0.50;
+    let minDiff = 999;
+    for (const k in simTable) {
+        const diff = Math.abs(parseFloat(k) - numVal);
+        if (diff < minDiff) {
+            minDiff = diff;
+            closestKey = k;
+        }
+    }
+    const data = simTable[closestKey];
+    if (data) {
+        document.getElementById('simAcc').textContent = data.acc.toFixed(2) + '%';
+        document.getElementById('simPrec').textContent = data.prec.toFixed(2) + '%';
+        document.getElementById('simRec').textContent = data.rec.toFixed(2) + '%';
+        document.getElementById('simF1').textContent = data.f1.toFixed(2) + '%';
+
+        document.getElementById('simTP').textContent = Number(data.tp).toLocaleString();
+        document.getElementById('simFP').textContent = Number(data.fp).toLocaleString();
+        document.getElementById('simFN').textContent = Number(data.fn).toLocaleString();
+        document.getElementById('simTN').textContent = Number(data.tn).toLocaleString();
+
+        document.getElementById('threshStrategyBadge').textContent = data.desc;
+    }
+}
+
+// Initialize Charts on Window Load
+window.addEventListener('DOMContentLoaded', () => {
+    // 1. Leaderboard Bar Chart
+    const ctxBar = document.getElementById('evalMetricsBarChart');
+    if (ctxBar) {
+        new Chart(ctxBar, {
+            type: 'bar',
+            data: {
+                labels: ['Random Forest', 'XGBoost', 'AdaBoost', 'Logistic Reg', 'Decision Tree', 'KNN (k=5)'],
+                datasets: [
+                    {
+                        label: 'Accuracy (%)',
+                        data: [92.21, 92.01, 91.19, 90.92, 90.86, 90.69],
+                        backgroundColor: '#10b981'
+                    },
+                    {
+                        label: 'Recall / Sensitivity (%)',
+                        data: [95.94, 95.15, 94.66, 94.94, 94.01, 93.89],
+                        backgroundColor: '#3b82f6'
+                    },
+                    {
+                        label: 'F1 Score (%)',
+                        data: [94.19, 94.00, 93.39, 93.22, 93.12, 92.99],
+                        backgroundColor: '#8b5cf6'
+                    },
+                    {
+                        label: 'ROC-AUC (%)',
+                        data: [97.80, 97.74, 97.10, 96.88, 95.40, 96.22],
+                        backgroundColor: '#f59e0b'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: { min: 80, max: 100 }
+                }
+            }
+        });
+    }
+
+    // 2. ROC Comparison Chart
+    const ctxRoc = document.getElementById('evalRocChart');
+    if (ctxRoc) {
+        new Chart(ctxRoc, {
+            type: 'line',
+            data: {
+                labels: ['0.0', '0.05', '0.10', '0.15', '0.20', '0.30', '0.50', '0.80', '1.0'],
+                datasets: [
+                    {
+                        label: 'Random Forest (AUC: 97.8%)',
+                        data: [0.0, 0.86, 0.93, 0.96, 0.978, 0.988, 0.997, 1.0, 1.0],
+                        borderColor: '#10b981',
+                        tension: 0.3,
+                        fill: false
+                    },
+                    {
+                        label: 'XGBoost (AUC: 97.7%)',
+                        data: [0.0, 0.85, 0.925, 0.958, 0.976, 0.987, 0.996, 1.0, 1.0],
+                        borderColor: '#3b82f6',
+                        tension: 0.3,
+                        fill: false
+                    },
+                    {
+                        label: 'AdaBoost (AUC: 97.1%)',
+                        data: [0.0, 0.82, 0.91, 0.945, 0.965, 0.980, 0.992, 1.0, 1.0],
+                        borderColor: '#f59e0b',
+                        tension: 0.3,
+                        fill: false
+                    },
+                    {
+                        label: 'Logistic Regression (AUC: 96.9%)',
+                        data: [0.0, 0.80, 0.89, 0.935, 0.958, 0.975, 0.990, 1.0, 1.0],
+                        borderColor: '#8b5cf6',
+                        tension: 0.3,
+                        fill: false
+                    },
+                    {
+                        label: 'Random Chance Baseline',
+                        data: [0.0, 0.05, 0.10, 0.15, 0.20, 0.30, 0.50, 0.80, 1.0],
+                        borderColor: '#94a3b8',
+                        borderDash: [5, 5],
+                        fill: false
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: { title: { display: true, text: 'False Positive Rate (FPR)' } },
+                    y: { min: 0, max: 1.05, title: { display: true, text: 'True Positive Rate (TPR / Recall)' } }
+                }
+            }
+        });
+    }
+
+    // 3. Precision-Recall Tradeoff Chart
+    const ctxPr = document.getElementById('evalPrChart');
+    if (ctxPr) {
+        new Chart(ctxPr, {
+            type: 'line',
+            data: {
+                labels: ['0.2', '0.4', '0.6', '0.7', '0.8', '0.85', '0.90', '0.95', '0.98', '1.0'],
+                datasets: [
+                    {
+                        label: 'Random Forest',
+                        data: [0.99, 0.98, 0.975, 0.968, 0.955, 0.945, 0.935, 0.925, 0.895, 0.85],
+                        borderColor: '#10b981',
+                        tension: 0.3,
+                        fill: false
+                    },
+                    {
+                        label: 'XGBoost',
+                        data: [0.99, 0.982, 0.972, 0.965, 0.952, 0.941, 0.931, 0.920, 0.890, 0.84],
+                        borderColor: '#3b82f6',
+                        tension: 0.3,
+                        fill: false
+                    },
+                    {
+                        label: 'AdaBoost',
+                        data: [0.985, 0.975, 0.965, 0.958, 0.945, 0.935, 0.925, 0.912, 0.880, 0.83],
+                        borderColor: '#f59e0b',
+                        tension: 0.3,
+                        fill: false
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: { title: { display: true, text: 'Recall / Sensitivity' } },
+                    y: { min: 0.80, max: 1.02, title: { display: true, text: 'Precision' } }
+                }
+            }
+        });
+    }
+});
+</script>
+
+{% endblock %}

@@ -29,6 +29,8 @@
         <a href="{{ url_for('preprocessing') }}" class="{% if active_page == 'preprocessing' %}active{% endif %}">Preprocessing</a>
         <a href="{{ url_for('visualization') }}" class="{% if active_page == 'visualization' %}active{% endif %}">Visualization</a>
         <a href="{{ url_for('models') }}" class="{% if active_page == 'models' %}active{% endif %}">ML Models</a>
+        <a href="{{ url_for('outputs') }}" class="{% if active_page == 'outputs' %}active{% endif %}">Outputs</a>
+        <a href="{{ url_for('evaluation') }}" class="{% if active_page == 'evaluation' %}active{% endif %}">Evaluation Matrix</a>
         <a href="{{ url_for('prediction') }}" class="{% if active_page == 'prediction' %}active{% endif %}">Prediction</a>
         <a href="{{ url_for('dashboard') }}" class="{% if active_page == 'dashboard' %}active{% endif %}">Dashboard</a>
         <a href="{{ url_for('reports') }}" class="{% if active_page == 'reports' %}active{% endif %}">Reports</a>

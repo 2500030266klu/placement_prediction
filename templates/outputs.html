@@ -1,0 +1,512 @@
+{% extends "base.html" %}
+
+{% block title %}Model & Module Outputs - Placement Prediction System{% endblock %}
+
+{% block content %}
+
+<div class="page">
+
+    <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; margin-bottom: 24px;">
+        <div>
+            <h1>Machine Learning & Module Outputs Explorer</h1>
+            <p>Comprehensive repository of all 35+ generated evaluation graphs, confusion matrices, decision tree diagrams, loss convergence curves, and analytical data reports across Modules 1 to 4.</p>
+        </div>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <span class="badge-pill rf">📁 35+ Output Files</span>
+            <span class="badge-pill" style="background: rgba(6, 182, 212, 0.1); color: #0891b2; border: 1px solid #a5f3fc;">M1: EDA Analysis</span>
+            <span class="badge-pill" style="background: rgba(245, 158, 11, 0.1); color: #d97706; border: 1px solid #fde68a;">M2: Linear Regression</span>
+            <span class="badge-pill knn">M3: Tree & Ensembles</span>
+            <span class="badge-pill kpp">M4: Clustering</span>
+        </div>
+    </div>
+
+    <!-- Quick Stats Cards -->
+    <div class="cards" style="margin-bottom: 32px;">
+        <div class="card" onclick="filterByModule('all')" style="cursor: pointer;">
+            <h3>📁 Total Output Artifacts</h3>
+            <h2 id="statsTotalOutputs">35+</h2>
+            <p>Generated plots, metrics, matrices, and models.</p>
+            <span style="font-size: 12px; font-weight: 700; color: #4f46e5;">View All ↓</span>
+        </div>
+
+        <div class="card" onclick="filterByModule('M1')" style="cursor: pointer;">
+            <h3>📊 Module 1: EDA Analysis</h3>
+            <h2>10+</h2>
+            <p>Academic & demographic distribution plots.</p>
+            <span style="font-size: 12px; font-weight: 700; color: #0891b2;">Filter M1 ↓</span>
+        </div>
+
+        <div class="card" onclick="filterByModule('M2')" style="cursor: pointer;">
+            <h3>📈 Module 2: Regression</h3>
+            <h2>7</h2>
+            <p>CFNE vs GD comparison, loss, residuals & metrics.</p>
+            <span style="font-size: 12px; font-weight: 700; color: #d97706;">Filter M2 ↓</span>
+        </div>
+
+        <div class="card" onclick="filterByModule('M3')" style="cursor: pointer;">
+            <h3>🤖 Module 3: Classifiers</h3>
+            <h2>12+</h2>
+            <p>Tree visuals, confusion matrices & feature gains.</p>
+            <span style="font-size: 12px; font-weight: 700; color: #10b981;">Filter M3 ↓</span>
+        </div>
+
+        <div class="card" onclick="filterByModule('M4')" style="cursor: pointer;">
+            <h3>🔬 Module 4: Clustering</h3>
+            <h2>8</h2>
+            <p>Elbow curves, silhouette, dendrogram & DBSCAN.</p>
+            <span style="font-size: 12px; font-weight: 700; color: #8b5cf6;">Filter M4 ↓</span>
+        </div>
+
+        <div class="card" onclick="filterByModule('M5')" style="cursor: pointer; border-top: 3px solid #06b6d4;">
+            <h3>🛡️ Module 5: SVM & PCA</h3>
+            <h2>7</h2>
+            <p>Decision hyperplanes, PCA scree, 2D projections & NB.</p>
+            <span style="font-size: 12px; font-weight: 700; color: #0891b2;">Filter M5 ↓</span>
+        </div>
+
+        <div class="card" onclick="filterByModule('M6')" style="cursor: pointer; border-top: 3px solid #6366f1;">
+            <h3>🧠 Module 6: Deep Learning</h3>
+            <h2>6</h2>
+            <p>MLP loss convergence, neural weights & stacking meta.</p>
+            <span style="font-size: 12px; font-weight: 700; color: #4f46e5;">Filter M6 ↓</span>
+        </div>
+
+        <div class="card" onclick="filterByModule('EVAL')" style="cursor: pointer; border-top: 3px solid #10b981;">
+            <h3>🎯 Evaluation Matrix</h3>
+            <h2>7</h2>
+            <p>Confusion grids, ROC/PR curves, K-Fold CV & audits.</p>
+            <span style="font-size: 12px; font-weight: 700; color: #047857;">Filter Eval ↓</span>
+        </div>
+    </div>
+
+    <!-- Interactive Filtering & Search Bar -->
+    <div style="background: #ffffff; border: 1px solid var(--border-subtle); border-radius: 14px; padding: 18px 22px; margin-bottom: 28px; box-shadow: var(--shadow-sm);">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px;">
+            <!-- Module Filter Pills -->
+            <div style="display: flex; gap: 6px; flex-wrap: wrap;" id="moduleFilterPills">
+                <button type="button" class="btn" style="padding: 7px 14px; font-size: 13px;" onclick="filterByModule('all', this)">All Modules</button>
+                <button type="button" class="btn secondary" style="padding: 7px 14px; font-size: 13px;" onclick="filterByModule('M1', this)">M1: EDA</button>
+                <button type="button" class="btn secondary" style="padding: 7px 14px; font-size: 13px;" onclick="filterByModule('M2', this)">M2: Linear Reg.</button>
+                <button type="button" class="btn secondary" style="padding: 7px 14px; font-size: 13px;" onclick="filterByModule('M3', this)">M3: Trees & Boosting</button>
+                <button type="button" class="btn secondary" style="padding: 7px 14px; font-size: 13px;" onclick="filterByModule('M4', this)">M4: Clustering</button>
+                <button type="button" class="btn secondary" style="padding: 7px 14px; font-size: 13px;" onclick="filterByModule('M5', this)">M5: SVM & PCA</button>
+                <button type="button" class="btn secondary" style="padding: 7px 14px; font-size: 13px;" onclick="filterByModule('M6', this)">M6: Deep Learning</button>
+                <button type="button" class="btn secondary" style="padding: 7px 14px; font-size: 13px;" onclick="filterByModule('EVAL', this)">🎯 Evaluation Matrix</button>
+            </div>
+
+            <!-- Format Filter Pills -->
+            <div style="display: flex; gap: 6px; flex-wrap: wrap;" id="formatFilterPills">
+                <button type="button" class="btn secondary" style="padding: 7px 12px; font-size: 12.5px;" onclick="filterByFormat('all', this)">All Formats</button>
+                <button type="button" class="btn secondary" style="padding: 7px 12px; font-size: 12.5px;" onclick="filterByFormat('png', this)">🖼️ Charts (.png)</button>
+                <button type="button" class="btn secondary" style="padding: 7px 12px; font-size: 12.5px;" onclick="filterByFormat('csv', this)">📊 Tables (.csv)</button>
+                <button type="button" class="btn secondary" style="padding: 7px 12px; font-size: 12.5px;" onclick="filterByFormat('txt', this)">📑 Reports (.txt)</button>
+            </div>
+        </div>
+
+        <!-- Search Input -->
+        <div style="margin-top: 14px;">
+            <input type="text" id="outputSearchInput" oninput="applyFilters()" placeholder="🔍 Search outputs by title, algorithm, metric, or file name (e.g., 'confusion matrix', 'elbow', 'residual', 'dendrogram')..." style="width: 100%; padding: 10px 14px; border: 1px solid var(--border-subtle); border-radius: 8px; font-size: 14px;">
+        </div>
+    </div>
+
+    <!-- Active Count Indicator -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px;">
+        <h2 style="margin: 0; font-size: 20px;">Outputs Gallery (<span id="visibleOutputsCount">0</span> items)</h2>
+        <span style="font-size: 13px; color: var(--text-muted);">Click on any output to preview in high resolution or download</span>
+    </div>
+
+    <!-- Outputs Cards Grid -->
+    <div id="outputsGrid" class="cards" style="grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px;">
+        <div style="text-align: center; padding: 40px; color: var(--text-muted); grid-column: 1 / -1;">
+            Loading verified outputs catalog...
+        </div>
+    </div>
+
+</div>
+
+<!-- ========================================================================== -->
+<!-- MODAL 1: HIGH-RES IMAGE / VISUAL PREVIEW MODAL                             -->
+<!-- ========================================================================== -->
+<div id="imagePreviewModal" class="modal-overlay">
+    <div class="modal-content" style="max-width: 960px;">
+        <div class="modal-header">
+            <div>
+                <h2 id="imageModalTitle" style="font-size: 20px;">Visual Output Preview</h2>
+                <div style="display: flex; gap: 8px; margin-top: 4px; align-items: center;">
+                    <span id="imageModalModuleBadge" class="param-tag">Module</span>
+                    <span id="imageModalFilename" style="font-size: 12.5px; color: var(--text-muted);">filename.png</span>
+                </div>
+            </div>
+            <button type="button" class="modal-close" onclick="closeModal('imagePreviewModal')">✕</button>
+        </div>
+
+        <div style="text-align: center; background: #0f172a; border-radius: 10px; padding: 16px; margin-bottom: 16px; min-height: 380px; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+            <img id="imageModalImg" src="" alt="Output Preview" style="max-width: 100%; max-height: 520px; object-fit: contain; border-radius: 6px; box-shadow: 0 4px 20px rgba(0,0,0,0.4);">
+        </div>
+
+        <p id="imageModalDesc" style="font-size: 14px; color: var(--text-muted); line-height: 1.5; margin-bottom: 18px;"></p>
+
+        <div style="display: flex; justify-content: flex-end; gap: 10px;">
+            <button type="button" class="secondary" onclick="closeModal('imagePreviewModal')">Close</button>
+            <a id="imageModalDownloadBtn" href="#" class="btn" style="text-decoration: none;" download>
+                <span>📥</span> Download Full-Res Image
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ========================================================================== -->
+<!-- MODAL 2: INTERACTIVE CSV DATA TABLE PREVIEW MODAL                          -->
+<!-- ========================================================================== -->
+<div id="csvPreviewModal" class="modal-overlay">
+    <div class="modal-content" style="max-width: 980px;">
+        <div class="modal-header">
+            <div>
+                <h2 id="csvModalTitle" style="font-size: 20px;">CSV Output Data Preview</h2>
+                <div style="display: flex; gap: 8px; margin-top: 4px; align-items: center;">
+                    <span id="csvModalModuleBadge" class="param-tag">Module</span>
+                    <span id="csvModalFilename" style="font-size: 12.5px; color: var(--text-muted);">data.csv</span>
+                </div>
+            </div>
+            <button type="button" class="modal-close" onclick="closeModal('csvPreviewModal')">✕</button>
+        </div>
+
+        <div id="csvModalLoading" style="text-align: center; padding: 30px; color: var(--text-muted);">
+            Reading CSV records...
+        </div>
+
+        <div id="csvModalTableWrapper" class="table-wrapper" style="max-height: 440px; overflow-y: auto; display: none; margin-bottom: 16px;">
+            <table id="csvModalTable">
+                <thead id="csvModalTableHead"></thead>
+                <tbody id="csvModalTableBody"></tbody>
+            </table>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+            <span id="csvModalRowCount" style="font-size: 13px; color: var(--text-muted);">Previewing top records</span>
+            <div style="display: flex; gap: 10px;">
+                <button type="button" class="secondary" onclick="closeModal('csvPreviewModal')">Close</button>
+                <a id="csvModalDownloadBtn" href="#" class="btn" style="text-decoration: none;" download>
+                    <span>📥</span> Download Full CSV
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ========================================================================== -->
+<!-- MODAL 3: TEXT REPORT PREVIEW MODAL                                         -->
+<!-- ========================================================================== -->
+<div id="textPreviewModal" class="modal-overlay">
+    <div class="modal-content" style="max-width: 800px;">
+        <div class="modal-header">
+            <div>
+                <h2 id="textModalTitle" style="font-size: 20px;">Text Report Output Preview</h2>
+                <div style="display: flex; gap: 8px; margin-top: 4px; align-items: center;">
+                    <span id="textModalModuleBadge" class="param-tag">Module</span>
+                    <span id="textModalFilename" style="font-size: 12.5px; color: var(--text-muted);">report.txt</span>
+                </div>
+            </div>
+            <button type="button" class="modal-close" onclick="closeModal('textPreviewModal')">✕</button>
+        </div>
+
+        <pre id="textModalContent" style="background: #0f172a; color: #38bdf8; padding: 20px; border-radius: 10px; font-family: 'Space Grotesk', monospace; font-size: 13.5px; line-height: 1.6; max-height: 420px; overflow-y: auto; white-space: pre-wrap; margin-bottom: 18px;"></pre>
+
+        <div style="display: flex; justify-content: flex-end; gap: 10px;">
+            <button type="button" class="secondary" onclick="closeModal('textPreviewModal')">Close</button>
+            <a id="textModalDownloadBtn" href="#" class="btn" style="text-decoration: none;" download>
+                <span>📥</span> Download Text Report
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ========================================================================== -->
+<!-- CLIENT JAVASCRIPT: FILTERING, MODAL RENDERING, TOAST NOTIFICATIONS         -->
+<!-- ========================================================================== -->
+<script>
+let outputsStore = [];
+let activeModuleFilter = 'all';
+let activeFormatFilter = 'all';
+
+document.addEventListener('DOMContentLoaded', async () => {
+    // Check if query param ?filter= exists
+    const urlParams = new URLSearchParams(window.location.search);
+    const filterParam = urlParams.get('filter');
+    if (filterParam) {
+        activeModuleFilter = filterParam;
+    }
+
+    try {
+        const res = await fetch('/api/outputs-list');
+        const data = await res.json();
+        if (data.success && data.catalog) {
+            outputsStore = data.catalog;
+            document.getElementById('statsTotalOutputs').textContent = outputsStore.length;
+            renderOutputs();
+        } else {
+            document.getElementById('outputsGrid').innerHTML = '<div style="color: #ef4444; padding: 20px;">Failed to load outputs catalog.</div>';
+        }
+    } catch (e) {
+        document.getElementById('outputsGrid').innerHTML = `<div style="color: #ef4444; padding: 20px;">Error loading outputs: ${e}</div>`;
+    }
+});
+
+function renderOutputs() {
+    const grid = document.getElementById('outputsGrid');
+    const searchVal = (document.getElementById('outputSearchInput')?.value || '').toLowerCase().trim();
+
+    const filtered = outputsStore.filter(item => {
+        // Module filter
+        if (activeModuleFilter !== 'all' && item.module_code !== activeModuleFilter) {
+            return false;
+        }
+        // Format filter
+        if (activeFormatFilter !== 'all' && item.format.toLowerCase() !== activeFormatFilter.toLowerCase()) {
+            return false;
+        }
+        // Search query
+        if (searchVal) {
+            const haystack = `${item.title} ${item.module} ${item.category} ${item.filename} ${item.description}`.toLowerCase();
+            if (!haystack.includes(searchVal)) return false;
+        }
+        return true;
+    });
+
+    document.getElementById('visibleOutputsCount').textContent = filtered.length;
+
+    if (filtered.length === 0) {
+        grid.innerHTML = `
+            <div style="grid-column: 1 / -1; text-align: center; padding: 48px 20px; background: #ffffff; border-radius: 12px; border: 1px dashed var(--border-subtle);">
+                <div style="font-size: 36px; margin-bottom: 10px;">🔍</div>
+                <h3 style="margin: 0; font-size: 18px; color: var(--text-main);">No matching outputs found</h3>
+                <p style="margin: 6px 0 0; font-size: 14px; color: var(--text-muted);">Try selecting another module filter or clearing your search keywords.</p>
+                <button type="button" class="btn secondary" style="margin-top: 14px;" onclick="resetAllFilters()">Reset All Filters</button>
+            </div>
+        `;
+        return;
+    }
+
+    grid.innerHTML = filtered.map(item => {
+        const fileUrl = `/api/outputs/file/${item.rel_path}`;
+        const downloadUrl = `/api/outputs/file/${item.rel_path}?download=1`;
+
+        let icon = '📊';
+        let badgeColor = '#4f46e5';
+        let badgeBg = 'rgba(79, 70, 229, 0.08)';
+
+        if (item.format === 'png') {
+            icon = '🖼️';
+            badgeColor = '#0284c7';
+            badgeBg = 'rgba(2, 132, 199, 0.08)';
+        } else if (item.format === 'csv') {
+            icon = '📑';
+            badgeColor = '#059669';
+            badgeBg = 'rgba(5, 150, 105, 0.08)';
+        } else if (item.format === 'txt') {
+            icon = '📄';
+            badgeColor = '#d97706';
+            badgeBg = 'rgba(217, 119, 6, 0.08)';
+        }
+
+        let moduleBadgeClass = 'rf';
+        if (item.module_code === 'M1') moduleBadgeClass = 'badge-pill';
+        if (item.module_code === 'M2') moduleBadgeClass = 'badge-pill';
+        if (item.module_code === 'M4') moduleBadgeClass = 'kpp';
+
+        return `
+            <div class="card" style="display: flex; flex-direction: column; justify-content: space-between; border-top: 4px solid ${badgeColor}; transition: var(--transition);">
+                <div>
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; gap: 8px;">
+                        <span class="param-tag" style="background: ${badgeBg}; color: ${badgeColor}; font-weight: 700;">
+                            ${item.module_code} • ${item.category}
+                        </span>
+                        <span style="font-size: 11px; font-weight: 700; background: #f1f5f9; color: #475569; padding: 2px 7px; border-radius: 4px; text-transform: uppercase;">
+                            ${item.format} ${item.size_kb > 0 ? `• ${item.size_kb} KB` : ''}
+                        </span>
+                    </div>
+
+                    <h3 style="font-size: 16.5px; color: var(--text-main); margin-bottom: 8px; line-height: 1.35;">
+                        <span style="margin-right: 4px;">${icon}</span> ${item.title}
+                    </h3>
+
+                    <p style="font-size: 13px; color: var(--text-muted); line-height: 1.45; margin-bottom: 14px;">
+                        ${item.description}
+                    </p>
+                </div>
+
+                <div style="border-top: 1px solid var(--border-subtle); padding-top: 12px; margin-top: auto; display: flex; gap: 8px;">
+                    <button type="button" class="btn" style="flex: 1; padding: 8px 12px; font-size: 13px;" onclick="previewOutput('${item.id}')">
+                        <span>👁️</span> Preview
+                    </button>
+                    <a href="${downloadUrl}" class="btn secondary" style="padding: 8px 12px; font-size: 13px; text-decoration: none;" download onclick="showToast('Downloading ${item.filename}...', '📥')">
+                        <span>📥</span>
+                    </a>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+function filterByModule(moduleCode, btnEl) {
+    activeModuleFilter = moduleCode;
+    const container = document.getElementById('moduleFilterPills');
+    if (container) {
+        container.querySelectorAll('button').forEach(b => {
+            b.className = 'btn secondary';
+            b.style.fontSize = '13px';
+            b.style.padding = '7px 14px';
+        });
+    }
+    if (btnEl) {
+        btnEl.className = 'btn';
+    }
+    applyFilters();
+}
+
+function filterByFormat(format, btnEl) {
+    activeFormatFilter = format;
+    const container = document.getElementById('formatFilterPills');
+    if (container) {
+        container.querySelectorAll('button').forEach(b => {
+            b.className = 'btn secondary';
+            b.style.fontSize = '12.5px';
+            b.style.padding = '7px 12px';
+        });
+    }
+    if (btnEl) {
+        btnEl.className = 'btn';
+    }
+    applyFilters();
+}
+
+function applyFilters() {
+    renderOutputs();
+}
+
+function resetAllFilters() {
+    activeModuleFilter = 'all';
+    activeFormatFilter = 'all';
+    const input = document.getElementById('outputSearchInput');
+    if (input) input.value = '';
+
+    const modPills = document.getElementById('moduleFilterPills');
+    if (modPills) {
+        const btns = modPills.querySelectorAll('button');
+        btns.forEach((b, i) => b.className = (i === 0 ? 'btn' : 'btn secondary'));
+    }
+
+    const fmtPills = document.getElementById('formatFilterPills');
+    if (fmtPills) {
+        const btns = fmtPills.querySelectorAll('button');
+        btns.forEach((b, i) => b.className = (i === 0 ? 'btn secondary' : 'btn secondary'));
+    }
+
+    renderOutputs();
+    showToast('Filters reset to default', '🔄');
+}
+
+// -----------------------------------------------------------------------------
+// PREVIEW HANDLER (FOR PNG, CSV, TXT)
+// -----------------------------------------------------------------------------
+async function previewOutput(id) {
+    const item = outputsStore.find(o => o.id === id);
+    if (!item) return;
+
+    if (item.format === 'png' || item.format === 'jpg') {
+        // Image preview
+        document.getElementById('imageModalTitle').textContent = item.title;
+        document.getElementById('imageModalModuleBadge').textContent = `${item.module_code} • ${item.category}`;
+        document.getElementById('imageModalFilename').textContent = item.filename;
+        document.getElementById('imageModalDesc').textContent = item.description;
+
+        const img = document.getElementById('imageModalImg');
+        img.src = `/api/outputs/file/${item.rel_path}`;
+
+        const dlBtn = document.getElementById('imageModalDownloadBtn');
+        dlBtn.href = `/api/outputs/file/${item.rel_path}?download=1`;
+        dlBtn.download = item.filename;
+
+        openModal('imagePreviewModal');
+        showToast(`Previewing ${item.title}`, '🖼️');
+
+    } else if (item.format === 'csv') {
+        // CSV Preview
+        document.getElementById('csvModalTitle').textContent = item.title;
+        document.getElementById('csvModalModuleBadge').textContent = `${item.module_code} • ${item.category}`;
+        document.getElementById('csvModalFilename').textContent = item.filename;
+
+        const dlBtn = document.getElementById('csvModalDownloadBtn');
+        dlBtn.href = `/api/outputs/file/${item.rel_path}?download=1`;
+        dlBtn.download = item.filename;
+
+        const loading = document.getElementById('csvModalLoading');
+        const wrapper = document.getElementById('csvModalTableWrapper');
+        loading.style.display = 'block';
+        loading.textContent = 'Loading CSV records...';
+        wrapper.style.display = 'none';
+
+        openModal('csvPreviewModal');
+
+        try {
+            const res = await fetch(`/api/outputs/preview-csv/${item.rel_path}`);
+            const data = await res.json();
+            if (data.success && data.columns) {
+                const head = document.getElementById('csvModalTableHead');
+                const body = document.getElementById('csvModalTableBody');
+                head.innerHTML = '<tr>' + data.columns.map(c => `<th>${c}</th>`).join('') + '</tr>';
+                body.innerHTML = data.rows.map(r => '<tr>' + r.map(c => `<td>${c}</td>`).join('') + '</tr>').join('');
+
+                document.getElementById('csvModalRowCount').textContent = `Showing top ${data.total_preview_rows} rows from ${item.filename}`;
+                loading.style.display = 'none';
+                wrapper.style.display = 'block';
+                showToast(`Loaded ${item.filename} records`, '📊');
+            } else {
+                loading.textContent = 'Could not parse CSV: ' + (data.error || 'Unknown error');
+            }
+        } catch (e) {
+            loading.textContent = 'Error loading CSV: ' + e;
+        }
+
+    } else if (item.format === 'txt') {
+        // Text preview
+        document.getElementById('textModalTitle').textContent = item.title;
+        document.getElementById('textModalModuleBadge').textContent = `${item.module_code} • ${item.category}`;
+        document.getElementById('textModalFilename').textContent = item.filename;
+
+        const dlBtn = document.getElementById('textModalDownloadBtn');
+        dlBtn.href = `/api/outputs/file/${item.rel_path}?download=1`;
+        dlBtn.download = item.filename;
+
+        const contentEl = document.getElementById('textModalContent');
+        contentEl.textContent = 'Loading text report...';
+
+        openModal('textPreviewModal');
+
+        try {
+            const res = await fetch(`/api/outputs/preview-text/${item.rel_path}`);
+            const data = await res.json();
+            if (data.success && data.content) {
+                contentEl.textContent = data.content;
+                showToast(`Loaded ${item.filename} text report`, '📑');
+            } else {
+                contentEl.textContent = 'Error: ' + (data.error || 'File not available');
+            }
+        } catch (e) {
+            contentEl.textContent = 'Error loading report: ' + e;
+        }
+    }
+}
+
+function openModal(id) {
+    const el = document.getElementById(id);
+    if (el) el.style.display = 'flex';
+}
+
+function closeModal(id) {
+    const el = document.getElementById(id);
+    if (el) el.style.display = 'none';
+}
+</script>
+
+{% endblock %}

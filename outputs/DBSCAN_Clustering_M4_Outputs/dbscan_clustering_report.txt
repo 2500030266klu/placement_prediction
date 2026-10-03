@@ -1,0 +1,9 @@
+DBSCAN DENSITY CLUSTERING BENCHMARK REPORT
+=============================================
+Epsilon (eps)         : 1.0
+Min Samples (MinPts)  : 30
+Clusters Discovered   : 5
+Core Points           : 49543
+Border Points         : 389
+Noise Outliers        : 68
+Silhouette Score      : 0.165

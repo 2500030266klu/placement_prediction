@@ -1,0 +1,13 @@
+HIERARCHICAL AGGLOMERATIVE CLUSTERING REPORT
+==================================================
+Linkage Criterion   : Ward
+Sample Records      : 5000
+Silhouette Score    : 0.249
+Calinski-Harabasz   : 2579.5
+Davies-Bouldin Index: 1.431
+
+Cohort Profiles:
+ - Tier 1: High-Impact Innovators: Placed 68.9%, Avg CGPA 7.1, Aptitude 68.4
+ - Tier 2: Balanced Core Candidates: Placed 97.0%, Avg CGPA 8.61, Aptitude 83.4
+ - Tier 3: Emerging Contenders: Placed 7.7%, Avg CGPA 5.43, Aptitude 47.7
+ - Tier 4: Skill-Enhancement Track: Placed 100.0%, Avg CGPA 8.8, Aptitude 83.6

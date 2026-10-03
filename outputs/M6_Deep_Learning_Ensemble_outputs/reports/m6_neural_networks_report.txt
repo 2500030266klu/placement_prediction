@@ -1,0 +1,49 @@
+================================================================================
+MODULE 6 TECHNICAL REPORT: DEEP NEURAL NETWORKS (MLP) & STACKING ENSEMBLE
+================================================================================
+Academic Context: Deep Feedforward Architectures, Backpropagation & Meta-Ensembling
+Dataset: University Placement Prediction Dataset (50,000 records)
+Holdout Test Size: 10,000 records (20%)
+
+--------------------------------------------------------------------------------
+1. MULTI-LAYER PERCEPTRON (MLP) DEEP NEURAL NETWORK
+--------------------------------------------------------------------------------
+Architecture Topology:
+    - Input Features : 13 standardized inputs
+    - Hidden Layer 1 : 64 Dense Neurons (Activation: Rectified Linear Unit - ReLU)
+    - Hidden Layer 2 : 32 Dense Neurons (Activation: ReLU)
+    - Hidden Layer 3 : 16 Dense Neurons (Activation: ReLU)
+    - Output Neuron  : 1 Sigmoid Logit Neuron (Placement Probability)
+Optimization & Regularization:
+    - Loss Function      : Binary Cross-Entropy Loss
+    - Optimizer          : Adam (Adaptive Moment Estimation, beta1=0.9, beta2=0.999)
+    - Initial Step Size  : 0.005 with adaptive decay
+    - L2 Regularization  : alpha = 0.001 (prevents co-adaptation of weights)
+    - Early Stopping     : Enabled (patience = 8 epochs)
+Performance Results:
+    - Test Accuracy  : 92.16%
+    - Test Precision : 93.19%
+    - Test Recall    : 95.03%
+    - Test F1-Score  : 94.1%
+    - Area Under ROC : 97.92%
+    - Total Epochs   : 18 iterations
+
+--------------------------------------------------------------------------------
+2. STACKING META-ENSEMBLE CLASSIFIER
+--------------------------------------------------------------------------------
+Architecture Topology:
+    - Level-0 Estimators : Random Forest (30 trees), KNN (k=5), GaussianNB, Logistic Regression
+    - Cross-Validation   : 3-Fold out-of-fold meta-prediction generation
+    - Level-1 Meta-Model : Regularized Logistic Regression
+Performance Results:
+    - Test Accuracy  : 91.66%
+    - Test Precision : 92.45%
+    - Test Recall    : 95.09%
+    - Test F1-Score  : 93.75%
+    - Area Under ROC : 97.6%
+Key Insight:
+    Stacking combines non-linear partitioning (Random Forest), local distance geometry
+    (KNN), and Bayesian likelihood into an optimal meta-decision boundary.
+
+Status: Artifacts generated and persisted successfully.
+================================================================================

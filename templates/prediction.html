@@ -99,7 +99,7 @@
                 </div>
             </div>
 
-            <div class="result-stats">
+            <div class="result-stats" style="grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));">
                 <div class="stat-box">
                     <div class="label">Placement Probability</div>
                     <div id="statProbability" class="value" style="color: #4f46e5;">92.5%</div>
@@ -109,29 +109,45 @@
                 </div>
 
                 <div class="stat-box">
-                    <div class="label">Estimated Package</div>
-                    <div id="statSalary" class="value" style="color: #10b981;">₹ 11.2 LPA</div>
-                    <span style="font-size: 12px; color: #64748b;">Annual CTC range</span>
+                    <div class="label">XGBoost Proba</div>
+                    <div id="statXgb" class="value" style="color: #1e40af;">92.0%</div>
+                    <span style="font-size: 11px; color: #64748b;">Extreme Gradient</span>
+                </div>
+
+                <div class="stat-box">
+                    <div class="label">AdaBoost Proba</div>
+                    <div id="statAda" class="value" style="color: #b91c1c;">91.2%</div>
+                    <span style="font-size: 11px; color: #64748b;">Adaptive Stumps</span>
                 </div>
 
                 <div class="stat-box">
                     <div class="label">KNN Neighborhood</div>
                     <div id="statKnn" class="value" style="color: #2563eb;">91.5%</div>
-                    <span style="font-size: 12px; color: #64748b;">K=5 Distance-Weighted</span>
+                    <span style="font-size: 11px; color: #64748b;">K=5 Distance-Weighted</span>
+                </div>
+
+                <div class="stat-box">
+                    <div class="label">Estimated Package</div>
+                    <div id="statSalary" class="value" style="color: #10b981;">₹ 11.2 LPA</div>
+                    <span style="font-size: 11px; color: #64748b;">Annual CTC range</span>
                 </div>
             </div>
 
-            <!-- K-Means++ Cluster Archetype Banner -->
+            <!-- Multi-Model Clustering Insights Banner (K-Means++, DBSCAN, Hierarchical) -->
             <div id="clusterArchetypeBanner" style="background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%); border: 1px solid #ddd6fe; border-radius: 12px; padding: 14px 18px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
                 <div style="display: flex; align-items: center; gap: 12px;">
                     <span id="clusterIcon" style="font-size: 28px;">🔬</span>
                     <div>
-                        <div style="font-size: 11px; text-transform: uppercase; font-weight: 700; color: #7c3aed; letter-spacing: 0.5px;">K-Means++ (K++) Unsupervised Student Archetype</div>
+                        <div style="font-size: 11px; text-transform: uppercase; font-weight: 700; color: #7c3aed; letter-spacing: 0.5px;">Multi-Cluster Archetype & Density Assessment</div>
                         <div id="clusterName" style="font-size: 16px; font-weight: 800; color: #4c1d95;">Skill-First Innovators</div>
                         <div id="clusterDesc" style="font-size: 12.5px; color: #6d28d9; margin-top: 2px;">Elite performance with high aptitude & portfolio strength.</div>
                     </div>
                 </div>
-                <span class="badge-pill kpp" style="background: #ffffff; color: #7c3aed; border-color: #c4b5fd;">K-Means++ Cluster</span>
+                <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                    <span class="badge-pill kpp" style="background: #ffffff; color: #7c3aed; border-color: #c4b5fd;">K-Means++ Cluster</span>
+                    <span id="dbscanBadge" class="badge-pill" style="background: #ffffff; color: #0f766e; border-color: #99f6e4;">DBSCAN: Dense Core</span>
+                    <span id="hierBadge" class="badge-pill" style="background: #ffffff; color: #a21caf; border-color: #f0abfc;">Hierarchical: Tier 1</span>
+                </div>
             </div>
 
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
@@ -256,13 +272,23 @@ async function submitPrediction() {
                 bar.style.background = 'linear-gradient(135deg, #f43f5e 0%, #e11d48 100%)';
             }
 
-            // KNN Score
+            // Multi-Model Probabilities (XGBoost, AdaBoost, KNN)
+            const statXgb = document.getElementById('statXgb');
+            if (statXgb) {
+                statXgb.textContent = (res.xgboost_probability !== undefined && res.xgboost_probability !== null) ? `${res.xgboost_probability}%` : `${res.probability}%`;
+            }
+
+            const statAda = document.getElementById('statAda');
+            if (statAda) {
+                statAda.textContent = (res.adaboost_probability !== undefined && res.adaboost_probability !== null) ? `${res.adaboost_probability}%` : `${res.probability}%`;
+            }
+
             const statKnn = document.getElementById('statKnn');
             if (statKnn) {
                 statKnn.textContent = (res.knn_probability !== undefined && res.knn_probability !== null) ? `${res.knn_probability}%` : `${res.probability}%`;
             }
 
-            // K-Means++ Cluster Archetype
+            // Unsupervised Clustering (K-Means++, DBSCAN, Hierarchical)
             if (res.cluster_archetype) {
                 const cName = document.getElementById('clusterName');
                 const cDesc = document.getElementById('clusterDesc');
@@ -270,6 +296,23 @@ async function submitPrediction() {
                 if (cName) cName.textContent = res.cluster_archetype.name || 'Core Contenders';
                 if (cDesc) cDesc.textContent = res.cluster_archetype.description || 'Standard placement profile.';
                 if (cIcon && res.cluster_archetype.icon) cIcon.textContent = res.cluster_archetype.icon;
+            }
+
+            const dbscanBadge = document.getElementById('dbscanBadge');
+            if (dbscanBadge && res.density_profile) {
+                dbscanBadge.textContent = `DBSCAN: ${res.density_profile.status || 'Dense Core'}`;
+                if (res.density_profile.is_outlier) {
+                    dbscanBadge.style.color = '#e11d48';
+                    dbscanBadge.style.borderColor = '#fca5a5';
+                } else {
+                    dbscanBadge.style.color = '#0f766e';
+                    dbscanBadge.style.borderColor = '#99f6e4';
+                }
+            }
+
+            const hierBadge = document.getElementById('hierBadge');
+            if (hierBadge && res.hierarchical_cluster) {
+                hierBadge.textContent = `Hierarchical: ${res.hierarchical_cluster.tier || 'Tier 1'}`;
             }
 
             // Strengths

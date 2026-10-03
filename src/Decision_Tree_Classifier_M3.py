@@ -41,6 +41,8 @@ import pickle
 
 import numpy as np
 import pandas as pd
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
 
@@ -83,23 +85,14 @@ from sklearn.metrics import (
 # ================================================================
 
 
-DATASET_PATH = (
-   r"C:/Users/Dell/PycharmProjects/ML_Project_New/dataset"
-   r"\placement_predict_50K_Raw.csv"
-)
-
-
-
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+DATASET_PATH = os.path.join(BASE_DIR, "dataset", "placement_predict_50K_Raw.csv")
 
 # ================================================================
 # 3. OUTPUT MAIN FOLDER
 # ================================================================
 
-
-OUTPUT_FOLDER = (
-   r"C:/Users/Dell/PycharmProjects/ML_Project_New/outputs"
-   r"\Decision_Tree_Classifier_M3_Outputs"
-)
+OUTPUT_FOLDER = os.path.join(BASE_DIR, "outputs", "Decision_Tree_Classifier_M3_Outputs")
 
 
 

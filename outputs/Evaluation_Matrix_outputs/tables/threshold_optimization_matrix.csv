@@ -1,0 +1,10 @@
+Decision Threshold,True Positives (TP),False Positives (FP),True Negatives (TN),False Negatives (FN),Accuracy (%),Precision (%),Recall / Sensitivity (%),F1-Score (%),Hiring Selection Recommendation
+0.1,3262,793,941,4,84.06,80.44,99.88,89.11,Max Sensitivity (No one missed)
+0.2,3249,652,1082,17,86.62,83.29,99.48,90.67,Max Sensitivity (No one missed)
+0.3,3234,525,1209,32,88.86,86.03,99.02,92.07,Max Sensitivity (No one missed)
+0.4,3200,388,1346,66,90.92,89.19,97.98,93.38,Strict Quality Filter
+0.5,3128,265,1469,138,91.94,92.19,95.77,93.95,Balanced Optimal F1
+0.6,3047,193,1541,219,91.76,94.04,93.29,93.67,Strict Quality Filter
+0.7,2935,123,1611,331,90.92,95.98,89.87,92.82,Strict Quality Filter
+0.8,2751,68,1666,515,88.34,97.59,84.23,90.42,Strict Quality Filter
+0.9,2412,23,1711,854,82.46,99.06,73.85,84.62,Strict Quality Filter
